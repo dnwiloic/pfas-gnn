@@ -1,0 +1,82 @@
+task: T2_multilabel_baseline
+seed: 42
+smoke: true
+labels:
+- PFOS
+- PFBS
+- PFHxA
+- PFOA
+- PFHpA
+- PFBA
+- PFPeA
+- PFHxS
+- PFPeS
+- PFNA
+n_feature_cols: 53
+feature_cols:
+- county
+- regional_board
+- dwr_region
+- dwr_basin
+- sgma_basin_name
+- sgma_subbasin_name
+- sgma_region_office
+- gm_well_category
+- well_depth_ft
+- dist_geotracker_km
+- nearest_geotracker_type
+- n_geotracker_within_1km
+- n_geotracker_within_3km
+- n_geotracker_within_10km
+- n_geotracker_within_50km
+- cocontam_no3n
+- cocontam_tds
+- cocontam_mn
+- cocontam_as
+- cocontam_so4
+- cocontam_fe
+- soil_sand_pct
+- soil_clay_pct
+- soil_silt_pct
+- soil_om_pct
+- soil_ph
+- soil_ksat_um_s
+- soil_awc_cm_cm
+- soil_bulk_density
+- soil_sand_vfine_pct
+- soil_sand_fine_pct
+- soil_sand_medium_pct
+- soil_sand_coarse_pct
+- soil_sand_vcoarse_pct
+- soil_water_1bar_pct
+- soil_water_15bar_pct
+- soil_texture_class
+- soil_ratio_water_clay
+- rainfall_mm_month
+- et_mm_month
+- runoff_mm
+- soil_moi_0_10_kg_m2
+- soil_moi_10_40_kg_m2
+- soil_moi_40_100_kg_m2
+- soil_moi_100_200_kg_m2
+- root_zone_moist_kg_m2
+- temp_c
+- snowpack_mm
+- gldas_dist_km
+- soil_moisture_total_mm
+- year
+- month_sin
+- month_cos
+cv:
+  spatial_k: 2
+  random_k: 2
+  group_key: gm_well_id
+models:
+- Prevalence
+- BinaryRelevance
+- Chain
+- Ensemble
+hgb_max_iter: 60
+encode: frequency
+threshold: per-label F1 on OOF probabilities
+imbalance: class_weight=balanced; SMOTE ablation on PFNA

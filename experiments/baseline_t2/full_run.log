@@ -1,0 +1,11 @@
+[data] rows=46338 wells=11333 labels=10 feats=53 SMOKE=False
+[Prevalence     ] sp macroAUROC=0.348 microF1=0.487 Ham=0.602 EMR=0.074 | rd macroAUROC=0.471  (16s)
+[BinaryRelevance] sp macroAUROC=0.698 microF1=0.551 Ham=0.337 EMR=0.156 | rd macroAUROC=0.903  (757s)
+[Chain          ] sp macroAUROC=0.681 microF1=0.545 Ham=0.365 EMR=0.137 | rd macroAUROC=0.903  (2467s)
+[Ensemble       ] sp macroAUROC=0.701 microF1=0.561 Ham=0.345 EMR=0.137 | rd macroAUROC=0.907  (10584s)
+[SMOTE ablation] PFNA AUROC class_weight=0.908 vs +SMOTE=0.886
+[paired] macro_AUROC: chain-BR=-0.0055 p=0.546875
+[paired] micro_F1: chain-BR=-0.0262 p=0.109375
+[pseudo] PFBA d=-0.014 | PFPeA d=+0.022 | PFPeS d=-0.011
+
+DONE in 14363s -> /home/wiloic/M2/Recherche/tmp/pfas/pfas-gnn/experiments/baseline_t2/{config.yaml,metrics.json,REPORT.md}

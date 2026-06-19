@@ -1,0 +1,25 @@
+task: T2_multilabel_baseline
+seed: 42
+smoke: true
+labels:
+- PFOS
+- PFBS
+- PFHxA
+- PFOA
+- PFHpA
+- PFBA
+- PFPeA
+- PFHxS
+- PFPeS
+- PFNA
+n_feature_cols: 53
+cv:
+  spatial_k: 2
+  random_k: 2
+models:
+- Prevalence
+- BinaryRelevance
+- Chain
+- Ensemble
+- FreqClassChain
+hgb_max_iter: 60

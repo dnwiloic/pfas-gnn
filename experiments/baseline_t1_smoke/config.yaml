@@ -1,0 +1,12 @@
+target: T1a
+smoke: True
+outer_k: 3
+inner_k: 2
+n_optuna_trials: 3
+feature_cols_count: 96
+prevalence: 0.3853554249064671
+seed: 42
+xgboost_available: True
+optuna_available: True
+shap_available: True
+elapsed_s: 153.87840747833252

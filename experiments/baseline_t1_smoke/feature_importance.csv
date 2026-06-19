@@ -1,0 +1,126 @@
+feature,importance,method,fold
+dwr_basin__enc,0.9791277,SHAP_TreeExplainer,0
+dist_geotracker_km,0.26531342,SHAP_TreeExplainer,0
+n_geotracker_within_50km,0.19306797,SHAP_TreeExplainer,0
+sgma_subbasin_name__enc,0.18021536,SHAP_TreeExplainer,0
+soil_texture_class__enc,0.14455223,SHAP_TreeExplainer,0
+gldas_dist_km,0.11783285,SHAP_TreeExplainer,0
+regional_board=CENTRAL VALLEY,0.11266671,SHAP_TreeExplainer,0
+soil_sand_pct,0.10870326,SHAP_TreeExplainer,0
+cocontam_tce,0.09922793,SHAP_TreeExplainer,0
+aqs_no2_ppb,0.09776549,SHAP_TreeExplainer,0
+aqs_so2_ppb,0.08976556,SHAP_TreeExplainer,0
+soil_om_pct,0.07866933,SHAP_TreeExplainer,0
+aqs_pm25_ugm3,0.07707134,SHAP_TreeExplainer,0
+temp_c,0.07184728,SHAP_TreeExplainer,0
+aqs_co_ppm,0.06869291,SHAP_TreeExplainer,0
+aqs_humidity_pct,0.05815995,SHAP_TreeExplainer,0
+sgma_basin_name__enc,0.05409161,SHAP_TreeExplainer,0
+cocontam_dca11,0.053010713,SHAP_TreeExplainer,0
+rainfall_mm_month,0.050418757,SHAP_TreeExplainer,0
+soil_ratio_water_clay,0.049902827,SHAP_TreeExplainer,0
+soil_awc_cm_cm,0.04801092,SHAP_TreeExplainer,0
+soil_moi_10_40_kg_m2,0.047850695,SHAP_TreeExplainer,0
+soil_sand_vfine_pct,0.04713042,SHAP_TreeExplainer,0
+year,0.045348067,SHAP_TreeExplainer,0
+cocontam_dcpa12,0.044225033,SHAP_TreeExplainer,0
+aqs_ozone_ppb,0.042732093,SHAP_TreeExplainer,0
+root_zone_moist_kg_m2,0.041933265,SHAP_TreeExplainer,0
+county__enc,0.04025399,SHAP_TreeExplainer,0
+aqs_pm10_ugm3,0.039772235,SHAP_TreeExplainer,0
+soil_sand_medium_pct,0.038297787,SHAP_TreeExplainer,0
+aqs_wind_ms,0.036864646,SHAP_TreeExplainer,0
+soil_moi_100_200_kg_m2,0.035727125,SHAP_TreeExplainer,0
+n_geotracker_within_10km,0.035638273,SHAP_TreeExplainer,0
+cocontam_vc,0.0355504,SHAP_TreeExplainer,0
+soil_moisture_total_mm,0.034779746,SHAP_TreeExplainer,0
+cocontam_fe,0.03440906,SHAP_TreeExplainer,0
+cocontam_as,0.034403183,SHAP_TreeExplainer,0
+cocontam_dbcp,0.03392799,SHAP_TreeExplainer,0
+soil_ph,0.03261725,SHAP_TreeExplainer,0
+gm_well_category=MONITORING,0.032578915,SHAP_TreeExplainer,0
+soil_sand_coarse_pct,0.032416828,SHAP_TreeExplainer,0
+cocontam_pbzn,0.031797588,SHAP_TreeExplainer,0
+cocontam_tcb124,0.030182216,SHAP_TreeExplainer,0
+month_cos,0.029469661,SHAP_TreeExplainer,0
+et_mm_month,0.029221142,SHAP_TreeExplainer,0
+soil_moi_0_10_kg_m2,0.02819095,SHAP_TreeExplainer,0
+cocontam_bzme,0.027895698,SHAP_TreeExplainer,0
+cocontam_mtbe,0.027023561,SHAP_TreeExplainer,0
+nearest_geotracker_type=Airport,0.025419805,SHAP_TreeExplainer,0
+cocontam_fc12,0.024749853,SHAP_TreeExplainer,0
+soil_silt_pct,0.024345959,SHAP_TreeExplainer,0
+soil_clay_pct,0.023549134,SHAP_TreeExplainer,0
+cocontam_sty,0.02233687,SHAP_TreeExplainer,0
+soil_water_15bar_pct,0.022105867,SHAP_TreeExplainer,0
+cocontam_tds,0.021069786,SHAP_TreeExplainer,0
+soil_moi_40_100_kg_m2,0.020669159,SHAP_TreeExplainer,0
+n_geotracker_within_3km,0.020524906,SHAP_TreeExplainer,0
+soil_sand_vcoarse_pct,0.020396601,SHAP_TreeExplainer,0
+soil_sand_fine_pct,0.020170687,SHAP_TreeExplainer,0
+cocontam_tcpr123,0.01944866,SHAP_TreeExplainer,0
+nearest_geotracker_type=Chrome Plater,0.016595505,SHAP_TreeExplainer,0
+well_depth_ft,0.016589385,SHAP_TreeExplainer,0
+runoff_mm,0.016137434,SHAP_TreeExplainer,0
+cocontam_pce,0.015931128,SHAP_TreeExplainer,0
+cocontam_so4,0.015843691,SHAP_TreeExplainer,0
+cocontam_ebz,0.015803905,SHAP_TreeExplainer,0
+cocontam_ctcl,0.01536162,SHAP_TreeExplainer,0
+soil_bulk_density,0.01394329,SHAP_TreeExplainer,0
+aqs_so2_ppb__missing,0.013001734,SHAP_TreeExplainer,0
+cocontam_no3n,0.012500938,SHAP_TreeExplainer,0
+cocontam_btbzs,0.011707358,SHAP_TreeExplainer,0
+cocontam_naph,0.011427168,SHAP_TreeExplainer,0
+cocontam_dce11,0.010457716,SHAP_TreeExplainer,0
+gm_well_category=MUNICIPAL,0.010160356,SHAP_TreeExplainer,0
+soil_ksat_um_s,0.008664839,SHAP_TreeExplainer,0
+cocontam_tbme,0.008292838,SHAP_TreeExplainer,0
+cocontam_tca112,0.008252656,SHAP_TreeExplainer,0
+soil_water_1bar_pct,0.008071095,SHAP_TreeExplainer,0
+month_sin,0.0076733683,SHAP_TreeExplainer,0
+n_geotracker_within_1km,0.006933743,SHAP_TreeExplainer,0
+regional_board=SANTA ANA,0.00689403,SHAP_TreeExplainer,0
+cocontam_dcbz13,0.006551452,SHAP_TreeExplainer,0
+cocontam_no3n__missing,0.006251389,SHAP_TreeExplainer,0
+cocontam_edb,0.006134451,SHAP_TreeExplainer,0
+sgma_region_office=__nan__,0.00585827,SHAP_TreeExplainer,0
+cocontam_bz,0.005817531,SHAP_TreeExplainer,0
+cocontam_tca111,0.0057882024,SHAP_TreeExplainer,0
+cocontam_dcbz12,0.0050489544,SHAP_TreeExplainer,0
+nearest_geotracker_type=Bulk Terminal,0.004188357,SHAP_TreeExplainer,0
+cocontam_tds__missing,0.0039909603,SHAP_TreeExplainer,0
+cocontam_mn,0.003320533,SHAP_TreeExplainer,0
+cocontam_dca12,0.003306312,SHAP_TreeExplainer,0
+cocontam_dce12t,0.002060248,SHAP_TreeExplainer,0
+regional_board=LAHONTAN,0.0012296834,SHAP_TreeExplainer,0
+cocontam_btbzn,0.000881966,SHAP_TreeExplainer,0
+nearest_geotracker_type=Refinery,0.0007192105,SHAP_TreeExplainer,0
+cocontam_dbcme,0.0,SHAP_TreeExplainer,0
+cocontam_fc11,0.0,SHAP_TreeExplainer,0
+gm_well_category=DOMESTIC,0.0,SHAP_TreeExplainer,0
+gm_well_category=IRRIGATION / INDUSTRIAL,0.0,SHAP_TreeExplainer,0
+cocontam_clbz,0.0,SHAP_TreeExplainer,0
+well_depth_ft__missing,0.0,SHAP_TreeExplainer,0
+"gm_well_category=WATER SUPPLY, OTHER",0.0,SHAP_TreeExplainer,0
+cocontam_bdcme,0.0,SHAP_TreeExplainer,0
+sgma_region_office=SCRO,0.0,SHAP_TreeExplainer,0
+cocontam_fc113,0.0,SHAP_TreeExplainer,0
+cocontam_tmb124,0.0,SHAP_TreeExplainer,0
+sgma_region_office=SRO,0.0,SHAP_TreeExplainer,0
+dwr_region=South Lahontan,0.0,SHAP_TreeExplainer,0
+dwr_region=Tulare Lake,0.0,SHAP_TreeExplainer,0
+dwr_region=South Coast,0.0,SHAP_TreeExplainer,0
+dwr_region=San Joaquin River,0.0,SHAP_TreeExplainer,0
+dwr_region=Colorado River,0.0,SHAP_TreeExplainer,0
+dwr_region=Central Coast,0.0,SHAP_TreeExplainer,0
+cocontam_pca,0.0,SHAP_TreeExplainer,0
+regional_board=SAN DIEGO,0.0,SHAP_TreeExplainer,0
+regional_board=LOS ANGELES,0.0,SHAP_TreeExplainer,0
+regional_board=COLORADO RIVER,0.0,SHAP_TreeExplainer,0
+regional_board=CENTRAL COAST,0.0,SHAP_TreeExplainer,0
+cocontam_tmb124__missing,0.0,SHAP_TreeExplainer,0
+cocontam_fe__missing,0.0,SHAP_TreeExplainer,0
+cocontam_so4__missing,0.0,SHAP_TreeExplainer,0
+cocontam_as__missing,0.0,SHAP_TreeExplainer,0
+cocontam_mn__missing,0.0,SHAP_TreeExplainer,0
+snowpack_mm,0.0,SHAP_TreeExplainer,0
