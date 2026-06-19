@@ -77,6 +77,7 @@ récite pas.
      paramétrée et explicite (chemin Drive monté, ou `gdown` avec un identifiant de
      fichier), avec une **instruction claire** indiquant à l'utilisateur où définir ce
      chemin/ID ; vérifier l'intégrité du fichier après téléchargement ;
+     Il est present sur github 
   5. exposer le toggle `SMOKE_TEST` en tête.
 - Cellules **idempotentes** (réexécutables sans casse) ; artefacts, modèles et
   **checkpoints** sauvegardés sur Drive dans `experiments/<id>/`.

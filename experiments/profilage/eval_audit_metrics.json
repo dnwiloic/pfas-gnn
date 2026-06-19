@@ -1,0 +1,418 @@
+{
+  "detection_guardrail": {
+    "T1a_raw_prevalence": 0.4565,
+    "T1a_guarded_prevalence": 0.4453,
+    "n_raw_pos": 21154,
+    "n_guard_pos": 20633,
+    "n_positives_from_nondetect_only": 521,
+    "frac_raw_positives_that_are_nondetect_artifacts": 0.0246,
+    "rows_PFOA_gt4_but_not_detected": 515,
+    "rows_PFOS_gt4_but_not_detected": 532,
+    "PFOA_gt_HBWC_and_NOT_detected": 515,
+    "PFOA_gt_HBWC_total": 16282,
+    "PFOS_gt_HBWC_and_NOT_detected": 532,
+    "PFOS_gt_HBWC_total": 18758,
+    "PFHxS_gt_HBWC_and_NOT_detected": 112,
+    "PFHxS_gt_HBWC_total": 6896,
+    "PFNA_gt_HBWC_and_NOT_detected": 278,
+    "PFNA_gt_HBWC_total": 1434,
+    "HFPO_DA_gt_HBWC_and_NOT_detected": 0,
+    "HFPO_DA_gt_HBWC_total": 0,
+    "PFBS_gt_HBWC_and_NOT_detected": 0,
+    "PFBS_gt_HBWC_total": 0
+  },
+  "n_candidate_features_after_blocklist": 103,
+  "leakage_scan_T1a_top25": [
+    {
+      "col": "dwr_basin",
+      "assoc": 0.5051,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "sgma_subbasin_name",
+      "assoc": 0.5051,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "county",
+      "assoc": 0.4026,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "sgma_basin_name",
+      "assoc": 0.389,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "well_depth_ft",
+      "assoc": -0.3468,
+      "kind": "pearson"
+    },
+    {
+      "col": "dwr_region",
+      "assoc": 0.3366,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "regional_board",
+      "assoc": 0.3306,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "soil_gradation_curvature",
+      "assoc": 0.2837,
+      "kind": "pearson"
+    },
+    {
+      "col": "n_geotracker_within_50km",
+      "assoc": 0.2562,
+      "kind": "pearson"
+    },
+    {
+      "col": "gm_dataset_name",
+      "assoc": 0.2523,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "sgma_region_office",
+      "assoc": 0.2424,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "soil_texture_class",
+      "assoc": 0.2309,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "n_geotracker_within_10km",
+      "assoc": 0.1971,
+      "kind": "pearson"
+    },
+    {
+      "col": "aqs_no2_ppb",
+      "assoc": 0.193,
+      "kind": "pearson"
+    },
+    {
+      "col": "latitude",
+      "assoc": -0.1876,
+      "kind": "pearson"
+    },
+    {
+      "col": "aqs_co_ppm",
+      "assoc": 0.1693,
+      "kind": "pearson"
+    },
+    {
+      "col": "dist_geotracker_km",
+      "assoc": -0.1595,
+      "kind": "pearson"
+    },
+    {
+      "col": "longitude",
+      "assoc": 0.1536,
+      "kind": "pearson"
+    },
+    {
+      "col": "gm_well_category",
+      "assoc": 0.1521,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "et_mm_month",
+      "assoc": -0.1513,
+      "kind": "pearson"
+    },
+    {
+      "col": "root_zone_moist_kg_m2",
+      "assoc": -0.1379,
+      "kind": "pearson"
+    },
+    {
+      "col": "aqs_humidity_pct",
+      "assoc": 0.1356,
+      "kind": "pearson"
+    },
+    {
+      "col": "cocontam_dbcp",
+      "assoc": 0.1281,
+      "kind": "pearson"
+    },
+    {
+      "col": "n_geotracker_within_1km",
+      "assoc": 0.127,
+      "kind": "pearson"
+    },
+    {
+      "col": "n_geotracker_within_3km",
+      "assoc": 0.1167,
+      "kind": "pearson"
+    }
+  ],
+  "leakage_scan_T1b_top25": [
+    {
+      "col": "dwr_basin",
+      "assoc": 0.456,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "sgma_subbasin_name",
+      "assoc": 0.456,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "gm_dataset_name",
+      "assoc": 0.3613,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "county",
+      "assoc": 0.3595,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "well_depth_ft",
+      "assoc": -0.3537,
+      "kind": "pearson"
+    },
+    {
+      "col": "sgma_basin_name",
+      "assoc": 0.34,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "gm_well_category",
+      "assoc": 0.2983,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "soil_texture_class",
+      "assoc": 0.2523,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "dwr_region",
+      "assoc": 0.2513,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "regional_board",
+      "assoc": 0.2377,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "sgma_region_office",
+      "assoc": 0.1936,
+      "kind": "eta(cat)"
+    },
+    {
+      "col": "n_geotracker_within_1km",
+      "assoc": 0.1782,
+      "kind": "pearson"
+    },
+    {
+      "col": "n_geotracker_within_10km",
+      "assoc": 0.1513,
+      "kind": "pearson"
+    },
+    {
+      "col": "n_geotracker_within_50km",
+      "assoc": 0.1478,
+      "kind": "pearson"
+    },
+    {
+      "col": "soil_gradation_uniformity",
+      "assoc": -0.1336,
+      "kind": "pearson"
+    },
+    {
+      "col": "aqs_pm10_ugm3",
+      "assoc": -0.1272,
+      "kind": "pearson"
+    },
+    {
+      "col": "latitude",
+      "assoc": -0.122,
+      "kind": "pearson"
+    },
+    {
+      "col": "aqs_co_ppm",
+      "assoc": 0.12,
+      "kind": "pearson"
+    },
+    {
+      "col": "n_geotracker_within_3km",
+      "assoc": 0.1187,
+      "kind": "pearson"
+    },
+    {
+      "col": "cocontam_dbcp",
+      "assoc": 0.1122,
+      "kind": "pearson"
+    },
+    {
+      "col": "aqs_humidity_pct",
+      "assoc": 0.1058,
+      "kind": "pearson"
+    },
+    {
+      "col": "cocontam_no3n",
+      "assoc": -0.1045,
+      "kind": "pearson"
+    },
+    {
+      "col": "soil_silt_coarse_pct",
+      "assoc": 0.1041,
+      "kind": "pearson"
+    },
+    {
+      "col": "soil_silt_fine_pct",
+      "assoc": -0.1002,
+      "kind": "pearson"
+    },
+    {
+      "col": "et_mm_month",
+      "assoc": -0.099,
+      "kind": "pearson"
+    }
+  ],
+  "baseline_n_features": 86,
+  "pseudo_replicate_leak": {
+    "auc_random_row_kfold_mean": 0.7463,
+    "auc_random_row_kfold_std": 0.0042,
+    "auc_groupkfold_well_mean": 0.7266,
+    "auc_groupkfold_well_std": 0.0104,
+    "delta_row_minus_group": 0.0198,
+    "note": "delta>0 = un meme puits des deux cotes gonfle le score (fuite pseudo-replicats)",
+    "frac_rows_in_multi_event_wells": 0.8493
+  },
+  "spatial_inflation": {
+    "kmeans_8": {
+      "auc_spatial_LOBO_mean": 0.5567,
+      "auc_spatial_LOBO_std": 0.0319,
+      "auc_spatial_LOBO_min": 0.5148,
+      "auc_spatial_LOBO_max": 0.5978,
+      "delta_random_minus_spatial": 0.1698,
+      "per_block": {
+        "0": {
+          "n_rows_test": 3840,
+          "test_prevalence": 0.2073,
+          "n_pos_test": 796,
+          "auc": 0.5148
+        },
+        "1": {
+          "n_rows_test": 6547,
+          "test_prevalence": 0.3848,
+          "n_pos_test": 2519,
+          "auc": 0.5862
+        },
+        "2": {
+          "n_rows_test": 18450,
+          "test_prevalence": 0.5791,
+          "n_pos_test": 10684,
+          "auc": 0.5978
+        },
+        "3": {
+          "n_rows_test": 2571,
+          "test_prevalence": 0.3979,
+          "n_pos_test": 1023,
+          "auc": 0.5909
+        },
+        "4": {
+          "n_rows_test": 6011,
+          "test_prevalence": 0.4899,
+          "n_pos_test": 2945,
+          "auc": 0.5232
+        },
+        "5": {
+          "n_rows_test": 2604,
+          "test_prevalence": 0.2327,
+          "n_pos_test": 606,
+          "auc": 0.5371
+        },
+        "6": {
+          "n_rows_test": 4576,
+          "test_prevalence": 0.2906,
+          "n_pos_test": 1330,
+          "auc": 0.5752
+        },
+        "7": {
+          "n_rows_test": 1739,
+          "test_prevalence": 0.4198,
+          "n_pos_test": 730,
+          "auc": 0.5285
+        }
+      }
+    },
+    "kmeans_5": {
+      "auc_spatial_LOBO_mean": 0.5796,
+      "auc_spatial_LOBO_std": 0.0323,
+      "auc_spatial_LOBO_min": 0.5373,
+      "auc_spatial_LOBO_max": 0.6209,
+      "delta_random_minus_spatial": 0.147,
+      "per_block": {
+        "0": {
+          "n_rows_test": 18191,
+          "test_prevalence": 0.5685,
+          "n_pos_test": 10342,
+          "auc": 0.6209
+        },
+        "1": {
+          "n_rows_test": 3021,
+          "test_prevalence": 0.3737,
+          "n_pos_test": 1129,
+          "auc": 0.6034
+        },
+        "2": {
+          "n_rows_test": 7324,
+          "test_prevalence": 0.2649,
+          "n_pos_test": 1940,
+          "auc": 0.5373
+        },
+        "3": {
+          "n_rows_test": 11144,
+          "test_prevalence": 0.3462,
+          "n_pos_test": 3858,
+          "auc": 0.5893
+        },
+        "4": {
+          "n_rows_test": 6658,
+          "test_prevalence": 0.5053,
+          "n_pos_test": 3364,
+          "auc": 0.5469
+        }
+      }
+    },
+    "auc_random_groupkfold_well_mean": 0.7266
+  },
+  "interblock_contamination": {
+    "method": "KMeans k=8 well-level; NN haversine; cross-block = NN in different block",
+    "buffers": {
+      "0.5km": {
+        "n_wells_with_NN_within": 8255,
+        "n_wells_NN_within_but_other_block": 0,
+        "frac_wells_cross_block_within": 0.0,
+        "frac_of_close_pairs_cross_block": 0.0
+      },
+      "1.0km": {
+        "n_wells_with_NN_within": 10038,
+        "n_wells_NN_within_but_other_block": 0,
+        "frac_wells_cross_block_within": 0.0,
+        "frac_of_close_pairs_cross_block": 0.0
+      },
+      "2.0km": {
+        "n_wells_with_NN_within": 10812,
+        "n_wells_NN_within_but_other_block": 1,
+        "frac_wells_cross_block_within": 0.0001,
+        "frac_of_close_pairs_cross_block": 0.0001
+      },
+      "5.0km": {
+        "n_wells_with_NN_within": 11139,
+        "n_wells_NN_within_but_other_block": 6,
+        "frac_wells_cross_block_within": 0.0005,
+        "frac_of_close_pairs_cross_block": 0.0005
+      }
+    },
+    "note": "frac_wells_cross_block_within mesure la part de puits dont le plus proche voisin (<d km) tombe dans un bloc different => fuite de frontiere a corriger par buffer"
+  }
+}

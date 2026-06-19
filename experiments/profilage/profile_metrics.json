@@ -1,0 +1,3865 @@
+{
+  "shape": [
+    46338,
+    201
+  ],
+  "memory_mb": 108.0,
+  "dtypes": {
+    "float64": 120,
+    "int64": 36,
+    "bool": 31,
+    "object": 13,
+    "datetime64[us]": 1
+  },
+  "family_counts": {
+    "pfas_concentration_ngL": 31,
+    "detection_flags": 31,
+    "precomputed_labels": 31,
+    "cocontaminants": 44,
+    "soil": 26,
+    "aqs_air": 8,
+    "geotracker": 6
+  },
+  "pfas_analytes_ngL": [
+    "ADONA_ngL",
+    "F53B_major_ngL",
+    "F53B_minor_ngL",
+    "FTS_4_2_ngL",
+    "FTS_6_2_ngL",
+    "FTS_8_2_ngL",
+    "HFPO_DA_ngL",
+    "NEtFOSAA_ngL",
+    "NFDHA_ngL",
+    "NMeFOSAA_ngL",
+    "PFBA_ngL",
+    "PFBS_ngL",
+    "PFDA_ngL",
+    "PFDS_ngL",
+    "PFDoDA_ngL",
+    "PFEESA_ngL",
+    "PFHpA_ngL",
+    "PFHpS_ngL",
+    "PFHxA_ngL",
+    "PFHxS_ngL",
+    "PFMBA_ngL",
+    "PFMPA_ngL",
+    "PFNA_ngL",
+    "PFOA_ngL",
+    "PFOS_ngL",
+    "PFOSAm_ngL",
+    "PFPeA_ngL",
+    "PFPeS_ngL",
+    "PFTeDA_ngL",
+    "PFTrDA_ngL",
+    "PFUnDA_ngL"
+  ],
+  "detection_cols": [
+    "ADONA_detected",
+    "F53B_major_detected",
+    "F53B_minor_detected",
+    "FTS_4_2_detected",
+    "FTS_6_2_detected",
+    "FTS_8_2_detected",
+    "HFPO_DA_detected",
+    "NEtFOSAA_detected",
+    "NFDHA_detected",
+    "NMeFOSAA_detected",
+    "PFBA_detected",
+    "PFBS_detected",
+    "PFDA_detected",
+    "PFDS_detected",
+    "PFDoDA_detected",
+    "PFEESA_detected",
+    "PFHpA_detected",
+    "PFHpS_detected",
+    "PFHxA_detected",
+    "PFHxS_detected",
+    "PFMBA_detected",
+    "PFMPA_detected",
+    "PFNA_detected",
+    "PFOA_detected",
+    "PFOS_detected",
+    "PFOSAm_detected",
+    "PFPeA_detected",
+    "PFPeS_detected",
+    "PFTeDA_detected",
+    "PFTrDA_detected",
+    "PFUnDA_detected"
+  ],
+  "label_cols": [
+    "label_ADONA",
+    "label_F53B_major",
+    "label_F53B_minor",
+    "label_FTS_4_2",
+    "label_FTS_6_2",
+    "label_FTS_8_2",
+    "label_HFPO_DA",
+    "label_NEtFOSAA",
+    "label_NFDHA",
+    "label_NMeFOSAA",
+    "label_PFBA",
+    "label_PFBS",
+    "label_PFDA",
+    "label_PFDS",
+    "label_PFDoDA",
+    "label_PFEESA",
+    "label_PFHpA",
+    "label_PFHpS",
+    "label_PFHxA",
+    "label_PFHxS",
+    "label_PFMBA",
+    "label_PFMPA",
+    "label_PFNA",
+    "label_PFOA",
+    "label_PFOS",
+    "label_PFOSAm",
+    "label_PFPeA",
+    "label_PFPeS",
+    "label_PFTeDA",
+    "label_PFTrDA",
+    "label_PFUnDA"
+  ],
+  "constant_cols": [
+    "label_PFEESA",
+    "label_PFMBA",
+    "label_PFMPA",
+    "pfas_class_assignment"
+  ],
+  "quasi_constant_cols": [
+    {
+      "col": "ADONA_detected",
+      "top_frac": 0.9996,
+      "top_val": "False"
+    },
+    {
+      "col": "F53B_major_detected",
+      "top_frac": 0.9997,
+      "top_val": "False"
+    },
+    {
+      "col": "F53B_minor_detected",
+      "top_frac": 0.9998,
+      "top_val": "False"
+    },
+    {
+      "col": "FTS_4_2_detected",
+      "top_frac": 0.9921,
+      "top_val": "False"
+    },
+    {
+      "col": "HFPO_DA_detected",
+      "top_frac": 0.9991,
+      "top_val": "False"
+    },
+    {
+      "col": "NEtFOSAA_detected",
+      "top_frac": 0.9943,
+      "top_val": "False"
+    },
+    {
+      "col": "NFDHA_detected",
+      "top_frac": 0.9999,
+      "top_val": "False"
+    },
+    {
+      "col": "NMeFOSAA_detected",
+      "top_frac": 0.9977,
+      "top_val": "False"
+    },
+    {
+      "col": "PFDS_detected",
+      "top_frac": 0.9989,
+      "top_val": "False"
+    },
+    {
+      "col": "PFDoDA_detected",
+      "top_frac": 0.9962,
+      "top_val": "False"
+    },
+    {
+      "col": "PFEESA_detected",
+      "top_frac": 0.9998,
+      "top_val": "False"
+    },
+    {
+      "col": "PFMBA_detected",
+      "top_frac": 0.9993,
+      "top_val": "False"
+    },
+    {
+      "col": "PFMPA_detected",
+      "top_frac": 0.9993,
+      "top_val": "False"
+    },
+    {
+      "col": "PFTeDA_detected",
+      "top_frac": 0.9982,
+      "top_val": "False"
+    },
+    {
+      "col": "PFTrDA_detected",
+      "top_frac": 0.9978,
+      "top_val": "False"
+    },
+    {
+      "col": "PFUnDA_detected",
+      "top_frac": 0.9913,
+      "top_val": "False"
+    },
+    {
+      "col": "cocontam_xylenes",
+      "top_frac": 0.998,
+      "top_val": "nan"
+    }
+  ],
+  "duplicate_columns": [
+    [
+      "label_PFEESA",
+      "label_PFMBA"
+    ],
+    [
+      "label_PFEESA",
+      "label_PFMPA"
+    ],
+    [
+      "cocontam_tmb124",
+      "cocontam_dce12c"
+    ],
+    [
+      "cocontam_tmb124",
+      "cocontam_btbzt"
+    ]
+  ],
+  "granularity": {
+    "n_rows": 46338,
+    "n_unique_wells": 11333,
+    "n_unique_well_date": 46338,
+    "full_duplicate_rows": 0,
+    "date_min": "2016-04-01 00:00:00",
+    "date_max": "2026-01-26 00:00:00",
+    "rows_per_well": {
+      "min": 1,
+      "median": 1.0,
+      "mean": 4.09,
+      "max": 139,
+      "wells_with_multiple_rows": 4349
+    }
+  },
+  "column_profile": [
+    {
+      "col": "gm_well_id",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 11333,
+      "top_modalities": {
+        "CA1910240_004_004": 139,
+        "CA1910240_047_047": 139,
+        "CA1910240_046_046": 134,
+        "CA3410010_010_010": 99,
+        "CA1910039_224_224": 74
+      }
+    },
+    {
+      "col": "collection_date",
+      "dtype": "datetime64[us]",
+      "missing_frac": 0.0,
+      "n_unique": 2069
+    },
+    {
+      "col": "ADONA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.1227,
+      "n_unique": 241,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 4.15,
+      "mean": 1.0971,
+      "skew": 4.149,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "F53B_major_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.1272,
+      "n_unique": 249,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 4.0,
+      "mean": 1.0483,
+      "skew": 4.937,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "F53B_minor_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.1273,
+      "n_unique": 241,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 4.0,
+      "mean": 1.0735,
+      "skew": 4.325,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "FTS_4_2_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4421,
+      "n_unique": 372,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 32.00500000000011,
+      "mean": 2.2415,
+      "skew": 5.184,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "FTS_6_2_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4418,
+      "n_unique": 614,
+      "min": 0.001,
+      "p50": 2.05,
+      "max": 503.6000000000058,
+      "mean": 16.6606,
+      "skew": 5.787,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "FTS_8_2_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4416,
+      "n_unique": 468,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 61.39200000000092,
+      "mean": 3.6308,
+      "skew": 5.34,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "HFPO_DA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.1241,
+      "n_unique": 278,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 4.45,
+      "mean": 1.1798,
+      "skew": 3.283,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "NEtFOSAA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4203,
+      "n_unique": 437,
+      "min": 0.0,
+      "p50": 1.25,
+      "max": 24.5,
+      "mean": 2.1737,
+      "skew": 4.844,
+      "frac_zero": 0.0008,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "NFDHA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.5527,
+      "n_unique": 176,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 10.0,
+      "mean": 1.2737,
+      "skew": 5.181,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "NMeFOSAA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4214,
+      "n_unique": 388,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 22.0,
+      "mean": 2.0429,
+      "skew": 4.859,
+      "frac_zero": 0.0008,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFBA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4429,
+      "n_unique": 866,
+      "min": 0.0025,
+      "p50": 2.0,
+      "max": 877.0000000000073,
+      "mean": 35.3817,
+      "skew": 5.165,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFBS_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0487,
+      "n_unique": 874,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 130.72000000000116,
+      "mean": 7.2139,
+      "skew": 5.186,
+      "frac_zero": 0.0032,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFDA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0393,
+      "n_unique": 417,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 8.5,
+      "mean": 1.291,
+      "skew": 4.674,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFDS_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.8642,
+      "n_unique": 334,
+      "min": 0.0585,
+      "p50": 0.95,
+      "max": 85.99999999999909,
+      "mean": 4.5826,
+      "skew": 4.876,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFDoDA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0582,
+      "n_unique": 316,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 4.5,
+      "mean": 1.0882,
+      "skew": 4.621,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFEESA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.5523,
+      "n_unique": 92,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 1.85,
+      "mean": 0.996,
+      "skew": 2.83,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFHpA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0267,
+      "n_unique": 853,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 210.0,
+      "mean": 8.4709,
+      "skew": 5.451,
+      "frac_zero": 0.0026,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFHpS_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4446,
+      "n_unique": 484,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 48.6299999999992,
+      "mean": 2.5793,
+      "skew": 5.395,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFHxA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0418,
+      "n_unique": 954,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 640.0,
+      "mean": 23.116,
+      "skew": 5.58,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFHxS_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.048,
+      "n_unique": 1106,
+      "min": 0.0,
+      "p50": 2.0,
+      "max": 480.0,
+      "mean": 18.9506,
+      "skew": 5.528,
+      "frac_zero": 0.0009,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFMBA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.5526,
+      "n_unique": 95,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 1.8862999999999737,
+      "mean": 0.997,
+      "skew": 2.959,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFMPA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.5529,
+      "n_unique": 91,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 2.0,
+      "mean": 1.0117,
+      "skew": 3.199,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFNA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0265,
+      "n_unique": 606,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 28.0,
+      "mean": 2.0611,
+      "skew": 5.206,
+      "frac_zero": 0.0033,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFOA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0019,
+      "n_unique": 1039,
+      "min": 0.0,
+      "p50": 1.475,
+      "max": 227.97999999999593,
+      "mean": 11.8565,
+      "skew": 5.062,
+      "frac_zero": 0.0023,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFOS_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0018,
+      "n_unique": 1257,
+      "min": 0.0,
+      "p50": 2.0,
+      "max": 421.8000000000029,
+      "mean": 20.6445,
+      "skew": 5.187,
+      "frac_zero": 0.0021,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFOSAm_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.8602,
+      "n_unique": 559,
+      "min": 0.02805,
+      "p50": 1.6,
+      "max": 100.0,
+      "mean": 6.8309,
+      "skew": 4.055,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFPeA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4446,
+      "n_unique": 873,
+      "min": 0.0015,
+      "p50": 1.0,
+      "max": 1500.0,
+      "mean": 54.3139,
+      "skew": 5.365,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFPeS_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.44,
+      "n_unique": 663,
+      "min": 0.001,
+      "p50": 1.0,
+      "max": 260.0,
+      "mean": 10.3001,
+      "skew": 5.277,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFTeDA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4135,
+      "n_unique": 354,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 9.5,
+      "mean": 1.2926,
+      "skew": 4.867,
+      "frac_zero": 0.0008,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFTrDA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.4177,
+      "n_unique": 337,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 9.5,
+      "mean": 1.2842,
+      "skew": 4.948,
+      "frac_zero": 0.0008,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "PFUnDA_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.039,
+      "n_unique": 330,
+      "min": 0.0,
+      "p50": 1.0,
+      "max": 5.0,
+      "mean": 1.1124,
+      "skew": 4.587,
+      "frac_zero": 0.0005,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "ADONA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "F53B_major_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "F53B_minor_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "FTS_4_2_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "FTS_6_2_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "FTS_8_2_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "HFPO_DA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "NEtFOSAA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "NFDHA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "NMeFOSAA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFBA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFBS_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFDA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFDS_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFDoDA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFEESA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFHpA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFHpS_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFHxA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFHxS_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFMBA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFMPA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFNA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFOA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFOS_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFOSAm_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFPeA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFPeS_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFTeDA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFTrDA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "PFUnDA_detected",
+      "dtype": "bool",
+      "missing_frac": 0.0,
+      "n_unique": 2
+    },
+    {
+      "col": "gm_dataset_name",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 6,
+      "top_modalities": {
+        "DDW": 36993,
+        "WB_CLEANUP": 5860,
+        "WRD": 1042,
+        "GAMA_USGS": 896,
+        "LOCALGW": 871
+      }
+    },
+    {
+      "col": "latitude",
+      "dtype": "float64",
+      "missing_frac": 0.0,
+      "n_unique": 10678,
+      "min": 32.578367,
+      "p50": 34.458405,
+      "max": 41.9656,
+      "mean": 35.5926,
+      "skew": 0.756,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "longitude",
+      "dtype": "float64",
+      "missing_frac": 0.0,
+      "n_unique": 10699,
+      "min": -124.281628,
+      "p50": -118.469556,
+      "max": -114.479166,
+      "mean": -119.3337,
+      "skew": -0.462,
+      "frac_zero": 0.0,
+      "frac_negative": 1.0
+    },
+    {
+      "col": "well_depth_ft",
+      "dtype": "float64",
+      "missing_frac": 0.9454,
+      "n_unique": 858,
+      "min": 6.0,
+      "p50": 227.0,
+      "max": 2500.0,
+      "mean": 298.898,
+      "skew": 1.805,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "county",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 58,
+      "top_modalities": {
+        "LOS ANGELES": 12191,
+        "ORANGE": 3477,
+        "SAN BERNARDINO": 3307,
+        "RIVERSIDE": 3296,
+        "KERN": 2732
+      }
+    },
+    {
+      "col": "dwr_basin",
+      "dtype": "object",
+      "missing_frac": 0.0606,
+      "n_unique": 239,
+      "top_modalities": {
+        "COASTAL PLAIN OF LOS ANGELES - CENTRAL (4-011.04)": 4265,
+        "COASTAL PLAIN OF ORANGE COUNTY (8-001)": 3290,
+        "SAN GABRIEL VALLEY (4-013)": 2894,
+        "SANTA CLARA VALLEY - SANTA CLARA (2-009.02)": 2086,
+        "SAN JOAQUIN VALLEY - KERN COUNTY (5-022.14)": 1963
+      }
+    },
+    {
+      "col": "regional_board",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 9,
+      "top_modalities": {
+        "CENTRAL VALLEY": 13022,
+        "LOS ANGELES": 12280,
+        "SANTA ANA": 8499,
+        "SAN FRANCISCO BAY": 4358,
+        "CENTRAL COAST": 3265
+      }
+    },
+    {
+      "col": "dwr_region",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 10,
+      "top_modalities": {
+        "South Coast": 22412,
+        "Tulare Lake": 5404,
+        "Sacramento River": 5058,
+        "San Francisco Bay": 4358,
+        "Central Coast": 3265
+      }
+    },
+    {
+      "col": "sum_pfas_ngL",
+      "dtype": "float64",
+      "missing_frac": 0.0,
+      "n_unique": 11351,
+      "min": 0.0,
+      "p50": 32.3,
+      "max": 5722.963300000012,
+      "mean": 174.0258,
+      "skew": 6.106,
+      "frac_zero": 0.0009,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "target_sum_gt70",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.248,
+      "skew": 1.167,
+      "frac_zero": 0.752,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_ADONA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0383,
+      "skew": 4.811,
+      "frac_zero": 0.9617,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_F53B_major",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0254,
+      "skew": 6.036,
+      "frac_zero": 0.9746,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_F53B_minor",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.041,
+      "skew": 4.632,
+      "frac_zero": 0.959,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_FTS_4_2",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0786,
+      "skew": 3.131,
+      "frac_zero": 0.9214,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_FTS_6_2",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.2794,
+      "skew": 0.983,
+      "frac_zero": 0.7206,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_FTS_8_2",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.2441,
+      "skew": 1.191,
+      "frac_zero": 0.7559,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_HFPO_DA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0753,
+      "skew": 3.219,
+      "frac_zero": 0.9247,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_NEtFOSAA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0947,
+      "skew": 2.769,
+      "frac_zero": 0.9053,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_NFDHA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0167,
+      "skew": 7.548,
+      "frac_zero": 0.9833,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_NMeFOSAA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0922,
+      "skew": 2.819,
+      "frac_zero": 0.9078,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFBA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.2736,
+      "skew": 1.016,
+      "frac_zero": 0.7264,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFBS",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.3911,
+      "skew": 0.446,
+      "frac_zero": 0.6089,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFDA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0822,
+      "skew": 3.041,
+      "frac_zero": 0.9178,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFDS",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0233,
+      "skew": 6.325,
+      "frac_zero": 0.9767,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFDoDA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.042,
+      "skew": 4.566,
+      "frac_zero": 0.958,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFEESA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 1,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 0.0,
+      "mean": 0.0,
+      "skew": 0.0,
+      "frac_zero": 1.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFHpA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.2785,
+      "skew": 0.989,
+      "frac_zero": 0.7215,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFHpS",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0468,
+      "skew": 4.29,
+      "frac_zero": 0.9532,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFHxA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.3834,
+      "skew": 0.48,
+      "frac_zero": 0.6166,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFHxS",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.4698,
+      "skew": 0.121,
+      "frac_zero": 0.5302,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFMBA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 1,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 0.0,
+      "mean": 0.0,
+      "skew": 0.0,
+      "frac_zero": 1.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFMPA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 1,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 0.0,
+      "mean": 0.0,
+      "skew": 0.0,
+      "frac_zero": 1.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFNA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.1465,
+      "skew": 2.0,
+      "frac_zero": 0.8535,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFOA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.4518,
+      "skew": 0.194,
+      "frac_zero": 0.5482,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFOS",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.4946,
+      "skew": 0.022,
+      "frac_zero": 0.5054,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFOSAm",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.036,
+      "skew": 4.984,
+      "frac_zero": 0.964,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFPeA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.2347,
+      "skew": 1.252,
+      "frac_zero": 0.7653,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFPeS",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.1015,
+      "skew": 2.639,
+      "frac_zero": 0.8985,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFTeDA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.038,
+      "skew": 4.831,
+      "frac_zero": 0.962,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFTrDA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0371,
+      "skew": 4.895,
+      "frac_zero": 0.9629,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "label_PFUnDA",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 2,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 1.0,
+      "mean": 0.0474,
+      "skew": 4.259,
+      "frac_zero": 0.9526,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "pfas_class_assignment",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 1,
+      "top_modalities": {
+        "{\"FTS_4_2\": 3, \"FTS_6_2\": 2, \"FTS_8_2\": 3, \"NEtFOSAA\": 3, \"NMeFOSAA\": 3, \"PFBA\": 1, \"PFBS\": 1, \"PFDA\": 2, \"PFDoDA\": 3, \"PFHpA\": 1, \"PFHpS\": 2, \"PFHxA\": 1, \"PFHxS\": 1, \"PFNA\": 1, \"PFOA\": 1, \"PFOS\": 1, \"PFOSAm\": 3, \"PFPeA\": 1, \"PFPeS\": 2, \"PFUnDA\": 3}": 46338
+      }
+    },
+    {
+      "col": "gm_well_category",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 5,
+      "top_modalities": {
+        "MUNICIPAL": 38067,
+        "MONITORING": 6921,
+        "DOMESTIC": 721,
+        "WATER SUPPLY, OTHER": 559,
+        "IRRIGATION / INDUSTRIAL": 70
+      }
+    },
+    {
+      "col": "sgma_basin_name",
+      "dtype": "object",
+      "missing_frac": 0.0606,
+      "n_unique": 162,
+      "top_modalities": {
+        "SAN JOAQUIN VALLEY": 7012,
+        "COASTAL PLAIN OF LOS ANGELES": 5587,
+        "SACRAMENTO VALLEY": 4458,
+        "UPPER SANTA ANA VALLEY": 4087,
+        "COASTAL PLAIN OF ORANGE COUNTY": 3290
+      }
+    },
+    {
+      "col": "sgma_subbasin_name",
+      "dtype": "object",
+      "missing_frac": 0.0606,
+      "n_unique": 237,
+      "top_modalities": {
+        "COASTAL PLAIN OF LOS ANGELES - CENTRAL": 4265,
+        "COASTAL PLAIN OF ORANGE COUNTY": 3290,
+        "SAN GABRIEL VALLEY": 2894,
+        "SANTA CLARA VALLEY - SANTA CLARA": 2086,
+        "SAN JOAQUIN VALLEY - KERN COUNTY": 1963
+      }
+    },
+    {
+      "col": "sgma_region_office",
+      "dtype": "object",
+      "missing_frac": 0.0606,
+      "n_unique": 4,
+      "top_modalities": {
+        "SRO": 24134,
+        "SCRO": 8840,
+        "NCRO": 8300,
+        "NRO": 2258
+      }
+    },
+    {
+      "col": "dist_geotracker_km",
+      "dtype": "float64",
+      "missing_frac": 0.0,
+      "n_unique": 7856,
+      "min": 0.001,
+      "p50": 3.935,
+      "max": 227.324,
+      "mean": 10.3617,
+      "skew": 3.651,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "nearest_geotracker_type",
+      "dtype": "object",
+      "missing_frac": 0.0,
+      "n_unique": 4,
+      "top_modalities": {
+        "Chrome Plater": 21496,
+        "Bulk Terminal": 13039,
+        "Airport": 7520,
+        "Refinery": 4283
+      }
+    },
+    {
+      "col": "n_geotracker_within_1km",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 8,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 8.0,
+      "mean": 0.254,
+      "skew": 4.115,
+      "frac_zero": 0.8558,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "n_geotracker_within_3km",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 22,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 21.0,
+      "mean": 1.1911,
+      "skew": 2.931,
+      "frac_zero": 0.5942,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "n_geotracker_within_10km",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 70,
+      "min": 0.0,
+      "p50": 3.0,
+      "max": 70.0,
+      "mean": 9.0858,
+      "skew": 1.898,
+      "frac_zero": 0.2407,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "n_geotracker_within_50km",
+      "dtype": "int64",
+      "missing_frac": 0.0,
+      "n_unique": 235,
+      "min": 0.0,
+      "p50": 23.0,
+      "max": 254.0,
+      "mean": 81.2556,
+      "skew": 0.866,
+      "frac_zero": 0.0409,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_no3n",
+      "dtype": "float64",
+      "missing_frac": 0.9485,
+      "n_unique": 135,
+      "min": 0.019,
+      "p50": 1.5,
+      "max": 45.9,
+      "mean": 3.0779,
+      "skew": 4.76,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_btbzs",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 27,
+      "min": 0.01,
+      "p50": 0.02025,
+      "max": 0.25,
+      "mean": 0.0257,
+      "skew": 8.003,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_pbzn",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 16,
+      "min": 0.0175,
+      "p50": 0.02,
+      "max": 0.25,
+      "mean": 0.0228,
+      "skew": 8.545,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_edb",
+      "dtype": "float64",
+      "missing_frac": 0.0112,
+      "n_unique": 45,
+      "min": 0.002,
+      "p50": 0.018,
+      "max": 0.25,
+      "mean": 0.0172,
+      "skew": 8.433,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dbcp",
+      "dtype": "float64",
+      "missing_frac": 0.0112,
+      "n_unique": 60,
+      "min": 0.01,
+      "p50": 0.25,
+      "max": 1.3,
+      "mean": 0.1695,
+      "skew": -0.141,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tcpr123",
+      "dtype": "float64",
+      "missing_frac": 0.0112,
+      "n_unique": 29,
+      "min": 0.003,
+      "p50": 0.06,
+      "max": 0.285,
+      "mean": 0.0602,
+      "skew": 1.589,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tce",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 83,
+      "min": 0.01,
+      "p50": 0.014166666666666666,
+      "max": 3.8,
+      "mean": 0.0483,
+      "skew": 11.382,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_pce",
+      "dtype": "float64",
+      "missing_frac": 0.0095,
+      "n_unique": 113,
+      "min": 0.008,
+      "p50": 0.02,
+      "max": 8.4,
+      "mean": 0.0608,
+      "skew": 9.336,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_mtbe",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 45,
+      "min": 0.006,
+      "p50": 0.05,
+      "max": 0.5,
+      "mean": 0.0467,
+      "skew": 7.548,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tca111",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 45,
+      "min": 0.01,
+      "p50": 0.016,
+      "max": 0.25,
+      "mean": 0.0199,
+      "skew": 8.02,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tca112",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 31,
+      "min": 0.014,
+      "p50": 0.0215,
+      "max": 0.25,
+      "mean": 0.0252,
+      "skew": 8.265,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dce12t",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 25,
+      "min": 0.009,
+      "p50": 0.012499999999999999,
+      "max": 0.25,
+      "mean": 0.0157,
+      "skew": 8.246,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_vc",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 11,
+      "min": 0.03,
+      "p50": 0.04,
+      "max": 0.25,
+      "mean": 0.0395,
+      "skew": 8.21,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_sty",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 17,
+      "min": 0.015,
+      "p50": 0.021,
+      "max": 0.25,
+      "mean": 0.0236,
+      "skew": 8.557,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_ebz",
+      "dtype": "float64",
+      "missing_frac": 0.012,
+      "n_unique": 34,
+      "min": 0.01,
+      "p50": 0.015,
+      "max": 0.25,
+      "mean": 0.0185,
+      "skew": 8.384,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tds",
+      "dtype": "float64",
+      "missing_frac": 0.3127,
+      "n_unique": 112,
+      "min": 5.0,
+      "p50": 7.5,
+      "max": 1680.0,
+      "mean": 13.9367,
+      "skew": 12.481,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_mn",
+      "dtype": "float64",
+      "missing_frac": 0.3131,
+      "n_unique": 122,
+      "min": 0.065,
+      "p50": 0.15000000000000002,
+      "max": 1690.0,
+      "mean": 2.643,
+      "skew": 24.626,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_as",
+      "dtype": "float64",
+      "missing_frac": 0.313,
+      "n_unique": 121,
+      "min": 0.011,
+      "p50": 0.05,
+      "max": 32.7,
+      "mean": 0.0918,
+      "skew": 30.073,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_so4",
+      "dtype": "float64",
+      "missing_frac": 0.3127,
+      "n_unique": 117,
+      "min": 0.01,
+      "p50": 0.049999999999999996,
+      "max": 490.0,
+      "mean": 0.8449,
+      "skew": 25.557,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_fe",
+      "dtype": "float64",
+      "missing_frac": 0.203,
+      "n_unique": 128,
+      "min": 1.0,
+      "p50": 2.8666666666666667,
+      "max": 11500.0,
+      "mean": 8.7594,
+      "skew": 47.636,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_naph",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 49,
+      "min": 0.08,
+      "p50": 0.2,
+      "max": 0.36,
+      "mean": 0.1908,
+      "skew": -0.087,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_bz",
+      "dtype": "float64",
+      "missing_frac": 0.0131,
+      "n_unique": 26,
+      "min": 0.008,
+      "p50": 0.0105,
+      "max": 0.25,
+      "mean": 0.0137,
+      "skew": 8.492,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_xylenes",
+      "dtype": "float64",
+      "missing_frac": 0.998,
+      "n_unique": 1,
+      "min": 0.5,
+      "p50": 0.5,
+      "max": 0.5,
+      "mean": 0.5,
+      "skew": 0.0,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_bzme",
+      "dtype": "float64",
+      "missing_frac": 0.0371,
+      "n_unique": 43,
+      "min": 0.009,
+      "p50": 0.01,
+      "max": 3.2,
+      "mean": 0.0279,
+      "skew": 21.114,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tmb124",
+      "dtype": "float64",
+      "missing_frac": 0.987,
+      "n_unique": 1,
+      "min": 0.25,
+      "p50": 0.25,
+      "max": 0.25,
+      "mean": 0.25,
+      "skew": 0.0,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dce12c",
+      "dtype": "float64",
+      "missing_frac": 0.987,
+      "n_unique": 1,
+      "min": 0.25,
+      "p50": 0.25,
+      "max": 0.25,
+      "mean": 0.25,
+      "skew": 0.0,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dce11",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 60,
+      "min": 0.01,
+      "p50": 0.012,
+      "max": 0.25,
+      "mean": 0.0158,
+      "skew": 7.88,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dca12",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 26,
+      "min": 0.03,
+      "p50": 0.05,
+      "max": 0.25,
+      "mean": 0.0538,
+      "skew": 6.019,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dca11",
+      "dtype": "float64",
+      "missing_frac": 0.0097,
+      "n_unique": 72,
+      "min": 0.009,
+      "p50": 0.020874999999999998,
+      "max": 0.25,
+      "mean": 0.0263,
+      "skew": 7.479,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_btbzn",
+      "dtype": "float64",
+      "missing_frac": 0.1015,
+      "n_unique": 14,
+      "min": 0.039,
+      "p50": 0.07,
+      "max": 0.25,
+      "mean": 0.0656,
+      "skew": 6.449,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_fc113",
+      "dtype": "float64",
+      "missing_frac": 0.1015,
+      "n_unique": 33,
+      "min": 1.1e-05,
+      "p50": 1.9e-05,
+      "max": 0.0005,
+      "mean": 0.0,
+      "skew": 7.953,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_bdcme",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 11,
+      "min": 0.02733333333333333,
+      "p50": 0.0375,
+      "max": 13.6,
+      "mean": 0.0461,
+      "skew": 90.806,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tcb124",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 16,
+      "min": 0.02,
+      "p50": 0.06,
+      "max": 0.25,
+      "mean": 0.0541,
+      "skew": 6.56,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dbcme",
+      "dtype": "float64",
+      "missing_frac": 0.013,
+      "n_unique": 19,
+      "min": 0.03,
+      "p50": 0.06,
+      "max": 20.2,
+      "mean": 0.0628,
+      "skew": 87.598,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_fc12",
+      "dtype": "float64",
+      "missing_frac": 0.1015,
+      "n_unique": 38,
+      "min": 3e-05,
+      "p50": 9e-05,
+      "max": 0.03,
+      "mean": 0.0001,
+      "skew": 170.536,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_tbme",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 24,
+      "min": 0.04,
+      "p50": 0.05,
+      "max": 9.31,
+      "mean": 0.0551,
+      "skew": 84.172,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_ctcl",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 26,
+      "min": 0.01,
+      "p50": 0.03,
+      "max": 0.25,
+      "mean": 0.0362,
+      "skew": 7.667,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_clbz",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 26,
+      "min": 0.008,
+      "p50": 0.013,
+      "max": 0.25,
+      "mean": 0.0155,
+      "skew": 8.517,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_btbzt",
+      "dtype": "float64",
+      "missing_frac": 0.987,
+      "n_unique": 1,
+      "min": 0.25,
+      "p50": 0.25,
+      "max": 0.25,
+      "mean": 0.25,
+      "skew": 0.0,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_fc11",
+      "dtype": "float64",
+      "missing_frac": 0.1015,
+      "n_unique": 20,
+      "min": 0.03,
+      "p50": 0.04,
+      "max": 2230.0,
+      "mean": 0.2072,
+      "skew": 117.759,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_pca",
+      "dtype": "float64",
+      "missing_frac": 0.1015,
+      "n_unique": 13,
+      "min": 0.04,
+      "p50": 0.05,
+      "max": 0.25,
+      "mean": 0.051,
+      "skew": 6.446,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dcbz12",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 32,
+      "min": 0.009,
+      "p50": 0.02,
+      "max": 0.25,
+      "mean": 0.0219,
+      "skew": 8.191,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dcbz13",
+      "dtype": "float64",
+      "missing_frac": 0.1015,
+      "n_unique": 15,
+      "min": 0.01,
+      "p50": 0.015,
+      "max": 0.25,
+      "mean": 0.0197,
+      "skew": 7.978,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "cocontam_dcpa12",
+      "dtype": "float64",
+      "missing_frac": 0.0096,
+      "n_unique": 49,
+      "min": 0.0015,
+      "p50": 0.01,
+      "max": 0.25,
+      "mean": 0.0141,
+      "skew": 7.432,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_sand_pct",
+      "dtype": "float64",
+      "missing_frac": 0.078,
+      "n_unique": 250,
+      "min": 0.5,
+      "p50": 65.9,
+      "max": 98.9,
+      "mean": 59.2911,
+      "skew": -0.512,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_clay_pct",
+      "dtype": "float64",
+      "missing_frac": 0.0747,
+      "n_unique": 95,
+      "min": 0.0,
+      "p50": 13.0,
+      "max": 68.0,
+      "mean": 14.622,
+      "skew": 1.601,
+      "frac_zero": 0.0001,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_silt_pct",
+      "dtype": "float64",
+      "missing_frac": 0.078,
+      "n_unique": 233,
+      "min": 0.0,
+      "p50": 23.0,
+      "max": 85.7,
+      "mean": 26.0375,
+      "skew": 0.74,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_om_pct",
+      "dtype": "float64",
+      "missing_frac": 0.0539,
+      "n_unique": 82,
+      "min": 0.0,
+      "p50": 1.25,
+      "max": 80.0,
+      "mean": 2.7982,
+      "skew": 7.25,
+      "frac_zero": 0.0211,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_ph",
+      "dtype": "float64",
+      "missing_frac": 0.0828,
+      "n_unique": 49,
+      "min": 4.5,
+      "p50": 7.1,
+      "max": 9.8,
+      "mean": 7.0728,
+      "skew": -0.377,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_ksat_um_s",
+      "dtype": "float64",
+      "missing_frac": 0.071,
+      "n_unique": 97,
+      "min": 0.0,
+      "p50": 28.0,
+      "max": 423.0,
+      "mean": 38.9453,
+      "skew": 3.933,
+      "frac_zero": 0.0045,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_awc_cm_cm",
+      "dtype": "float64",
+      "missing_frac": 0.0553,
+      "n_unique": 36,
+      "min": 0.0,
+      "p50": 0.13,
+      "max": 0.6,
+      "mean": 0.1281,
+      "skew": 2.533,
+      "frac_zero": 0.0222,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_bulk_density",
+      "dtype": "float64",
+      "missing_frac": 0.0762,
+      "n_unique": 83,
+      "min": 0.05,
+      "p50": 1.54,
+      "max": 1.8,
+      "mean": 1.4943,
+      "skew": -4.944,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_sand_vfine_pct",
+      "dtype": "float64",
+      "missing_frac": 0.078,
+      "n_unique": 188,
+      "min": 0.2,
+      "p50": 11.8,
+      "max": 37.4,
+      "mean": 12.5371,
+      "skew": 1.159,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_sand_fine_pct",
+      "dtype": "float64",
+      "missing_frac": 0.078,
+      "n_unique": 248,
+      "min": 0.1,
+      "p50": 20.0,
+      "max": 64.4,
+      "mean": 21.7896,
+      "skew": 0.805,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_sand_medium_pct",
+      "dtype": "float64",
+      "missing_frac": 0.078,
+      "n_unique": 194,
+      "min": 0.1,
+      "p50": 15.9,
+      "max": 38.0,
+      "mean": 14.1617,
+      "skew": 0.707,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_sand_coarse_pct",
+      "dtype": "float64",
+      "missing_frac": 0.078,
+      "n_unique": 153,
+      "min": 0.0,
+      "p50": 5.6,
+      "max": 31.7,
+      "mean": 7.8691,
+      "skew": 0.478,
+      "frac_zero": 0.0156,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_sand_vcoarse_pct",
+      "dtype": "float64",
+      "missing_frac": 0.0778,
+      "n_unique": 98,
+      "min": 0.0,
+      "p50": 3.2,
+      "max": 19.5,
+      "mean": 2.9362,
+      "skew": 2.346,
+      "frac_zero": 0.0663,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_silt_coarse_pct",
+      "dtype": "float64",
+      "missing_frac": 0.9507,
+      "n_unique": 64,
+      "min": 0.0,
+      "p50": 8.5,
+      "max": 35.0,
+      "mean": 10.3601,
+      "skew": 0.828,
+      "frac_zero": 0.0193,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_silt_fine_pct",
+      "dtype": "float64",
+      "missing_frac": 0.9507,
+      "n_unique": 61,
+      "min": 1.0,
+      "p50": 11.0,
+      "max": 39.8,
+      "mean": 12.6301,
+      "skew": 1.473,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_water_1bar_pct",
+      "dtype": "float64",
+      "missing_frac": 0.0792,
+      "n_unique": 365,
+      "min": 0.1,
+      "p50": 19.6,
+      "max": 60.0,
+      "mean": 21.0504,
+      "skew": 0.766,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_water_15bar_pct",
+      "dtype": "float64",
+      "missing_frac": 0.0788,
+      "n_unique": 282,
+      "min": 0.0,
+      "p50": 10.0,
+      "max": 36.7,
+      "mean": 10.7359,
+      "skew": 1.079,
+      "frac_zero": 0.0001,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_texture_class",
+      "dtype": "object",
+      "missing_frac": 0.0419,
+      "n_unique": 102,
+      "top_modalities": {
+        "SL": 8821,
+        "FSL": 7944,
+        "L": 5798,
+        "LS": 4120,
+        "SIL": 2091
+      }
+    },
+    {
+      "col": "soil_ratio_water_clay",
+      "dtype": "float64",
+      "missing_frac": 0.0794,
+      "n_unique": 748,
+      "min": 0.0,
+      "p50": 0.79,
+      "max": 3.325,
+      "mean": 0.8125,
+      "skew": 2.879,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_gradation_uniformity",
+      "dtype": "float64",
+      "missing_frac": 0.9825,
+      "n_unique": 36,
+      "min": 2.6404982174179157,
+      "p50": 44.61716767398135,
+      "max": 150.28675384361804,
+      "mean": 33.7948,
+      "skew": 1.034,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_gradation_curvature",
+      "dtype": "float64",
+      "missing_frac": 0.9825,
+      "n_unique": 36,
+      "min": 0.8429373505917052,
+      "p50": 2.5029150129584674,
+      "max": 22.928947699938277,
+      "mean": 3.0552,
+      "skew": 2.064,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "aqs_pm25_ugm3",
+      "dtype": "float64",
+      "missing_frac": 0.0297,
+      "n_unique": 756,
+      "min": 2.087282,
+      "p50": 10.16,
+      "max": 31.71645,
+      "mean": 9.8645,
+      "skew": 0.49,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "aqs_pm10_ugm3",
+      "dtype": "float64",
+      "missing_frac": 0.0456,
+      "n_unique": 694,
+      "min": 5.488971,
+      "p50": 24.147541,
+      "max": 75.482508,
+      "mean": 25.6603,
+      "skew": 0.806,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "aqs_no2_ppb",
+      "dtype": "float64",
+      "missing_frac": 0.0657,
+      "n_unique": 615,
+      "min": -0.308877,
+      "p50": 9.817088,
+      "max": 30.039914,
+      "mean": 10.4609,
+      "skew": 0.681,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0002
+    },
+    {
+      "col": "aqs_so2_ppb",
+      "dtype": "float64",
+      "missing_frac": 0.3464,
+      "n_unique": 160,
+      "min": -0.675252,
+      "p50": 0.262201,
+      "max": 2.914887,
+      "mean": 0.3129,
+      "skew": 2.71,
+      "frac_zero": 0.001,
+      "frac_negative": 0.0089
+    },
+    {
+      "col": "aqs_wind_ms",
+      "dtype": "float64",
+      "missing_frac": 0.05,
+      "n_unique": 767,
+      "min": 0.566651,
+      "p50": 3.33695,
+      "max": 10.317911,
+      "mean": 3.6068,
+      "skew": 1.803,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "aqs_humidity_pct",
+      "dtype": "float64",
+      "missing_frac": 0.0729,
+      "n_unique": 644,
+      "min": 12.158072,
+      "p50": 61.442069,
+      "max": 82.509524,
+      "mean": 59.5704,
+      "skew": -0.997,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "aqs_ozone_ppb",
+      "dtype": "float64",
+      "missing_frac": 0.0213,
+      "n_unique": 918,
+      "min": 0.022635,
+      "p50": 0.048889,
+      "max": 0.074551,
+      "mean": 0.05,
+      "skew": 0.107,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "aqs_co_ppm",
+      "dtype": "float64",
+      "missing_frac": 0.1609,
+      "n_unique": 375,
+      "min": -0.100685,
+      "p50": 0.316363,
+      "max": 0.852067,
+      "mean": 0.3273,
+      "skew": 1.0,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0004
+    },
+    {
+      "col": "rainfall_mm_month",
+      "dtype": "float64",
+      "missing_frac": 0.0428,
+      "n_unique": 5479,
+      "min": 0.0,
+      "p50": 14.066201787383761,
+      "max": 251.48982769344002,
+      "mean": 32.3865,
+      "skew": 1.799,
+      "frac_zero": 0.0083,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "et_mm_month",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5752,
+      "min": -0.007786454535477105,
+      "p50": 8.358366173197282,
+      "max": 155.0451780874282,
+      "mean": 17.2263,
+      "skew": 2.308,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0001
+    },
+    {
+      "col": "runoff_mm",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5105,
+      "min": 0.0,
+      "p50": 0.00013463709910865873,
+      "max": 0.34113407135009766,
+      "mean": 0.0042,
+      "skew": 8.541,
+      "frac_zero": 0.0156,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_moi_0_10_kg_m2",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5759,
+      "min": 2.00404953956604,
+      "p50": 20.643774032592773,
+      "max": 43.383689880371094,
+      "mean": 20.5358,
+      "skew": 0.07,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_moi_10_40_kg_m2",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5750,
+      "min": 5.999999523162842,
+      "p50": 63.12818145751953,
+      "max": 130.1996307373047,
+      "mean": 62.8437,
+      "skew": 0.016,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_moi_40_100_kg_m2",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5750,
+      "min": 11.999999046325684,
+      "p50": 125.22233581542969,
+      "max": 252.25033569335938,
+      "mean": 123.5839,
+      "skew": 0.044,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_moi_100_200_kg_m2",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5760,
+      "min": 47.11885070800781,
+      "p50": 232.98365783691406,
+      "max": 436.1275329589844,
+      "mean": 242.5679,
+      "skew": 0.348,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "root_zone_moist_kg_m2",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5760,
+      "min": 6.7532219886779785,
+      "p50": 83.83743286132812,
+      "max": 693.0769653320312,
+      "mean": 103.8124,
+      "skew": 1.382,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "temp_c",
+      "dtype": "float64",
+      "missing_frac": 0.0428,
+      "n_unique": 5750,
+      "min": -3.3540100097656023,
+      "p50": 16.784753417968773,
+      "max": 36.82430419921877,
+      "mean": 17.3981,
+      "skew": 0.233,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0005
+    },
+    {
+      "col": "snowpack_mm",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 616,
+      "min": 0.0,
+      "p50": 0.0,
+      "max": 78.61576843261719,
+      "mean": 0.0181,
+      "skew": 77.353,
+      "frac_zero": 0.904,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "gldas_dist_km",
+      "dtype": "float64",
+      "missing_frac": 0.0188,
+      "n_unique": 7080,
+      "min": 0.031,
+      "p50": 10.015,
+      "max": 17.822,
+      "mean": 9.6962,
+      "skew": -0.299,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    },
+    {
+      "col": "soil_moisture_total_mm",
+      "dtype": "float64",
+      "missing_frac": 0.0429,
+      "n_unique": 5760,
+      "min": 79.3606686592102,
+      "p50": 436.3238945007324,
+      "max": 853.8349838256836,
+      "mean": 449.5313,
+      "skew": 0.471,
+      "frac_zero": 0.0,
+      "frac_negative": 0.0
+    }
+  ],
+  "sentinel_candidates": {},
+  "analyte_stats": [
+    {
+      "analyte": "PFOS",
+      "ngL_col": "PFOS_ngL",
+      "det_col": "PFOS_detected",
+      "frac_rows_measured(non_null)": 0.9982,
+      "frac_detected": 0.4927,
+      "median_when_detected": 12.0,
+      "p95_when_detected": 270.0,
+      "max": 421.8
+    },
+    {
+      "analyte": "PFHxS",
+      "ngL_col": "PFHxS_ngL",
+      "det_col": "PFHxS_detected",
+      "frac_rows_measured(non_null)": 0.952,
+      "frac_detected": 0.4743,
+      "median_when_detected": 6.0,
+      "p95_when_detected": 280.0,
+      "max": 480.0
+    },
+    {
+      "analyte": "PFOA",
+      "ngL_col": "PFOA_ngL",
+      "det_col": "PFOA_detected",
+      "frac_rows_measured(non_null)": 0.9981,
+      "frac_detected": 0.4505,
+      "median_when_detected": 8.3,
+      "p95_when_detected": 180.0,
+      "max": 227.98
+    },
+    {
+      "analyte": "PFBS",
+      "ngL_col": "PFBS_ngL",
+      "det_col": "PFBS_detected",
+      "frac_rows_measured(non_null)": 0.9513,
+      "frac_detected": 0.3973,
+      "median_when_detected": 6.1,
+      "p95_when_detected": 110.0,
+      "max": 130.72
+    },
+    {
+      "analyte": "PFHxA",
+      "ngL_col": "PFHxA_ngL",
+      "det_col": "PFHxA_detected",
+      "frac_rows_measured(non_null)": 0.9582,
+      "frac_detected": 0.3851,
+      "median_when_detected": 6.8,
+      "p95_when_detected": 630.0,
+      "max": 640.0
+    },
+    {
+      "analyte": "PFHpA",
+      "ngL_col": "PFHpA_ngL",
+      "det_col": "PFHpA_detected",
+      "frac_rows_measured(non_null)": 0.9733,
+      "frac_detected": 0.2788,
+      "median_when_detected": 4.4,
+      "p95_when_detected": 210.0,
+      "max": 210.0
+    },
+    {
+      "analyte": "PFBA",
+      "ngL_col": "PFBA_ngL",
+      "det_col": "PFBA_detected",
+      "frac_rows_measured(non_null)": 0.5571,
+      "frac_detected": 0.2386,
+      "median_when_detected": 7.1,
+      "p95_when_detected": 740.0,
+      "max": 877.0
+    },
+    {
+      "analyte": "PFPeA",
+      "ngL_col": "PFPeA_ngL",
+      "det_col": "PFPeA_detected",
+      "frac_rows_measured(non_null)": 0.5554,
+      "frac_detected": 0.2355,
+      "median_when_detected": 8.4,
+      "p95_when_detected": 1300.0,
+      "max": 1500.0
+    },
+    {
+      "analyte": "PFNA",
+      "ngL_col": "PFNA_ngL",
+      "det_col": "PFNA_detected",
+      "frac_rows_measured(non_null)": 0.9735,
+      "frac_detected": 0.1331,
+      "median_when_detected": 3.1,
+      "p95_when_detected": 28.0,
+      "max": 28.0
+    },
+    {
+      "analyte": "PFPeS",
+      "ngL_col": "PFPeS_ngL",
+      "det_col": "PFPeS_detected",
+      "frac_rows_measured(non_null)": 0.56,
+      "frac_detected": 0.0952,
+      "median_when_detected": 6.6,
+      "p95_when_detected": 260.0,
+      "max": 260.0
+    },
+    {
+      "analyte": "PFDA",
+      "ngL_col": "PFDA_ngL",
+      "det_col": "PFDA_detected",
+      "frac_rows_measured(non_null)": 0.9607,
+      "frac_detected": 0.0559,
+      "median_when_detected": 2.7,
+      "p95_when_detected": 8.5,
+      "max": 8.5
+    },
+    {
+      "analyte": "FTS_6_2",
+      "ngL_col": "FTS_6_2_ngL",
+      "det_col": "FTS_6_2_detected",
+      "frac_rows_measured(non_null)": 0.5582,
+      "frac_detected": 0.0391,
+      "median_when_detected": 58.0,
+      "p95_when_detected": 503.6,
+      "max": 503.6
+    },
+    {
+      "analyte": "PFHpS",
+      "ngL_col": "PFHpS_ngL",
+      "det_col": "PFHpS_detected",
+      "frac_rows_measured(non_null)": 0.5554,
+      "frac_detected": 0.0339,
+      "median_when_detected": 9.17,
+      "p95_when_detected": 48.63,
+      "max": 48.63
+    },
+    {
+      "analyte": "FTS_8_2",
+      "ngL_col": "FTS_8_2_ngL",
+      "det_col": "FTS_8_2_detected",
+      "frac_rows_measured(non_null)": 0.5584,
+      "frac_detected": 0.0174,
+      "median_when_detected": 35.0,
+      "p95_when_detected": 61.392,
+      "max": 61.392
+    },
+    {
+      "analyte": "PFOSAm",
+      "ngL_col": "PFOSAm_ngL",
+      "det_col": "PFOSAm_detected",
+      "frac_rows_measured(non_null)": 0.1398,
+      "frac_detected": 0.0147,
+      "median_when_detected": 4.6,
+      "p95_when_detected": 100.0,
+      "max": 100.0
+    },
+    {
+      "analyte": "PFUnDA",
+      "ngL_col": "PFUnDA_ngL",
+      "det_col": "PFUnDA_detected",
+      "frac_rows_measured(non_null)": 0.961,
+      "frac_detected": 0.0087,
+      "median_when_detected": 5.0,
+      "p95_when_detected": 5.0,
+      "max": 5.0
+    },
+    {
+      "analyte": "FTS_4_2",
+      "ngL_col": "FTS_4_2_ngL",
+      "det_col": "FTS_4_2_detected",
+      "frac_rows_measured(non_null)": 0.5579,
+      "frac_detected": 0.0079,
+      "median_when_detected": 18.5,
+      "p95_when_detected": 32.005,
+      "max": 32.005
+    },
+    {
+      "analyte": "NEtFOSAA",
+      "ngL_col": "NEtFOSAA_ngL",
+      "det_col": "NEtFOSAA_detected",
+      "frac_rows_measured(non_null)": 0.5797,
+      "frac_detected": 0.0057,
+      "median_when_detected": 15.0,
+      "p95_when_detected": 24.5,
+      "max": 24.5
+    },
+    {
+      "analyte": "PFDoDA",
+      "ngL_col": "PFDoDA_ngL",
+      "det_col": "PFDoDA_detected",
+      "frac_rows_measured(non_null)": 0.9418,
+      "frac_detected": 0.0038,
+      "median_when_detected": 4.4,
+      "p95_when_detected": 4.5,
+      "max": 4.5
+    },
+    {
+      "analyte": "NMeFOSAA",
+      "ngL_col": "NMeFOSAA_ngL",
+      "det_col": "NMeFOSAA_detected",
+      "frac_rows_measured(non_null)": 0.5786,
+      "frac_detected": 0.0023,
+      "median_when_detected": 13.0,
+      "p95_when_detected": 22.0,
+      "max": 22.0
+    },
+    {
+      "analyte": "PFTrDA",
+      "ngL_col": "PFTrDA_ngL",
+      "det_col": "PFTrDA_detected",
+      "frac_rows_measured(non_null)": 0.5823,
+      "frac_detected": 0.0022,
+      "median_when_detected": 5.7,
+      "p95_when_detected": 9.5,
+      "max": 9.5
+    },
+    {
+      "analyte": "PFTeDA",
+      "ngL_col": "PFTeDA_ngL",
+      "det_col": "PFTeDA_detected",
+      "frac_rows_measured(non_null)": 0.5865,
+      "frac_detected": 0.0018,
+      "median_when_detected": 1.1,
+      "p95_when_detected": 7.88,
+      "max": 9.5
+    },
+    {
+      "analyte": "PFDS",
+      "ngL_col": "PFDS_ngL",
+      "det_col": "PFDS_detected",
+      "frac_rows_measured(non_null)": 0.1358,
+      "frac_detected": 0.0011,
+      "median_when_detected": 3.6,
+      "p95_when_detected": 29.0,
+      "max": 86.0
+    },
+    {
+      "analyte": "HFPO_DA",
+      "ngL_col": "HFPO_DA_ngL",
+      "det_col": "HFPO_DA_detected",
+      "frac_rows_measured(non_null)": 0.8759,
+      "frac_detected": 0.0009,
+      "median_when_detected": 4.45,
+      "p95_when_detected": 4.45,
+      "max": 4.45
+    },
+    {
+      "analyte": "PFMBA",
+      "ngL_col": "PFMBA_ngL",
+      "det_col": "PFMBA_detected",
+      "frac_rows_measured(non_null)": 0.4474,
+      "frac_detected": 0.0007,
+      "median_when_detected": 1.8863,
+      "p95_when_detected": 1.8863,
+      "max": 1.8863
+    },
+    {
+      "analyte": "PFMPA",
+      "ngL_col": "PFMPA_ngL",
+      "det_col": "PFMPA_detected",
+      "frac_rows_measured(non_null)": 0.4471,
+      "frac_detected": 0.0007,
+      "median_when_detected": 2.0,
+      "p95_when_detected": 2.0,
+      "max": 2.0
+    },
+    {
+      "analyte": "ADONA",
+      "ngL_col": "ADONA_ngL",
+      "det_col": "ADONA_detected",
+      "frac_rows_measured(non_null)": 0.8773,
+      "frac_detected": 0.0004,
+      "median_when_detected": 2.9,
+      "p95_when_detected": 4.15,
+      "max": 4.15
+    },
+    {
+      "analyte": "F53B_major",
+      "ngL_col": "F53B_major_ngL",
+      "det_col": "F53B_major_detected",
+      "frac_rows_measured(non_null)": 0.8728,
+      "frac_detected": 0.0003,
+      "median_when_detected": 2.25,
+      "p95_when_detected": 4.0,
+      "max": 4.0
+    },
+    {
+      "analyte": "F53B_minor",
+      "ngL_col": "F53B_minor_ngL",
+      "det_col": "F53B_minor_detected",
+      "frac_rows_measured(non_null)": 0.8727,
+      "frac_detected": 0.0002,
+      "median_when_detected": 3.15,
+      "p95_when_detected": 4.0,
+      "max": 4.0
+    },
+    {
+      "analyte": "PFEESA",
+      "ngL_col": "PFEESA_ngL",
+      "det_col": "PFEESA_detected",
+      "frac_rows_measured(non_null)": 0.4477,
+      "frac_detected": 0.0002,
+      "median_when_detected": 1.85,
+      "p95_when_detected": 1.85,
+      "max": 1.85
+    },
+    {
+      "analyte": "NFDHA",
+      "ngL_col": "NFDHA_ngL",
+      "det_col": "NFDHA_detected",
+      "frac_rows_measured(non_null)": 0.4473,
+      "frac_detected": 0.0001,
+      "median_when_detected": 6.3,
+      "p95_when_detected": 8.24,
+      "max": 10.0
+    }
+  ],
+  "nondetect_encoding": {
+    "ADONA_ngL": {
+      "n_null": 5686,
+      "n_zero": 22,
+      "n_pos": 40630,
+      "n_detected_true": 20,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.1228,
+      "when_notdet_zero_frac": 0.0005,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    },
+    "F53B_major_ngL": {
+      "n_null": 5896,
+      "n_zero": 22,
+      "n_pos": 40420,
+      "n_detected_true": 12,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.1273,
+      "when_notdet_zero_frac": 0.0005,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    },
+    "F53B_minor_ngL": {
+      "n_null": 5897,
+      "n_zero": 22,
+      "n_pos": 40419,
+      "n_detected_true": 8,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.1273,
+      "when_notdet_zero_frac": 0.0005,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    },
+    "FTS_4_2_ngL": {
+      "n_null": 20488,
+      "n_zero": 0,
+      "n_pos": 25850,
+      "n_detected_true": 364,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.4456,
+      "when_notdet_zero_frac": 0.0,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    },
+    "FTS_6_2_ngL": {
+      "n_null": 20473,
+      "n_zero": 0,
+      "n_pos": 25865,
+      "n_detected_true": 1812,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.4598,
+      "when_notdet_zero_frac": 0.0,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    },
+    "PFOA_ngL": {
+      "n_null": 86,
+      "n_zero": 107,
+      "n_pos": 46145,
+      "n_detected_true": 20877,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.0034,
+      "when_notdet_zero_frac": 0.0042,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    },
+    "PFOS_ngL": {
+      "n_null": 82,
+      "n_zero": 97,
+      "n_pos": 46159,
+      "n_detected_true": 22830,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.0035,
+      "when_notdet_zero_frac": 0.0041,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    },
+    "PFHxS_ngL": {
+      "n_null": 2223,
+      "n_zero": 41,
+      "n_pos": 44074,
+      "n_detected_true": 21979,
+      "null_iff_not_detected": null,
+      "when_notdet_null_frac": 0.0913,
+      "when_notdet_zero_frac": 0.0017,
+      "when_det_null_frac": 0.0,
+      "when_det_pos_frac": 1.0
+    }
+  },
+  "sum_reconstruction": {
+    "sum_pfas_null_frac": 0.0,
+    "corr_storedsum_vs_reconstructed": 1.0,
+    "max_abs_diff": 0.0,
+    "frac_exact_match_1ngL": 1.0
+  },
+  "target_sum_gt70": {
+    "values": {
+      "0": 34848,
+      "1": 11490
+    },
+    "prevalence": 0.248,
+    "matches_sum_gt_70": 1.0,
+    "corr_with_sum_pfas": 0.3891
+  },
+  "label_leakage": [
+    {
+      "label": "label_ADONA",
+      "prevalence": 0.03831,
+      "equals_detected_frac": 0.96191,
+      "corr_with_detected": 0.0771,
+      "corr_with_ngL": 0.9479
+    },
+    {
+      "label": "label_F53B_major",
+      "prevalence": 0.02538,
+      "equals_detected_frac": 0.97471,
+      "corr_with_detected": 0.0656,
+      "corr_with_ngL": 0.9252
+    },
+    {
+      "label": "label_F53B_minor",
+      "prevalence": 0.04096,
+      "equals_detected_frac": 0.95913,
+      "corr_with_detected": 0.047,
+      "corr_with_ngL": 0.9234
+    },
+    {
+      "label": "label_FTS_4_2",
+      "prevalence": 0.07862,
+      "equals_detected_frac": 0.92824,
+      "corr_with_detected": 0.2837,
+      "corr_with_ngL": 0.6356
+    },
+    {
+      "label": "label_FTS_6_2",
+      "prevalence": 0.2794,
+      "equals_detected_frac": 0.75841,
+      "corr_with_detected": 0.3165,
+      "corr_with_ngL": 0.204
+    },
+    {
+      "label": "label_FTS_8_2",
+      "prevalence": 0.24414,
+      "equals_detected_frac": 0.77146,
+      "corr_with_detected": 0.2181,
+      "corr_with_ngL": 0.3144
+    },
+    {
+      "label": "label_HFPO_DA",
+      "prevalence": 0.07529,
+      "equals_detected_frac": 0.92537,
+      "corr_with_detected": 0.0907,
+      "corr_with_ngL": 0.8724
+    },
+    {
+      "label": "label_NEtFOSAA",
+      "prevalence": 0.09467,
+      "equals_detected_frac": 0.90994,
+      "corr_with_detected": 0.2096,
+      "corr_with_ngL": 0.5905
+    },
+    {
+      "label": "label_NFDHA",
+      "prevalence": 0.01668,
+      "equals_detected_frac": 0.9834,
+      "corr_with_detected": 0.0713,
+      "corr_with_ngL": 0.9547
+    },
+    {
+      "label": "label_NMeFOSAA",
+      "prevalence": 0.09219,
+      "equals_detected_frac": 0.90956,
+      "corr_with_detected": 0.1307,
+      "corr_with_ngL": 0.6034
+    },
+    {
+      "label": "label_PFBA",
+      "prevalence": 0.27358,
+      "equals_detected_frac": 0.94512,
+      "corr_with_detected": 0.8598,
+      "corr_with_ngL": 0.2471
+    },
+    {
+      "label": "label_PFBS",
+      "prevalence": 0.3911,
+      "equals_detected_frac": 0.95809,
+      "corr_with_detected": 0.9123,
+      "corr_with_ngL": 0.3639
+    },
+    {
+      "label": "label_PFDA",
+      "prevalence": 0.08224,
+      "equals_detected_frac": 0.95172,
+      "corr_with_detected": 0.639,
+      "corr_with_ngL": 0.7895
+    },
+    {
+      "label": "label_PFDS",
+      "prevalence": 0.02326,
+      "equals_detected_frac": 0.97736,
+      "corr_with_detected": 0.1676,
+      "corr_with_ngL": 0.565
+    },
+    {
+      "label": "label_PFDoDA",
+      "prevalence": 0.04202,
+      "equals_detected_frac": 0.95967,
+      "corr_with_detected": 0.2087,
+      "corr_with_ngL": 0.8725
+    },
+    {
+      "label": "label_PFEESA",
+      "prevalence": 0.0,
+      "equals_detected_frac": 0.99983,
+      "corr_with_detected": NaN,
+      "corr_with_ngL": NaN
+    },
+    {
+      "label": "label_PFHpA",
+      "prevalence": 0.27845,
+      "equals_detected_frac": 0.95887,
+      "corr_with_detected": 0.8977,
+      "corr_with_ngL": 0.3596
+    },
+    {
+      "label": "label_PFHpS",
+      "prevalence": 0.04683,
+      "equals_detected_frac": 0.979,
+      "corr_with_detected": 0.7395,
+      "corr_with_ngL": 0.6932
+    },
+    {
+      "label": "label_PFHxA",
+      "prevalence": 0.38342,
+      "equals_detected_frac": 0.96677,
+      "corr_with_detected": 0.9298,
+      "corr_with_ngL": 0.2734
+    },
+    {
+      "label": "label_PFHxS",
+      "prevalence": 0.46983,
+      "equals_detected_frac": 0.96353,
+      "corr_with_detected": 0.9269,
+      "corr_with_ngL": 0.2447
+    },
+    {
+      "label": "label_PFMBA",
+      "prevalence": 0.0,
+      "equals_detected_frac": 0.99931,
+      "corr_with_detected": NaN,
+      "corr_with_ngL": NaN
+    },
+    {
+      "label": "label_PFMPA",
+      "prevalence": 0.0,
+      "equals_detected_frac": 0.99931,
+      "corr_with_detected": NaN,
+      "corr_with_ngL": NaN
+    },
+    {
+      "label": "label_PFNA",
+      "prevalence": 0.14647,
+      "equals_detected_frac": 0.9465,
+      "corr_with_detected": 0.7788,
+      "corr_with_ngL": 0.5832
+    },
+    {
+      "label": "label_PFOA",
+      "prevalence": 0.45179,
+      "equals_detected_frac": 0.95852,
+      "corr_with_detected": 0.9162,
+      "corr_with_ngL": 0.3275
+    },
+    {
+      "label": "label_PFOS",
+      "prevalence": 0.49458,
+      "equals_detected_frac": 0.95999,
+      "corr_with_detected": 0.92,
+      "corr_with_ngL": 0.2977
+    },
+    {
+      "label": "label_PFOSAm",
+      "prevalence": 0.03597,
+      "equals_detected_frac": 0.97151,
+      "corr_with_detected": 0.4712,
+      "corr_with_ngL": 0.5225
+    },
+    {
+      "label": "label_PFPeA",
+      "prevalence": 0.23473,
+      "equals_detected_frac": 0.98472,
+      "corr_with_detected": 0.9575,
+      "corr_with_ngL": 0.2625
+    },
+    {
+      "label": "label_PFPeS",
+      "prevalence": 0.10151,
+      "equals_detected_frac": 0.97984,
+      "corr_with_detected": 0.8869,
+      "corr_with_ngL": 0.4736
+    },
+    {
+      "label": "label_PFTeDA",
+      "prevalence": 0.03802,
+      "equals_detected_frac": 0.96141,
+      "corr_with_detected": 0.0668,
+      "corr_with_ngL": 0.8201
+    },
+    {
+      "label": "label_PFTrDA",
+      "prevalence": 0.03714,
+      "equals_detected_frac": 0.96433,
+      "corr_with_detected": 0.1974,
+      "corr_with_ngL": 0.8142
+    },
+    {
+      "label": "label_PFUnDA",
+      "prevalence": 0.04741,
+      "equals_detected_frac": 0.9593,
+      "corr_with_detected": 0.3696,
+      "corr_with_ngL": 0.8815
+    }
+  ],
+  "context_corr_with_T1_top20": [
+    {
+      "col": "PFHpA_detected",
+      "corr_with_T1": 0.696
+    },
+    {
+      "col": "PFHxA_detected",
+      "corr_with_T1": 0.5895
+    },
+    {
+      "col": "PFOA_detected",
+      "corr_with_T1": 0.5482
+    },
+    {
+      "col": "PFBS_detected",
+      "corr_with_T1": 0.5453
+    },
+    {
+      "col": "PFNA_detected",
+      "corr_with_T1": 0.5369
+    },
+    {
+      "col": "PFBA_detected",
+      "corr_with_T1": 0.5366
+    },
+    {
+      "col": "PFPeA_detected",
+      "corr_with_T1": 0.5318
+    },
+    {
+      "col": "PFPeS_detected",
+      "corr_with_T1": 0.4936
+    },
+    {
+      "col": "PFHxS_detected",
+      "corr_with_T1": 0.462
+    },
+    {
+      "col": "PFOS_detected",
+      "corr_with_T1": 0.4591
+    },
+    {
+      "col": "well_depth_ft",
+      "corr_with_T1": -0.3537
+    },
+    {
+      "col": "FTS_6_2_detected",
+      "corr_with_T1": 0.3297
+    },
+    {
+      "col": "PFHpS_detected",
+      "corr_with_T1": 0.3249
+    },
+    {
+      "col": "PFDA_detected",
+      "corr_with_T1": 0.2891
+    },
+    {
+      "col": "FTS_8_2_detected",
+      "corr_with_T1": 0.2269
+    },
+    {
+      "col": "PFOSAm_detected",
+      "corr_with_T1": 0.1812
+    },
+    {
+      "col": "n_geotracker_within_1km",
+      "corr_with_T1": 0.1782
+    },
+    {
+      "col": "FTS_4_2_detected",
+      "corr_with_T1": 0.1538
+    },
+    {
+      "col": "n_geotracker_within_10km",
+      "corr_with_T1": 0.1513
+    },
+    {
+      "col": "PFUnDA_detected",
+      "corr_with_T1": 0.148
+    }
+  ],
+  "detection_corr_with_T1": [
+    {
+      "col": "PFHpA_detected",
+      "corr_with_T1": 0.696
+    },
+    {
+      "col": "PFHxA_detected",
+      "corr_with_T1": 0.5895
+    },
+    {
+      "col": "PFOA_detected",
+      "corr_with_T1": 0.5482
+    },
+    {
+      "col": "PFBS_detected",
+      "corr_with_T1": 0.5453
+    },
+    {
+      "col": "PFNA_detected",
+      "corr_with_T1": 0.5369
+    },
+    {
+      "col": "PFBA_detected",
+      "corr_with_T1": 0.5366
+    },
+    {
+      "col": "PFPeA_detected",
+      "corr_with_T1": 0.5318
+    },
+    {
+      "col": "PFPeS_detected",
+      "corr_with_T1": 0.4936
+    },
+    {
+      "col": "PFHxS_detected",
+      "corr_with_T1": 0.462
+    },
+    {
+      "col": "PFOS_detected",
+      "corr_with_T1": 0.4591
+    },
+    {
+      "col": "FTS_6_2_detected",
+      "corr_with_T1": 0.3297
+    },
+    {
+      "col": "PFHpS_detected",
+      "corr_with_T1": 0.3249
+    },
+    {
+      "col": "PFDA_detected",
+      "corr_with_T1": 0.2891
+    },
+    {
+      "col": "FTS_8_2_detected",
+      "corr_with_T1": 0.2269
+    },
+    {
+      "col": "PFOSAm_detected",
+      "corr_with_T1": 0.1812
+    },
+    {
+      "col": "FTS_4_2_detected",
+      "corr_with_T1": 0.1538
+    },
+    {
+      "col": "PFUnDA_detected",
+      "corr_with_T1": 0.148
+    },
+    {
+      "col": "NEtFOSAA_detected",
+      "corr_with_T1": 0.122
+    },
+    {
+      "col": "PFDoDA_detected",
+      "corr_with_T1": 0.0914
+    },
+    {
+      "col": "NMeFOSAA_detected",
+      "corr_with_T1": 0.0756
+    },
+    {
+      "col": "PFTrDA_detected",
+      "corr_with_T1": 0.0745
+    },
+    {
+      "col": "PFDS_detected",
+      "corr_with_T1": 0.0563
+    },
+    {
+      "col": "PFTeDA_detected",
+      "corr_with_T1": 0.0472
+    },
+    {
+      "col": "HFPO_DA_detected",
+      "corr_with_T1": 0.0449
+    },
+    {
+      "col": "PFMBA_detected",
+      "corr_with_T1": 0.0439
+    },
+    {
+      "col": "PFMPA_detected",
+      "corr_with_T1": 0.0439
+    },
+    {
+      "col": "F53B_major_detected",
+      "corr_with_T1": 0.0249
+    },
+    {
+      "col": "PFEESA_detected",
+      "corr_with_T1": 0.0191
+    },
+    {
+      "col": "NFDHA_detected",
+      "corr_with_T1": 0.0162
+    },
+    {
+      "col": "F53B_minor_detected",
+      "corr_with_T1": 0.0153
+    },
+    {
+      "col": "ADONA_detected",
+      "corr_with_T1": 0.0097
+    }
+  ],
+  "target_definitions": {
+    "T1a_EPA2024_MCL_HI": {
+      "rule": "PFOA>4 OR PFOS>4 OR HazardIndex>=1 (HI=PFHxS/10+PFNA/10+HFPODA/10+PFBS/2000)",
+      "prevalence": 0.4565,
+      "n_positive": 21154,
+      "imbalance_ratio_neg_per_pos": 1.2
+    },
+    "T1b_sum_gt70_precomputed": {
+      "rule": "sum_pfas_ngL > 70 (matches stored target_sum_gt70)",
+      "prevalence": 0.248,
+      "n_positive": 11490
+    },
+    "T1c_any_detection": {
+      "rule": "any analyte detected",
+      "prevalence": 0.61,
+      "n_positive": 28268
+    },
+    "T1a_vs_T1b_agreement": 0.775
+  },
+  "t2_label_positive_counts": {
+    "label_PFOS": 22918,
+    "label_PFHxS": 21771,
+    "label_PFOA": 20935,
+    "label_PFBS": 18123,
+    "label_PFHxA": 17767,
+    "label_FTS_6_2": 12947,
+    "label_PFHpA": 12903,
+    "label_PFBA": 12677,
+    "label_FTS_8_2": 11313,
+    "label_PFPeA": 10877,
+    "label_PFNA": 6787,
+    "label_PFPeS": 4704,
+    "label_NEtFOSAA": 4387,
+    "label_NMeFOSAA": 4272,
+    "label_PFDA": 3811,
+    "label_FTS_4_2": 3643,
+    "label_HFPO_DA": 3489,
+    "label_PFUnDA": 2197,
+    "label_PFHpS": 2170,
+    "label_PFDoDA": 1947,
+    "label_F53B_minor": 1898,
+    "label_ADONA": 1775,
+    "label_PFTeDA": 1762,
+    "label_PFTrDA": 1721,
+    "label_PFOSAm": 1667,
+    "label_F53B_major": 1176,
+    "label_PFDS": 1078,
+    "label_NFDHA": 773,
+    "label_PFEESA": 0,
+    "label_PFMBA": 0,
+    "label_PFMPA": 0
+  },
+  "t2_label_prevalence": {
+    "label_ADONA": 0.03831,
+    "label_F53B_major": 0.02538,
+    "label_F53B_minor": 0.04096,
+    "label_FTS_4_2": 0.07862,
+    "label_FTS_6_2": 0.2794,
+    "label_FTS_8_2": 0.24414,
+    "label_HFPO_DA": 0.07529,
+    "label_NEtFOSAA": 0.09467,
+    "label_NFDHA": 0.01668,
+    "label_NMeFOSAA": 0.09219,
+    "label_PFBA": 0.27358,
+    "label_PFBS": 0.3911,
+    "label_PFDA": 0.08224,
+    "label_PFDS": 0.02326,
+    "label_PFDoDA": 0.04202,
+    "label_PFEESA": 0.0,
+    "label_PFHpA": 0.27845,
+    "label_PFHpS": 0.04683,
+    "label_PFHxA": 0.38342,
+    "label_PFHxS": 0.46983,
+    "label_PFMBA": 0.0,
+    "label_PFMPA": 0.0,
+    "label_PFNA": 0.14647,
+    "label_PFOA": 0.45179,
+    "label_PFOS": 0.49458,
+    "label_PFOSAm": 0.03597,
+    "label_PFPeA": 0.23473,
+    "label_PFPeS": 0.10151,
+    "label_PFTeDA": 0.03802,
+    "label_PFTrDA": 0.03714,
+    "label_PFUnDA": 0.04741
+  },
+  "t2_candidate_labels": [
+    "label_ADONA",
+    "label_F53B_major",
+    "label_F53B_minor",
+    "label_FTS_4_2",
+    "label_FTS_6_2",
+    "label_FTS_8_2",
+    "label_HFPO_DA",
+    "label_NEtFOSAA",
+    "label_NFDHA",
+    "label_NMeFOSAA",
+    "label_PFBA",
+    "label_PFBS",
+    "label_PFDA",
+    "label_PFDS",
+    "label_PFDoDA",
+    "label_PFHpA",
+    "label_PFHpS",
+    "label_PFHxA",
+    "label_PFHxS",
+    "label_PFNA",
+    "label_PFOA",
+    "label_PFOS",
+    "label_PFOSAm",
+    "label_PFPeA",
+    "label_PFPeS",
+    "label_PFTeDA",
+    "label_PFTrDA",
+    "label_PFUnDA"
+  ],
+  "t2_top_label_correlations": [
+    {
+      "a": "label_NEtFOSAA",
+      "b": "label_NMeFOSAA",
+      "corr": 0.982
+    },
+    {
+      "a": "label_PFTeDA",
+      "b": "label_PFTrDA",
+      "corr": 0.953
+    },
+    {
+      "a": "label_PFDoDA",
+      "b": "label_PFUnDA",
+      "corr": 0.928
+    },
+    {
+      "a": "label_FTS_6_2",
+      "b": "label_FTS_8_2",
+      "corr": 0.88
+    },
+    {
+      "a": "label_PFDoDA",
+      "b": "label_PFTrDA",
+      "corr": 0.871
+    },
+    {
+      "a": "label_PFDoDA",
+      "b": "label_PFTeDA",
+      "corr": 0.854
+    },
+    {
+      "a": "label_PFTrDA",
+      "b": "label_PFUnDA",
+      "corr": 0.851
+    },
+    {
+      "a": "label_PFTeDA",
+      "b": "label_PFUnDA",
+      "corr": 0.819
+    },
+    {
+      "a": "label_PFDS",
+      "b": "label_PFOSAm",
+      "corr": 0.784
+    },
+    {
+      "a": "label_F53B_major",
+      "b": "label_F53B_minor",
+      "corr": 0.777
+    },
+    {
+      "a": "label_ADONA",
+      "b": "label_F53B_major",
+      "corr": 0.773
+    },
+    {
+      "a": "label_PFBA",
+      "b": "label_PFPeA",
+      "corr": 0.757
+    },
+    {
+      "a": "label_PFHxA",
+      "b": "label_PFOA",
+      "corr": 0.754
+    },
+    {
+      "a": "label_PFDS",
+      "b": "label_PFTrDA",
+      "corr": 0.749
+    },
+    {
+      "a": "label_PFOA",
+      "b": "label_PFOS",
+      "corr": 0.748
+    }
+  ],
+  "t2_labels_per_row": {
+    "mean": 4.564,
+    "median": 3.0,
+    "max": 28,
+    "frac_zero_labels": 0.2524
+  },
+  "spatial_blocks": {
+    "kmeans_5": {
+      "well_sizes_min_max": [
+        1093,
+        3324
+      ],
+      "per_block": {
+        "0": {
+          "n_wells": 3324,
+          "n_rows": 18191,
+          "T1_prevalence": 0.5796
+        },
+        "1": {
+          "n_wells": 1093,
+          "n_rows": 3021,
+          "T1_prevalence": 0.3787
+        },
+        "2": {
+          "n_wells": 1925,
+          "n_rows": 7324,
+          "T1_prevalence": 0.272
+        },
+        "3": {
+          "n_wells": 3320,
+          "n_rows": 11144,
+          "T1_prevalence": 0.3589
+        },
+        "4": {
+          "n_wells": 1671,
+          "n_rows": 6658,
+          "T1_prevalence": 0.5219
+        }
+      }
+    },
+    "kmeans_8": {
+      "well_sizes_min_max": [
+        476,
+        3163
+      ],
+      "per_block": {
+        "0": {
+          "n_wells": 897,
+          "n_rows": 3840,
+          "T1_prevalence": 0.2107
+        },
+        "1": {
+          "n_wells": 1676,
+          "n_rows": 6547,
+          "T1_prevalence": 0.3954
+        },
+        "2": {
+          "n_wells": 3163,
+          "n_rows": 18450,
+          "T1_prevalence": 0.5902
+        },
+        "3": {
+          "n_wells": 891,
+          "n_rows": 2571,
+          "T1_prevalence": 0.401
+        },
+        "4": {
+          "n_wells": 1621,
+          "n_rows": 6011,
+          "T1_prevalence": 0.5072
+        },
+        "5": {
+          "n_wells": 1023,
+          "n_rows": 2604,
+          "T1_prevalence": 0.2389
+        },
+        "6": {
+          "n_wells": 1586,
+          "n_rows": 4576,
+          "T1_prevalence": 0.3066
+        },
+        "7": {
+          "n_wells": 476,
+          "n_rows": 1739,
+          "T1_prevalence": 0.4382
+        }
+      }
+    },
+    "kmeans_10": {
+      "well_sizes_min_max": [
+        459,
+        2821
+      ],
+      "per_block": {
+        "0": {
+          "n_wells": 695,
+          "n_rows": 2237,
+          "T1_prevalence": 0.4139
+        },
+        "1": {
+          "n_wells": 758,
+          "n_rows": 2903,
+          "T1_prevalence": 0.2208
+        },
+        "2": {
+          "n_wells": 1540,
+          "n_rows": 6378,
+          "T1_prevalence": 0.3269
+        },
+        "3": {
+          "n_wells": 459,
+          "n_rows": 1645,
+          "T1_prevalence": 0.4602
+        },
+        "4": {
+          "n_wells": 1172,
+          "n_rows": 6286,
+          "T1_prevalence": 0.5402
+        },
+        "5": {
+          "n_wells": 1250,
+          "n_rows": 3513,
+          "T1_prevalence": 0.3259
+        },
+        "6": {
+          "n_wells": 1030,
+          "n_rows": 3305,
+          "T1_prevalence": 0.2284
+        },
+        "7": {
+          "n_wells": 2821,
+          "n_rows": 16186,
+          "T1_prevalence": 0.5986
+        },
+        "8": {
+          "n_wells": 774,
+          "n_rows": 1972,
+          "T1_prevalence": 0.431
+        },
+        "9": {
+          "n_wells": 834,
+          "n_rows": 1913,
+          "T1_prevalence": 0.4757
+        }
+      }
+    }
+  },
+  "spatial": {
+    "lat_range": [
+      32.5784,
+      41.9656
+    ],
+    "lon_range": [
+      -124.2816,
+      -114.4792
+    ],
+    "lat_lon_missing": [
+      0,
+      0
+    ],
+    "n_counties": 58,
+    "n_dwr_basin": 239,
+    "n_sgma_subbasin": 237,
+    "n_regional_board": 9,
+    "morans_I_T1": {
+      "value": 0.4262,
+      "k_neighbors": 8,
+      "n_wells_sampled": 4000,
+      "expected_under_null": -0.00025,
+      "note": "well-level, T1=EPA exceedance (max over events); kNN binary weights"
+    },
+    "concordance_by_distance": {
+      "0-1km": {
+        "n_pairs": 129,
+        "frac_same_T1": 0.7674
+      },
+      "1-5km": {
+        "n_pairs": 511,
+        "frac_same_T1": 0.5812
+      },
+      "5-20km": {
+        "n_pairs": 3792,
+        "frac_same_T1": 0.5593
+      },
+      "20-100km": {
+        "n_pairs": 27058,
+        "frac_same_T1": 0.5353
+      },
+      "100-1000km": {
+        "n_pairs": 167824,
+        "frac_same_T1": 0.542
+      }
+    },
+    "baseline_concordance_random": 0.5403
+  }
+}

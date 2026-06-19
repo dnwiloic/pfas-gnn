@@ -1,0 +1,316 @@
+{
+  "n_rows": 46338,
+  "seed": 42,
+  "analytical_threshold": 2.0,
+  "frameworks": {
+    "epa": {
+      "n_labels": 5,
+      "n_usable_ge5pct": 3,
+      "usable_labels": [
+        "PFOS",
+        "PFOA",
+        "PFHxS"
+      ],
+      "compounds": {
+        "PFOA": {
+          "threshold": 4.0,
+          "prevalence": 0.3402606931675946,
+          "measured_frac": 0.9981440718201045
+        },
+        "PFOS": {
+          "threshold": 4.0,
+          "prevalence": 0.39332729077646855,
+          "measured_frac": 0.9982303940610299
+        },
+        "PFHxS": {
+          "threshold": 10.0,
+          "prevalence": 0.146402520609435,
+          "measured_frac": 0.9520264146057231
+        },
+        "PFNA": {
+          "threshold": 10.0,
+          "prevalence": 0.02494712762743321,
+          "measured_frac": 0.9735422331563728
+        },
+        "HFPO_DA": {
+          "threshold": 10.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.8759117786697743
+        }
+      }
+    },
+    "ca_nl": {
+      "n_labels": 7,
+      "n_usable_ge5pct": 3,
+      "usable_labels": [
+        "PFOS",
+        "PFHxS",
+        "PFOA"
+      ],
+      "compounds": {
+        "PFOA": {
+          "threshold": 4.0,
+          "prevalence": 0.3402606931675946,
+          "measured_frac": 0.9981440718201045
+        },
+        "PFOS": {
+          "threshold": 4.0,
+          "prevalence": 0.39332729077646855,
+          "measured_frac": 0.9982303940610299
+        },
+        "PFHxS": {
+          "threshold": 3.0,
+          "prevalence": 0.38555828909318485,
+          "measured_frac": 0.9520264146057231
+        },
+        "PFNA": {
+          "threshold": 10.0,
+          "prevalence": 0.02494712762743321,
+          "measured_frac": 0.9735422331563728
+        },
+        "HFPO_DA": {
+          "threshold": 10.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.8759117786697743
+        },
+        "PFBS": {
+          "threshold": 500.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.9513358366783202
+        },
+        "PFHxA": {
+          "threshold": 1000.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.9581768742716561
+        }
+      }
+    },
+    "ca_rl": {
+      "n_labels": 7,
+      "n_usable_ge5pct": 3,
+      "usable_labels": [
+        "PFOA",
+        "PFHxS",
+        "PFOS"
+      ],
+      "compounds": {
+        "PFOA": {
+          "threshold": 10.0,
+          "prevalence": 0.18144935042513705,
+          "measured_frac": 0.9981440718201045
+        },
+        "PFOS": {
+          "threshold": 40.0,
+          "prevalence": 0.07661098882126981,
+          "measured_frac": 0.9982303940610299
+        },
+        "PFHxS": {
+          "threshold": 10.0,
+          "prevalence": 0.146402520609435,
+          "measured_frac": 0.9520264146057231
+        },
+        "PFNA": {
+          "threshold": 10.0,
+          "prevalence": 0.02494712762743321,
+          "measured_frac": 0.9735422331563728
+        },
+        "HFPO_DA": {
+          "threshold": 10.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.8759117786697743
+        },
+        "PFBS": {
+          "threshold": 5000.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.9513358366783202
+        },
+        "PFHxA": {
+          "threshold": 10000.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.9581768742716561
+        }
+      }
+    },
+    "strictest": {
+      "n_labels": 7,
+      "n_usable_ge5pct": 3,
+      "usable_labels": [
+        "PFOS",
+        "PFHxS",
+        "PFOA"
+      ],
+      "compounds": {
+        "PFOA": {
+          "threshold": 4.0,
+          "prevalence": 0.3402606931675946,
+          "measured_frac": 0.9981440718201045
+        },
+        "PFOS": {
+          "threshold": 4.0,
+          "prevalence": 0.39332729077646855,
+          "measured_frac": 0.9982303940610299
+        },
+        "PFHxS": {
+          "threshold": 3.0,
+          "prevalence": 0.38555828909318485,
+          "measured_frac": 0.9520264146057231
+        },
+        "PFNA": {
+          "threshold": 10.0,
+          "prevalence": 0.02494712762743321,
+          "measured_frac": 0.9735422331563728
+        },
+        "HFPO_DA": {
+          "threshold": 10.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.8759117786697743
+        },
+        "PFBS": {
+          "threshold": 500.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.9513358366783202
+        },
+        "PFHxA": {
+          "threshold": 1000.0,
+          "prevalence": 0.0,
+          "measured_frac": 0.9581768742716561
+        }
+      }
+    }
+  },
+  "per_compound": {
+    "PFOA": {
+      "present": true,
+      "measured_frac": 0.9981440718201045,
+      "detected_frac": 0.45053735594976047,
+      "thresholds": {
+        "epa_mcl": 4.0,
+        "ca_nl": 4.0,
+        "ca_rl": 10.0
+      },
+      "prevalence_analytical_2.0": 0.4304242738141482,
+      "prev_epa": 0.3402606931675946,
+      "thr_epa": 4.0,
+      "prev_ca_nl": 0.3402606931675946,
+      "thr_ca_nl": 4.0,
+      "prev_ca_rl": 0.18144935042513705,
+      "thr_ca_rl": 10.0,
+      "prev_strictest": 0.3402606931675946,
+      "thr_strictest": 4.0
+    },
+    "PFOS": {
+      "present": true,
+      "measured_frac": 0.9982303940610299,
+      "detected_frac": 0.4926841900815745,
+      "thresholds": {
+        "epa_mcl": 4.0,
+        "ca_nl": 4.0,
+        "ca_rl": 40.0
+      },
+      "prevalence_analytical_2.0": 0.4736285553972981,
+      "prev_epa": 0.39332729077646855,
+      "thr_epa": 4.0,
+      "prev_ca_nl": 0.39332729077646855,
+      "thr_ca_nl": 4.0,
+      "prev_ca_rl": 0.07661098882126981,
+      "thr_ca_rl": 40.0,
+      "prev_strictest": 0.39332729077646855,
+      "thr_strictest": 4.0
+    },
+    "PFHxS": {
+      "present": true,
+      "measured_frac": 0.9520264146057231,
+      "detected_frac": 0.4743191333247011,
+      "thresholds": {
+        "epa_mcl": 10.0,
+        "ca_nl": 3.0,
+        "ca_rl": 10.0
+      },
+      "prevalence_analytical_2.0": 0.453839181665156,
+      "prev_epa": 0.146402520609435,
+      "thr_epa": 10.0,
+      "prev_ca_nl": 0.38555828909318485,
+      "thr_ca_nl": 3.0,
+      "prev_ca_rl": 0.146402520609435,
+      "thr_ca_rl": 10.0,
+      "prev_strictest": 0.38555828909318485,
+      "thr_strictest": 3.0
+    },
+    "PFNA": {
+      "present": true,
+      "measured_frac": 0.9735422331563728,
+      "detected_frac": 0.13306573438646468,
+      "thresholds": {
+        "epa_mcl": 10.0,
+        "ca_nl": null,
+        "ca_rl": null
+      },
+      "prevalence_analytical_2.0": 0.11301739393154646,
+      "prev_epa": 0.02494712762743321,
+      "thr_epa": 10.0,
+      "prev_ca_nl": 0.02494712762743321,
+      "thr_ca_nl": 10.0,
+      "prev_ca_rl": 0.02494712762743321,
+      "thr_ca_rl": 10.0,
+      "prev_strictest": 0.02494712762743321,
+      "thr_strictest": 10.0
+    },
+    "HFPO_DA": {
+      "present": true,
+      "measured_frac": 0.8759117786697743,
+      "detected_frac": 0.000927964089947775,
+      "thresholds": {
+        "epa_mcl": 10.0,
+        "ca_nl": null,
+        "ca_rl": null
+      },
+      "prevalence_analytical_2.0": 0.0007984807285597134,
+      "prev_epa": 0.0,
+      "thr_epa": 10.0,
+      "prev_ca_nl": 0.0,
+      "thr_ca_nl": 10.0,
+      "prev_ca_rl": 0.0,
+      "thr_ca_rl": 10.0,
+      "prev_strictest": 0.0,
+      "thr_strictest": 10.0
+    },
+    "PFBS": {
+      "present": true,
+      "measured_frac": 0.9513358366783202,
+      "detected_frac": 0.3973196944192671,
+      "thresholds": {
+        "epa_mcl": null,
+        "ca_nl": 500.0,
+        "ca_rl": 5000.0
+      },
+      "prevalence_analytical_2.0": 0.373257369761319,
+      "prev_epa": null,
+      "thr_epa": null,
+      "prev_ca_nl": 0.0,
+      "thr_ca_nl": 500.0,
+      "prev_ca_rl": 0.0,
+      "thr_ca_rl": 5000.0,
+      "prev_strictest": 0.0,
+      "thr_strictest": 500.0
+    },
+    "PFHxA": {
+      "present": true,
+      "measured_frac": 0.9581768742716561,
+      "detected_frac": 0.3851482584487893,
+      "thresholds": {
+        "epa_mcl": null,
+        "ca_nl": 1000.0,
+        "ca_rl": 10000.0
+      },
+      "prevalence_analytical_2.0": 0.367668004661401,
+      "prev_epa": null,
+      "thr_epa": null,
+      "prev_ca_nl": 0.0,
+      "thr_ca_nl": 1000.0,
+      "prev_ca_rl": 0.0,
+      "thr_ca_rl": 10000.0,
+      "prev_strictest": 0.0,
+      "thr_strictest": 1000.0
+    }
+  }
+}
