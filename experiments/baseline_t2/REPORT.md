@@ -1,129 +1,88 @@
 # REPORT — Baseline multilabel T2 (quels PFAS dépassent, PFAS CA, mode prédictif strict)
 
-> Agent : `multilabel-specialist`. Graine 42. Cibles = `src.targets.build_T2` (schéma
-> hybride EPA-MCL / analytique + garde-fou détection C1) ; features = socle (encodage
-> fréquentiel, aucune mesure PFAS en entrée) ; CV = socle spatial-block (référence) +
-> aléatoire groupé (Δ) ; **masquage de mesure par label** (MNAR : on n'entraîne/évalue
-> un label que sur ses lignes mesurées).
+> Agent : `multilabel-specialist` + run canonique Colab. Graine 42.
+> Cibles = `src.targets.build_T2` (schéma hybride EPA‑MCL / analytique + garde‑fou
+> détection C1) ; features = socle (encodage fréquentiel, aucune mesure PFAS en entrée) ;
+> CV = socle spatial‑block (référence) + aléatoire groupé (Δ) ; **masquage de mesure par
+> label** (MNAR). 5 modèles dont **FrequencyClassChain** (4 classes de fréquence + chaîne
+> cascade façon Dong et al. 2024). Les 5 métriques imposées (AUC‑ROC, F1, accuracy,
+> rappel, précision) calculées en micro/macro/par‑label.
 >
-> ⚠️ **PROVENANCE / DÉVIATION.** Le run complet a été exécuté **localement sur CPU
-> (~4 h)** — déviation de la discipline CLAUDE.md (les runs longs vont sur Colab GPU).
-> Les **chiffres « full » ci-dessous (headline) sont vérifiés** dans
-> `experiments/baseline_t2/full_run.log`. Le tableau **par-label détaillé est SMOKE**
-> (500 puits, k=3) car le run complet n'a persisté que le headline. **À reproduire
-> proprement sur Colab pour figer le canonique** (per-label complet, calibration).
-> Module : `src/baselines_t2.py` ; smoke : `tests/test_baselines_t2.py` (VERT ~66 s CPU).
+> **Statut : RUN CANONIQUE COMPLET (Colab) — données complètes 46 338 lignes, 10 labels,
+> 8 plis spatiaux + 8 aléatoires.** Source : `experiments/baseline_t2/metrics.json`.
 
 ## 0. Résumé exécutif
 
-Binary Relevance (un classifieur par label), Chaînes de classifieurs (1 ordre),
-Ensemble de chaînes (ECC) et plancher de prévalence, comparés sous double CV.
-**Conclusion : les chaînes ne battent pas la Binary Relevance** (gain < bruit, non
-significatif) ⇒ **BR = baseline T2 de référence**. L'inflation spatiale (Δ ≈ 0.20 sur
-macro-AUROC) est le fait méthodologique central et **aucun modèle ne la réduit**.
+- **Binary Relevance reste la référence** (macro‑AUROC spatial 0.680) ; aucun modèle ne la
+  bat significativement. L'Ensemble de chaînes est à égalité (0.677) ; **FrequencyClassChain
+  (chaîne‑par‑classe, Dong) = 0.668**, au niveau des autres chaînes — **le chaînage n'apporte
+  pas de gain** en mode prédictif strict.
+- **L'inflation spatiale est le fait central** : macro‑AUROC **aléatoire ~0.90 vs spatial
+  ~0.67**, soit **Δ ≈ +0.22 à +0.23**. Aucun modèle ne réduit ce Δ.
+- Positionnement Dong et al. 2024 : nos scores **aléatoires (~0.90) rejoignent la
+  littérature** ; nos scores **spatiaux (~0.67)** mesurent la généralisation géographique
+  réelle (jamais rapportée en protocole non spatial).
 
-## 1. Headline — modèles × métriques (RUN COMPLET, full_run.log)
+## 1. Modèles × les 5 métriques (micro, CV spatiale) + AUROC aléatoire + Δ
 
-Données complètes (46 338 lignes, 10 labels), 8 plis spatiaux + 8 aléatoires.
+AUROC = macro (sans seuil) ; F1/accuracy/rappel/précision = micro au seuil OOF par label.
 
-| modèle | mAUROC sp | microF1 sp | Hamming sp | EMR sp | mAUROC rd | Δ mAUROC (rd−sp) | coût |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| Prévalence (plancher) | 0.348 | 0.487 | 0.602 | 0.074 | 0.471 | +0.123 | 16 s |
-| **Binary Relevance** | **0.698** | **0.551** | **0.337** | 0.156 | 0.903 | +0.205 | 757 s |
-| Chaîne (1 ordre) | 0.681 | 0.545 | 0.365 | 0.137 | 0.903 | +0.222 | 2 467 s |
-| Ensemble de chaînes (ECC) | 0.701 | 0.561 | 0.345 | 0.137 | 0.907 | +0.206 | 10 584 s |
+| modèle | AUROC | F1 | accuracy | rappel | précision | AUROC(rd) | Δ AUROC |
+|---|---|---|---|---|---|---|---|
+| Prévalence (plancher) | 0.348 | 0.487 | 0.398 | 0.990 | 0.323 | 0.476 | +0.128 |
+| **BinaryRelevance** | **0.680** | 0.542 | 0.655 | 0.709 | 0.439 | 0.902 | +0.222 |
+| Chaîne (1 ordre) | 0.667 | 0.533 | 0.642 | 0.707 | 0.427 | 0.901 | +0.234 |
+| Ensemble de chaînes | 0.677 | 0.541 | 0.638 | 0.739 | 0.427 | 0.904 | +0.228 |
+| FreqClassChain (Dong) | 0.668 | 0.531 | 0.649 | 0.689 | 0.432 | 0.895 | +0.228 |
 
-**Test apparié chaîne − BR (8 plis spatiaux)** : macro-AUROC −0.0055 (Wilcoxon p=0.55) ;
-micro-F1 −0.026 (p=0.11). **Non significatif.** ECC ≈ BR (+0.003 < bruit, std inter-plis
-≈ 0.087) pour **14×** le coût. ⇒ **BR de référence ; ECC réservé à Colab/multi-cœur.**
+**Test apparié chaîne − BR (8 plis spatiaux)** : macro‑AUROC +0.020 (Wilcoxon p=0.078),
+micro‑F1 −0.013 (p=0.95) → **non significatif**. ⇒ **BR de référence.**
 
-## 1bis. Modèle « chaîne par classe » (Dong et al. 2024) + 5 métriques (ajout 2026-06-19)
+## 2. Par‑label — Binary Relevance, CV spatiale (les 5 métriques au seuil OOF)
 
-À la demande, ajout du modèle **`FrequencyClassChain`** (`src/baselines_t2.py`) reproduisant
-l'architecture Dong et al. 2024 **sur nos cibles** (hybride + garde-fou C1, CV spatiale) :
-les labels sont rangés en **4 classes ordonnées par fréquence de présence** (du moins rare
-au plus rare) et une **chaîne en cascade** parcourt cet ordre, si bien que les PFAS rares
-sont prédits à partir des plus fréquents déjà prédits. Réutilise la `MaskedClassifierChain`
-(priors OOF sans fuite). Le découpage en 4 classes (ordre de fréquence, train) est rapporté
-dans `metrics.json`/`classes_`.
+| label | mesuré | prévalence | AUROC | F1 | accuracy | rappel | précision | AP |
+|---|---|---|---|---|---|---|---|---|
+| PFOS | 46 256 | 0.394 | 0.588 | 0.536 | 0.562 | 0.643 | 0.460 | 0.450 |
+| PFBS | 44 083 | 0.392 | 0.632 | 0.570 | 0.526 | 0.800 | 0.442 | 0.487 |
+| PFHxA | 44 400 | 0.384 | 0.656 | 0.574 | 0.545 | 0.799 | 0.448 | 0.519 |
+| PFOA | 46 252 | 0.341 | 0.665 | 0.573 | 0.617 | 0.753 | 0.462 | 0.443 |
+| PFHpA | 45 099 | 0.265 | 0.634 | 0.439 | 0.579 | 0.620 | 0.339 | 0.379 |
+| PFBA | 25 816 | 0.410 | 0.728 | 0.665 | 0.673 | 0.792 | 0.573 | 0.592 |
+| PFPeA | 25 738 | 0.410 | 0.689 | 0.625 | 0.638 | 0.737 | 0.542 | 0.559 |
+| PFHxS | 44 115 | 0.154 | 0.660 | 0.363 | 0.739 | 0.484 | 0.290 | 0.288 |
+| PFPeS | 25 948 | 0.158 | 0.721 | 0.412 | 0.755 | 0.544 | 0.332 | 0.367 |
+| PFNA | 45 112 | 0.026 | 0.831 | 0.241 | 0.956 | 0.274 | 0.215 | 0.169 |
 
-Et conformément à la consigne, **les 5 métriques — AUC-ROC, F1, accuracy, rappel,
-précision — sont désormais calculées pour T1 ET T2** (T2 en micro, macro et par-label ;
-module partagé `src/metrics.py`), en plus de Hamming/EMR.
+PFNA : AUROC élevé (0.831) mais **AP 0.169 et F1 0.24** — label rare (2.6 %), viser l'AP.
+PFBA/PFPeS/PFOA sont les mieux prédits spatialement (~0.66–0.73).
 
-**Aperçu smoke (7 labels, 800 puits, k=2 — indicatif ; chiffres canoniques à régénérer sur Colab)** :
+## 3. FrequencyClassChain — 4 classes de fréquence (Dong et al. 2024 sur nos cibles)
 
-| modèle | AUROC | F1 | accuracy | recall | precision |
-|---|---|---|---|---|---|
-| Prévalence | 0.433 | 0.422 | 0.383 | 0.981 | 0.269 |
-| BinaryRelevance | 0.683 | 0.509 | 0.694 | 0.691 | 0.403 |
-| Chain | 0.685 | 0.506 | 0.675 | 0.725 | 0.389 |
-| Ensemble | 0.681 | 0.509 | 0.683 | 0.714 | 0.395 |
-| **FreqClassChain** | 0.677 | 0.509 | 0.669 | 0.746 | 0.386 |
+Labels rangés du moins rare au plus rare, chaîne cascade dans cet ordre. Résultat : sur
+données complètes, FreqClassChain (0.668) ≈ Chaîne simple (0.667) ≈ sous BR (0.680) →
+**le découpage en classes de fréquence n'aide pas** : en mode prédictif strict la
+co‑occurrence est déjà médiée par le contexte commun (proxys géo/hydro), donc propager les
+prédictions n'ajoute pas d'information.
 
-Le `FrequencyClassChain` est **au niveau des autres chaînes** (≈ BR), cohérent avec la
-conclusion : en mode prédictif strict, la co-occurrence est déjà médiée par le contexte ⇒
-pas de gain net du chaînage. Smoke VERT en ~158 s CPU (`tests/test_baselines_t2.py`).
+## 4. Déséquilibre / labels rares & semi‑supervision
 
-## 2. Par-label — Binary Relevance (⚠️ SMOKE, 500 puits ; à régénérer sur Colab)
+- **SMOTE sur PFNA** : AUROC 0.831 (class_weight) → **0.873 (+SMOTE)** = **+0.042**. Ici
+  SMOTE aide PFNA (run complet) ; à confirmer en AP (la métrique pertinente à 2.6 %).
+- **Pseudo‑étiquetage** (labels à panel réduit) : PFBA −0.017, PFPeA +0.006, PFPeS −0.011
+  → **apport nul**, cohérent avec le MNAR. Non activé.
 
-| label | n_meas | prévalence | AUROC sp | AP sp |
-|---|---|---|---|---|
-| PFOS | 3153 | 0.340 | 0.616 | 0.406 |
-| PFBS | 3013 | 0.331 | 0.622 | 0.402 |
-| PFHxA | 3025 | 0.338 | 0.625 | 0.446 |
-| PFOA | 3152 | 0.286 | 0.597 | 0.364 |
-| PFHpA | 3077 | 0.201 | 0.602 | 0.301 |
-| PFBA | 1788 | 0.352 | 0.681 | 0.501 |
-| PFPeA | 1781 | 0.360 | 0.676 | 0.513 |
-| PFHxS | 3017 | 0.127 | 0.628 | 0.264 |
-| PFPeS | 1799 | 0.147 | 0.755 | 0.357 |
-| PFNA | 3077 | 0.026 | 0.843 | 0.251 |
+## 5. Mur pour les GNN
 
-Repères **run complet** (rapportés par l'agent) : AUROC spatial minimal = **0.598 (PFOS)** ;
-max hors PFNA = **0.729 (PFBA)** ; PFNA AUROC 0.908 mais **AP seulement 0.254** (à 2.6 %
-de prévalence, viser l'AP, pas l'AUROC).
+- **Cible à battre = macro‑AUROC spatial ≈ 0.68** (BR), pas l'aléatoire ~0.90.
+- Rapporter le triplet (aléatoire, spatial, Δ) ; un GNN n'aide que s'il **monte le spatial
+  sans gonfler Δ ≈ 0.22**. Std inter‑plis ≈ 0.08–0.10 → un gain < ~0.03 sera dans le bruit.
+- Vu la structure MNAR, prioriser la **complétion de matrice bipartite puits × analyte**
+  plutôt que le graphe de labels (les chaînes échouent ici), en respectant C4/C5.
 
-## 3. Où les chaînes aident-elles ? (per-label AUROC, chaîne − BR)
+## 6. Artefacts
 
-Quasiment nulle part, et non significativement. Micro-gains seulement sur **PFHxS (+0.018)**
-et **PFPeS (+0.010)** (la paire à co-occurrence ~0.84). Paradoxe : les labels à **plus
-forte co-occurrence** sont les plus **dégradés** par la chaîne (PFHxA −0.054, PFHpA −0.055,
-PFOA −0.044) — en mode prédictif strict la co-occurrence est déjà médiée par le **contexte
-commun** (proxys géo/hydro partagés) ; le prior d'un label imparfait ne fait que
-**propager son erreur**, amplifiée en CV spatiale.
-
-## 4. Déséquilibre / labels rares
-
-- PFNA (rare réglementé, ~2.6 %) : `class_weight='balanced'`. **SMOTE testé et REJETÉ**
-  (AUROC 0.886 vs 0.908 sans) — il crée des positifs hors distribution spatiale.
-- Tous les labels appris utilisent `class_weight='balanced'` (mesuré, pas supposé).
-
-## 5. Semi-supervision (sonde de pseudo-étiquetage, labels à panel réduit)
-
-Apport **nul, signes mélangés** (PFBA −0.014, PFPeA +0.022, PFPeS −0.011 ; tous dans le
-bruit) — cohérent avec le MNAR (transport de distribution source→cible). **Non activé** ;
-code réutilisable en cas de transfert futur vers un contexte à données rares.
-
-## 6. Points de vigilance & positionnement
-
-- **Inflation spatiale = contribution méthodologique** : Δ ≈ 0.20 macro-AUROC (jusqu'à
-  +0.295 PFOS, +0.275 PFHxS). Le classement se fait **en spatial**.
-- **vs Dong et al. (2024)** : nos AUROC **spatiaux** 0.60–0.73 sont ~0.15–0.30 **sous** les
-  ~0.8–0.9 publiés ; nos scores **random** (0.90) **rejoignent la littérature** → l'essentiel
-  de l'écart est l'inflation spatiale (+ mode prédictif strict + garde-fou détection).
-- **Puissance** : k=8 LOBO, std inter-plis ≈ 0.087 → un gain GNN < 0.03 AUROC spatiale
-  sera dans le bruit.
-- **Recommandation GNN forte** : vu la structure MNAR, prioriser la **complétion de
-  matrice bipartite puits × analyte** (réutiliser le masque de mesure comme matrice
-  d'observation), **pas** le graphe de labels (les chaînes échouent ici). Respecter
-  C4/C5 (k-NN spatial plafonné ~1–2 km, arêtes coupées aux frontières de bloc).
-
-## 7. Artefacts
-
-- `src/baselines_t2.py` — module (masques par label, BR / chaîne / ECC / prévalence,
-  seuils OOF par label, métriques masquées, sonde pseudo, test apparié).
-- `tests/test_baselines_t2.py` — smoke test (VERT, ~66 s CPU).
+- `src/baselines_t2.py` — modèles (BR, chaînes, ECC, **FreqClassChain**, prévalence),
+  masques par label, seuils OOF, métriques masquées, SMOTE/pseudo, test apparié.
 - `experiments/baseline_t2/run_baseline_t2.py` — driver (toggle `SMOKE_TEST`).
-- `experiments/baseline_t2/full_run.log` — **headline du run complet (source des chiffres §1)**.
-- `experiments/baseline_t2/{config.yaml,metrics.json}` — ⚠️ état SMOKE (à régénérer canonique sur Colab).
+- `experiments/baseline_t2/{metrics.json,full_run.log,config.yaml}` — **run canonique
+  Colab** (source des chiffres §1‑§4) ; `metrics_incremental.json` — checkpoint par modèle.
