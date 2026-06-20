@@ -1,110 +1,90 @@
-# REPORT — Baseline non-graphe T1 (dépassement réglementaire binaire, PFAS CA)
+# REPORT — Baseline T1 (dépassement réglementaire binaire, PFAS CA)
 
-> Agent : `tabular-ml-engineer`. Date : 2026-06-19. Graine : 42 partout.
-> **Statut : module SMOKE-TESTÉ VERT sur CPU (160 s). Run complet NON exécuté →
-> à lancer sur Colab GPU** (discipline CLAUDE.md §4/§5 respectée : pas de run long local).
-> Reproductible : `python3 tests/test_baselines_t1.py` (smoke) ; module : `src/baselines_t1.py`.
-> Les chiffres ci-dessous sont SMOKE (500 puits, k=3, 3 trials Optuna) — indicatifs,
-> à remplacer par le run complet k=8 sur Colab.
+> Graine 42. Cible T1a = EPA 2024 NPDWR (PFOA>4 ∨ PFOS>4 ∨ PFNA>10 ∨ PFHxS>10 ∨
+> GenX>10 ∨ Hazard Index>1), prévalence ~45,7 %.
+>
+> **Statut : métriques de baseline adoptées d'un notebook ANTÉRIEUR**
+> (`ca-pfas-ml/notebooks/01_binary_classification_epa2024`, 2026-06-20), car le run
+> rigoureux (CV spatiale) sur Colab est trop long. **⚠️ Ces chiffres relèvent du
+> RÉGIME ALÉATOIRE/OPTIMISTE (≈ protocole Dong et al.), PAS de notre référence
+> spatiale** — voir §5 (3 sources d'inflation). À traiter comme le **plafond
+> littérature**, à contraster avec la CV spatiale (notre pipeline).
 
 ## 0. Résumé exécutif
 
-Trois baselines non-graphe (régression logistique plancher, Random Forest, XGBoost)
-évaluées en **double CV** : spatiale par blocs (k=8, référence) + aléatoire groupée par
-puits (k=8, diagnostic), sur **T1a** (EPA 2024, garde-fou détection C1). Conditions
-C1–C6 respectées par réutilisation du socle `src/`.
+- **Protocole standard (split aléatoire 80/20, 86 features, Optuna)** : RF **AUC 0,974**,
+  XGBoost **AUC 0,971** — niveau de la littérature (Dong et al. ~0,97-0,99).
+- Ces scores sont **gonflés** par trois facteurs vs notre protocole strict (§5) : split
+  **aléatoire** (pas de groupage puits, pas de blocs spatiaux), inclusion du confondeur de
+  design **`gm_dataset_name`** (rang 1 en importance XGB), **absence de garde-fou de
+  détection** (C1).
+- **Référence spatiale honnête** (notre pipeline `src/baselines_t1.py`, CV par blocs) :
+  smoke ≈ **0,62 AUC**, run complet à obtenir. **L'écart 0,97 → ~0,62 = l'inflation
+  spatiale + design**, cœur de notre contribution. **Le mur pour les GNN reste l'AUC
+  spatiale (~0,62), pas ce 0,97.**
 
-Chiffres **smoke** (500 puits, k=3) :
+## 1. Modèles × les 5 métriques (split aléatoire 80/20, après Optuna)
 
-| Modèle | AUC spatial | AUC random | Δ (rd−sp) | Recall sp | Brier sp | Gain top-20% sp |
-|--------|:-----------:|:----------:|:---------:|:---------:|:--------:|:---------------:|
-| LR (plancher) | 0.574 ± 0.069 | 0.652 | +0.079 | 0.445 | 0.307 | 0.233 |
-| RF | 0.617 ± 0.108 | 0.674 | +0.058 | 0.791 | 0.214 | 0.263 |
-| **XGBoost** | **0.623** ± 0.069 | 0.654 | **+0.031** | 0.627 | 0.272 | **0.317** |
+Jeu de test = 9 268 puits (20 %, stratifié aléatoire). prévalence test 45,7 %.
 
-Comparaisons appariées (Nadeau-Bengio, k=3) : RF vs LR Δ=+0.043 (p=0.43) ; XGB vs LR
-Δ=+0.049 (p=0.32) ; RF vs XGB Δ=−0.006 (p=0.93) — **tous non significatifs** (k=3
-insuffisant ; k=8 du run complet requis pour la résolution statistique).
+| modèle | AUC‑ROC | F1 | accuracy | rappel | précision | AP | bal.acc |
+|---|---|---|---|---|---|---|---|
+| **Random Forest (Optuna)** | **0,974** | 0,920 | 0,927 | 0,915 | 0,925 | 0,969 | 0,926 |
+| **XGBoost (Optuna)** | 0,971 | 0,912 | 0,919 | 0,916 | 0,909 | 0,967 | 0,919 |
+| Random Forest (défaut) | 0,966 | 0,900 | 0,909 | 0,893 | 0,906 | 0,961 | 0,908 |
+| XGBoost (défaut) | 0,967 | 0,902 | 0,910 | 0,906 | 0,899 | 0,962 | 0,910 |
 
-**Mur GNN provisoire** : AUC spatiale > 0.62 (à figer après le run complet).
+**CV 5-fold (aléatoire, params défaut)** : RF AUC 0,962 ± 0,001 · F1 0,891 ± 0,004 ·
+rappel 0,887 ± 0,002 ; XGB AUC 0,965 ± 0,001 · F1 0,898 ± 0,002 · rappel 0,900 ± 0,004.
 
-> **Métriques (ajout 2026-06-19).** Les **5 métriques imposées — AUC-ROC, F1, accuracy,
-> rappel, précision — sont calculées pour T1** (au seuil OOF) via le module partagé
-> `src/metrics.py`, en CV spatiale ET aléatoire, en plus de PR-AUC / balanced-accuracy /
-> Brier / gain cumulé. Elles figurent dans `metrics.json` (`*_mean`/`*_std` par modèle).
+Seuil optimal OOF ≈ 0,49 (RF) / 0,48 (XGB) — proche du défaut 0,50 (cible quasi-équilibrée).
 
-## 1. Protocole (conditions éval)
+## 2. Lecture opérationnelle
 
-- **C1** garde-fou détection : via `targets.build_T1a`.
-- **C2** groupage `gm_well_id` : partout, vérifié par `assert_no_group_leak`.
-- **C3** CV double : outer k=8 spatial + k=8 aléatoire ; inner k=4 spatial sur le train.
-- **C5** target-encoding OOF (`_KFoldTargetEncoder`) pour `dwr_basin`/`sgma_subbasin`.
-- **C6** `gm_dataset_name` exclu des features (`config.feature_columns`).
-- Déséquilibre : `class_weight`/`scale_pos_weight` dans l'espace Optuna (auto-sélection ;
-  T1a quasi-équilibré ~0.445 → pas de pondération forcée).
-- Seuil τ* : max-F1 sur probabilités OOF du train interne, **jamais sur le test**.
-- Optuna TPE (20 trials en complet, 3 en smoke), graine 42.
+- **Gain cumulé** : en testant les **25 % puits les plus à risque**, on détecte **54 %**
+  des puits réellement > MCL (RF et XGB).
+- **Calibration** : probabilités bien calibrées (courbe proche de la diagonale).
 
-## 2. Scores du run complet (à remplir sur Colab)
+## 3. Importance des features (et alerte de fuite)
 
-[PLACEHOLDER — exécuter `run_baselines(smoke=False)` (`python -m src.baselines_t1` ou
-notebook) sur Colab GPU : XGBoost `tree_method="hist"` GPU + RF `n_jobs=-1`. Estimation :
-45–90 min GPU. Le tableau final rapportera, par modèle et par schéma de CV
-(spatial / aléatoire + Δ), les **5 métriques** : AUC-ROC, F1, accuracy, rappel, précision.]
+Top features communes RF∩XGB : `n_geotracker_within_50km`, **`gm_dataset_name`** (rang 1
+XGB), `n_geotracker_within_10km`, `gm_well_category`, `cocontam_pce`…
 
-## 3. Importance des features (SHAP, XGB, smoke pli 0) + contrôle de plausibilité
+⚠️ **`gm_dataset_name` en tête = fuite de design** : le programme d'échantillonnage (p. ex.
+WB_CLEANUP cible des sites déjà pollués) est fortement corrélé à la cible. Notre protocole
+l'**exclut** (C6). Sa présence ici explique une part importante du 0,97.
 
-| Rang | Feature | SHAP | Famille | Vigilance |
-|------|---------|:----:|---------|-----------|
-| 1 | `dwr_basin__enc` | 0.979 | Admin/hydrogéo | ⚠️ proxy géo fort (η≈0.50 vs T1a) — confondeur design |
-| 2 | `dist_geotracker_km` | 0.265 | Geotracker | OK mécaniste (distance source PFAS) |
-| 3 | `n_geotracker_within_50km` | 0.193 | Geotracker | OK (densité sources) |
-| 4 | `sgma_subbasin_name__enc` | 0.180 | Admin/hydrogéo | ⚠️ proxy géo (η≈0.50, C5) |
-| 5 | `soil_texture_class__enc` | 0.145 | Sol SSURGO | OK (perméabilité) |
-| 6 | `gldas_dist_km` | 0.118 | Climat | artefact possible (proxy région) |
-| 7 | `regional_board=CENTRAL VALLEY` | 0.113 | Admin | ⚠️ proxy régional |
-| 8 | `soil_sand_pct` | 0.109 | Sol SSURGO | OK (drainage) |
-| 9 | `cocontam_tce` | 0.099 | Cocontaminant | proxy panel labo possible — audit SHAP spatial |
-| 10 | `aqs_no2_ppb` | 0.098 | Air AQS | proxy urbanité/industrie |
+## 4. Dataset & protocole de ce baseline (externe)
 
-**Alerte clé** : `dwr_basin__enc` domine (SHAP 0.979). Le target-encoding est anti-fuite
-de cible (C5 OK) mais reste un **confondeur géographique** ; vérifier sur le run complet
-si son importance **s'effondre en CV spatiale vs aléatoire** (→ artefact de design) ou
-**tient** (→ valeur mécaniste de géologie de bassin).
+- 46 338 échantillons × **86 features** (concentrations/_detected/label_ exclus ; **lat/lon
+  + county/regional_board/dwr_region exclus** « localisation pure » ; `gm_dataset_name`
+  **conservé**). Imputation médiane, OrdinalEncoder pour les catégorielles.
+- **Split aléatoire stratifié 80/20** (train 37 070 / test 9 268). Optuna : RF 40 trials,
+  XGB 60 trials. Modèles sauvés (`models/*.pkl`).
 
-## 4. Ablations (RF, smoke, sans Optuna)
+## 5. ⚠️ Caveats méthodologiques (pourquoi 0,97 ≠ notre référence)
 
-| Configuration | AUC sp | AUC rd | Δ |
-|---|:---:|:---:|:---:|
-| no_loc / cocontam=all (réf.) | 0.700 | 0.669 | −0.031 |
-| with_loc / all | 0.658 | 0.671 | +0.013 |
-| no_loc / cocontam=core | 0.561 | 0.649 | +0.088 |
-| no_loc / cocontam=none | 0.648 | 0.673 | +0.025 |
+| Facteur | Ce baseline (externe) | Notre protocole strict |
+|---|---|---|
+| Découpage | **aléatoire** 80/20 + 5-fold aléatoire | **CV spatiale par blocs** + groupé `gm_well_id` (C2/C3) |
+| Pseudo-réplicats | un puits peut être dans train ET test | interdits (groupage puits) |
+| `gm_dataset_name` | **conservé** (rang 1) | **exclu** (confondeur de design, C6) |
+| Garde-fou détection | **absent** (prév. 45,7 %) | **appliqué** (C1, prév. 44,5 %) |
 
-- **lat/lon dégrade** l'AUC spatiale (−4 pts) → confirme : **pas de lat/lon en features
-  de nœuds GNN**, les passer par les arêtes k-NN distanciées (C4).
-- cocontam=core seul réduit fortement l'AUC sp ET amplifie l'artefact (Δ +0.088) →
-  à arbitrer avec l'hydro sur le périmètre cocontaminant.
+⇒ ces 0,97 sont le **régime aléatoire/optimiste** (≈ Dong et al.). Notre référence
+**spatiale** (smoke ~0,62) mesure la généralisation géographique réelle. **Toujours
+comparer un GNN à la référence SPATIALE**, jamais à ce 0,97.
 
-## 5. Positionnement littérature (Dong et al. 2024)
+## 6. Réconciliation & étape suivante
 
-Dong et al. rapportent AUC ~0.78–0.85 en **split aléatoire par ligne**. Nos AUC random
-(0.65–0.67, smoke, split **par puits**) sont plus basses, et nos AUC **spatiales**
-(0.57–0.62) mesurent la généralisation **géographique** réelle — non rapportée dans un
-protocole non spatial. À reconfirmer au run complet.
+- Pour un positionnement cohérent, rapporter le **triplet (aléatoire, spatial, Δ)** comme
+  pour T2. Ce baseline fournit le point **aléatoire** de T1 (~0,97, ≈ littérature) ; il
+  manque le point **spatial** (notre `run_baselines(smoke=False)` — long sur Colab).
+- Options pour le point spatial T1 : (a) laisser finir le run Colab ; (b) lancer chez nous
+  un run **spatial réduit** (sans Optuna, k=8) — faisable en CPU multi-cœurs ; (c) extrapoler
+  depuis le smoke (~0,62) en attendant.
 
-## 6. Recommandations pour les GNN
-
-1. Battre le **mur spatial** (AUC sp à figer au run complet, ~0.62), pas l'AUC aléatoire.
-2. Rapporter systématiquement le **triplet (random, spatial, Δ)** ; un GNN n'aide que
-   s'il monte le spatial **sans gonfler Δ**.
-3. lat/lon **uniquement** via arêtes k-NN plafonnées ~1–2 km, coupées aux frontières de
-   bloc (C4) ; ne pas mettre lat/lon en features de nœud.
-4. Auditer SHAP `dwr_basin`/cocontaminants en spatial vs aléatoire (artefact vs signal).
-
-## 7. Artefacts
-
-- `src/baselines_t1.py` — module importable (RF, XGBoost, LR ; Optuna ; seuil OOF ; SHAP ; ablations).
-- `tests/test_baselines_t1.py` — smoke test (VERT, 160 s CPU).
-- `experiments/baseline_t1_smoke/` — artefacts smoke (`config.yaml`, `metrics.json`, `feature_importance.csv`).
-- **Run complet Colab** → écrira `experiments/baseline_t1/{config.yaml,metrics.json}` + complétera ce REPORT (§2).
+### Provenance
+Notebook externe `ca-pfas-ml/notebooks/01_binary_classification_epa2024` (PDF 2026-06-20).
+Chiffres recopiés fidèlement ; figures/artefacts originaux dans ce dépôt-là
+(`models/{rf,xgb}_binary_epa2024.pkl`, `reports/figures/`).
