@@ -40,9 +40,10 @@ FEATURE_COLS = C.feature_columns(include_location=False, cocontam="core",
                                  include_air=False)
 K = 2 if SMOKE else 8
 SMOKE_N = 800
-# tractable HGB (class_weight handles imbalance; SMOTE measured as an ablation)
+# tractable base learner; XGBoost on GPU when available (Colab), else HGB on CPU (smoke)
 SMALL = SMOKE
 MAX_ITER = 60 if SMOKE else 200
+BASE_KIND = B.default_base_kind()       # "xgb" (GPU) on Colab, "hgb" (CPU) on smoke
 
 
 def _patch_max_iter():
@@ -64,6 +65,8 @@ def main():
     df = D.load(smoke=SMOKE, smoke_n=SMOKE_N)
     print(f"[data] rows={len(df)} wells={df[C.WELL_ID].nunique()} "
           f"labels={len(LABELS)} feats={len(FEATURE_COLS)} SMOKE={SMOKE}")
+    print(f"[compute] GPU={C.gpu_available()}  base_learner={BASE_KIND} "
+          f"(xgb=GPU device=cuda, hgb=CPU)")
 
     spatial = S.spatial_block_folds(df, k=K)
     random = S.group_random_folds(df, k=K)
@@ -73,19 +76,19 @@ def main():
     order = tuple(LABELS)                  # high->low prevalence order for the chain
 
     def f_prev():  return B.PrevalenceBaseline(labels=LABELS)
-    def f_br():    return B.BinaryRelevance(kind="hgb", labels=LABELS,
+    def f_br():    return B.BinaryRelevance(kind=BASE_KIND, labels=LABELS,
                                             class_weight="balanced", small=SMALL)
-    def f_chain(): return B.MaskedClassifierChain(kind="hgb", order=order,
+    def f_chain(): return B.MaskedClassifierChain(kind=BASE_KIND, order=order,
                                                   out_labels=order,
                                                   class_weight="balanced",
                                                   small=SMALL,
                                                   inner_k=2 if SMOKE else 3)
-    def f_ecc():   return B.EnsembleClassifierChains(kind="hgb",
+    def f_ecc():   return B.EnsembleClassifierChains(kind=BASE_KIND,
                                                      n_chains=2 if SMOKE else 3,
                                                      labels=list(LABELS),
                                                      class_weight="balanced",
                                                      small=SMALL)
-    def f_fcc():   return B.FrequencyClassChain(kind="hgb", labels=list(LABELS),
+    def f_fcc():   return B.FrequencyClassChain(kind=BASE_KIND, labels=list(LABELS),
                                                 n_classes=4, class_weight="balanced",
                                                 small=SMALL, inner_k=2 if SMOKE else 3)
 
@@ -96,8 +99,10 @@ def main():
     results = {}
     for nm, (fac, ug) in models.items():
         t1 = time.time()
-        sp = B.evaluate_model(df, fac, spatial, FEATURE_COLS, labels=LABELS, use_groups=ug)
-        rd = B.evaluate_model(df, fac, random, FEATURE_COLS, labels=LABELS, use_groups=ug)
+        sp = B.evaluate_model(df, fac, spatial, FEATURE_COLS, labels=LABELS,
+                              use_groups=ug, desc=f"{nm}/spatial")
+        rd = B.evaluate_model(df, fac, random, FEATURE_COLS, labels=LABELS,
+                              use_groups=ug, desc=f"{nm}/random")
         results[nm] = {"spatial": sp, "random": rd}
         a, b = sp["aggregate"], rd["aggregate"]
         print(f"[{nm:15s}] sp macroAUROC={a['macro_AUROC']:.3f} microF1={a['micro_F1']:.3f} "
@@ -105,7 +110,7 @@ def main():
               f"  ({time.time()-t1:.0f}s)")
 
     # ---- SMOTE ablation on the rare label PFNA --------------------------------
-    def f_br_smote(): return B.BinaryRelevance(kind="hgb", labels=LABELS,
+    def f_br_smote(): return B.BinaryRelevance(kind=BASE_KIND, labels=LABELS,
                                                class_weight="balanced",
                                                smote_labels=("PFNA",), small=SMALL)
     smote = B.evaluate_model(df, f_br_smote, spatial, FEATURE_COLS, labels=LABELS)

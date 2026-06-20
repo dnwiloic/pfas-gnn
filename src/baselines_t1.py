@@ -72,6 +72,7 @@ from . import data as D
 from . import targets as T
 from . import splits as S
 from . import features as F
+from . import progress as P
 
 logger = logging.getLogger(__name__)
 
@@ -220,6 +221,7 @@ def _make_xgb(prevalence: float = 0.445, smoke: bool = False, **kw) -> Any:
     spw = kw.get("scale_pos_weight", default_spw)
 
     if XGBOOST_AVAILABLE:
+        # device='cuda' when a GPU is present (auto), else CPU 'hist' (cf. config).
         return xgb.XGBClassifier(
             n_estimators=n_est,
             max_depth=kw.get("max_depth", 6),
@@ -229,8 +231,8 @@ def _make_xgb(prevalence: float = 0.445, smoke: bool = False, **kw) -> Any:
             reg_lambda=kw.get("reg_lambda", 1.0),
             scale_pos_weight=spw,
             eval_metric="logloss",
-            use_label_encoder=False,
-            random_state=SEED, tree_method="hist", verbosity=0,
+            random_state=SEED, verbosity=0,
+            **C.xgb_device_params(),
         )
     # Sklearn HGB fallback
     cw_val = kw.get("class_weight", None)
@@ -378,7 +380,10 @@ def _run_model_cv(
 
     def _run_one_scheme(outer_fold: np.ndarray, scheme: str) -> list[dict]:
         fold_metrics = []
-        for f, tr_mask, te_mask in S.iter_folds(outer_fold):
+        folds = list(S.iter_folds(outer_fold))
+        dev = "GPU" if (model_name == "XGB" and C.gpu_available()) else "CPU"
+        for f, tr_mask, te_mask in P.track(folds, total=len(folds),
+                                           desc=f"{model_name}/{scheme} [{dev}]"):
             df_tr = df[tr_mask].reset_index(drop=True)
             y_tr  = y[tr_mask]
             df_te = df[te_mask].reset_index(drop=True)
@@ -658,8 +663,10 @@ def run_baselines(
     logger.info(f"Feature candidates: {len(feature_cols)}")
 
     # 5. Model loop
+    logger.info(f"GPU available: {C.gpu_available()} (XGBoost device="
+                f"{'cuda' if C.gpu_available() else 'cpu'}; LR/RF are CPU-only)")
     model_results: dict[str, dict] = {}
-    for mname in ("LR", "RF", "XGB"):
+    for mname in P.track(("LR", "RF", "XGB"), total=3, desc="T1 models"):
         t_m = time.time()
         trials_m = n_trials if mname in ("RF", "XGB") else 0
         res = _run_model_cv(

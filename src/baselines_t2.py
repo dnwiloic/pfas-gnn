@@ -60,6 +60,7 @@ from sklearn.metrics import (
 
 from . import config as C
 from . import features as F
+from . import progress as P
 from . import splits as S
 from . import targets as T
 
@@ -89,12 +90,29 @@ def masked_targets(df: pd.DataFrame, labels=None):
 
 
 # ------------------------------------------------------------------- base estimator
+def default_base_kind() -> str:
+    """Base learner for T2: 'xgb' (GPU device='cuda') when a GPU is present, else 'hgb'
+    (sklearn HistGradientBoosting, CPU, fast, NaN-robust). So a Colab GPU run actually
+    exercises the GPU through every per-label fit; the CPU smoke stays on 'hgb'."""
+    return "xgb" if C.gpu_available() else "hgb"
+
+
 def make_estimator(kind: str = "hgb", *, class_weight=None, small: bool = False):
-    """Per-label base classifier. HGB = HistGradientBoosting (fast, NaN-robust,
-    class_weight); 'logreg' as a light fallback for smoke."""
+    """Per-label base classifier. 'hgb' = HistGradientBoosting (CPU, NaN-robust,
+    class_weight); 'xgb' = XGBoost on GPU when available (imbalance via scale_pos_weight,
+    set in _fit_one); 'logreg' = light fallback for smoke."""
     if kind == "logreg":
         return LogisticRegression(max_iter=1000, C=1.0,
                                   class_weight=class_weight, random_state=RNG)
+    if kind == "xgb":
+        import xgboost as xgb
+        return xgb.XGBClassifier(
+            random_state=RNG, eval_metric="logloss", verbosity=0,
+            learning_rate=0.1, reg_lambda=1.0,
+            n_estimators=(60 if small else 300),
+            max_depth=(3 if small else 6),
+            **C.xgb_device_params(),          # device='cuda' on GPU, else CPU 'hist'
+        )                                     # class_weight -> scale_pos_weight in _fit_one
     params = dict(random_state=RNG, class_weight=class_weight,
                   learning_rate=0.1, l2_regularization=1.0,
                   early_stopping=True, validation_fraction=0.1, n_iter_no_change=15)
@@ -335,7 +353,12 @@ def _fit_one(kind, X, y, class_weight, use_smote, small):
             X, y = SMOTE(random_state=RNG, k_neighbors=max(1, k)).fit_resample(X, y)
         except Exception as e:                       # pragma: no cover
             warnings.warn(f"SMOTE failed ({e}); using class_weight only")
-    clf = make_estimator(kind, class_weight=class_weight, small=small)
+    # XGBoost has no class_weight -> translate "balanced" to scale_pos_weight from y.
+    cw = None if kind == "xgb" else class_weight
+    clf = make_estimator(kind, class_weight=cw, small=small)
+    if kind == "xgb" and class_weight == "balanced":
+        pos = float(y.sum()); neg = float(len(y) - pos)
+        clf.set_params(scale_pos_weight=(neg / pos if pos > 0 else 1.0))
     clf.fit(X, y)
     return clf
 
@@ -424,7 +447,8 @@ def _transform_fold(df_tr, df_te, feature_cols):
     return Xtr, Xte
 
 
-def run_cv(df, model_factory, fold, feature_cols, labels=None, *, use_groups=False):
+def run_cv(df, model_factory, fold, feature_cols, labels=None, *, use_groups=False,
+          desc=""):
     """Run one model over a CV scheme. Returns (oof_P, oof_true, oof_M, per_fold_metrics).
 
     model_factory() -> a fresh model each fold. oof_* are concatenated test predictions
@@ -437,7 +461,10 @@ def run_cv(df, model_factory, fold, feature_cols, labels=None, *, use_groups=Fal
     oof_P = np.full((n, len(labels)), np.nan)
     groups_all = df[C.WELL_ID].to_numpy()
     per_fold = []
-    for f, tr, te in S.iter_folds(fold):
+    folds = list(S.iter_folds(fold))
+    dev = "GPU" if C.gpu_available() else "CPU"
+    for f, tr, te in P.track(folds, total=len(folds),
+                             desc=f"{desc or 'model'} [{dev}]"):
         df_tr, df_te = df[tr], df[te]
         Xtr, Xte = _transform_fold(df_tr, df_te, feature_cols)
         model = model_factory()
@@ -457,12 +484,12 @@ def run_cv(df, model_factory, fold, feature_cols, labels=None, *, use_groups=Fal
 
 
 def evaluate_model(df, model_factory, fold, feature_cols, labels=None, *,
-                   use_groups=False):
+                   use_groups=False, desc=""):
     """Full evaluation of ONE model on ONE CV scheme: OOF predictions -> per-label OOF
     thresholds -> global aggregate metrics + per-label table + per-fold spread."""
     labels = labels or C.T2_LABELS
     oof_P, Y, M, per_fold = run_cv(df, model_factory, fold, feature_cols,
-                                   labels=labels, use_groups=use_groups)
+                                   labels=labels, use_groups=use_groups, desc=desc)
     thr = best_thresholds_oof(Y, oof_P, M, labels)     # thresholds from OOF only
     agg, pl = aggregate_metrics(Y, oof_P, M, labels, thr)
     pf = pd.DataFrame(per_fold)

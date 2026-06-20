@@ -143,3 +143,36 @@ def feature_columns(*, include_location=False, cocontam="all", include_air=True)
 # --------------------------------------------------------------------- spatial CV
 N_SPATIAL_BLOCKS = 8     # primary KMeans blocks on well coords (profiling/eval C3)
 N_RANDOM_FOLDS = 8       # group-by-well random folds for the random-vs-spatial Δ
+
+
+# --------------------------------------------------------------------------- GPU
+import functools as _functools
+
+
+@_functools.lru_cache(maxsize=1)
+def gpu_available() -> bool:
+    """True iff an NVIDIA GPU is usable (for XGBoost device='cuda').
+
+    Cached (detection cost paid once). On a CPU smoke-test box -> False, so the tree
+    models transparently fall back to CPU 'hist'. Force CPU with env PFAS_FORCE_CPU=1.
+    Note: scikit-learn RandomForest / HistGradientBoosting / LogisticRegression are
+    CPU-only — only XGBoost honours the GPU.
+    """
+    import os
+    import shutil
+    import subprocess
+    if os.environ.get("PFAS_FORCE_CPU") == "1":
+        return False
+    if shutil.which("nvidia-smi") is None:
+        return False
+    try:
+        r = subprocess.run(["nvidia-smi"], capture_output=True, timeout=10)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def xgb_device_params() -> dict:
+    """XGBoost params selecting GPU when available (xgboost>=2: device='cuda')."""
+    return {"tree_method": "hist", "device": "cuda"} if gpu_available() \
+        else {"tree_method": "hist", "device": "cpu"}

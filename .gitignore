@@ -2,6 +2,5 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
-# data is large / external — keep out of git (fetched on Colab from Drive)
-data/*.csv
-data/*.parquet
+# NOTE: data/CA-PFAS-ASGWS.parquet is intentionally tracked in git so that a Colab
+# `git clone` brings the dataset with the code (no Google Drive). Do not ignore it.

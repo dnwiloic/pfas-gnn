@@ -1,16 +1,24 @@
-"""Smoke-test for the two Colab notebooks (CLAUDE.md §5).
+"""Smoke-test for the two Colab notebooks (CLAUDE.md §5) — zero-Drive policy.
 
 Exercises the SAME code path that the notebooks use, but locally on CPU with
 SMOKE_TEST=True. Does NOT invoke nbconvert (which would trip on Colab-specific
 cells). Instead, reproduces the notebook orchestration inline, so every
 Colab-specific block is under `if IN_COLAB:` and is inert locally.
 
+Zero-Drive policy (enforced here):
+  - No google.colab.drive, no gdown, no DRIVE_DATA_PATH/GDRIVE_FILE_ID references
+    in the active code cells of both notebooks.
+  - Dataset loaded from REPO_LOCAL / DATA_PATH (parquet is versioned in the repo).
+  - Code loaded from local src/ (same as git clone would bring).
+  - Artifacts written to REPO_LOCAL/experiments/<id>/ (ephemeral on Colab; Cell 13/15
+    proposes download or git push for persistence).
+
 Verifications:
-  - src/ imports correctly (including FrequencyClassChain, REQUIRED metrics)
-  - Dataset loads with correct shape (46338 x 201)
-  - Integrity checks pass
-  - T1 run_baselines(smoke=True) produces the 5 required metrics, artefacts written
-  - T2 evaluate_model x 5 models produces the 5 metrics (micro+macro), per-label table,
+  - No Drive residuals in notebook code cells (grep check)
+  - src/ imports correctly (FrequencyClassChain, REQUIRED metrics)
+  - Dataset loads with correct shape (46338 x 201) and key columns
+  - T1 run_baselines(smoke=True) -> 5 required metrics, artefacts written
+  - T2 evaluate_model x 5 models -> 5 metrics (micro+macro), per-label table,
     incremental checkpoint written
   - SMOTE ablation, pseudo-label probe, paired comparison all run without error
   - Both runs complete in < 200s each
@@ -21,6 +29,7 @@ Run:  python tests/test_colab_notebooks.py
 from __future__ import annotations
 
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -32,9 +41,13 @@ REPO_LOCAL = Path(__file__).resolve().parents[1]
 if str(REPO_LOCAL) not in sys.path:
     sys.path.insert(0, str(REPO_LOCAL))
 
+# Dataset is versioned in the repo — no Drive needed
 DATA_PATH = REPO_LOCAL / "data" / "CA-PFAS-ASGWS.parquet"
 SAVE_T1   = REPO_LOCAL / "experiments" / "baseline_t1_smoke"
 SAVE_T2   = REPO_LOCAL / "experiments" / "baseline_t2_smoke_nb"
+
+NOTEBOOK_T1 = REPO_LOCAL / "notebooks" / "baseline_t1_colab.ipynb"
+NOTEBOOK_T2 = REPO_LOCAL / "notebooks" / "baseline_t2_colab.ipynb"
 
 
 def _ok(name: str, cond: bool, detail: str = ""):
@@ -42,6 +55,41 @@ def _ok(name: str, cond: bool, detail: str = ""):
         raise AssertionError(f"FAILED [{name}]" + (f": {detail}" if detail else ""))
     msg = f"  ok {name}" + (f"  [{detail}]" if detail else "")
     print(msg)
+
+
+# =============================================================================
+# 0. Zero-Drive policy: grep check on both notebooks
+# =============================================================================
+_DRIVE_PATTERNS = [
+    r"drive\.mount",
+    r"google\.colab\.drive",
+    r"DRIVE_DATA_PATH",
+    r"GDRIVE_FILE_ID",
+    r"DRIVE_PROJECT_DIR",
+    r"gdown",
+    r"BOOTSTRAP\s*=.*['\"]drive['\"]",
+]
+
+def test_no_drive_residuals():
+    """No Drive reference must remain in active code cells of either notebook."""
+    print("\n[no-Drive] Checking notebooks for Drive residuals...")
+    import json as _json
+
+    violations = []
+    for nb_path in [NOTEBOOK_T1, NOTEBOOK_T2]:
+        _ok(f"notebook exists: {nb_path.name}", nb_path.exists(), str(nb_path))
+        nb = _json.loads(nb_path.read_text())
+        for cell in nb.get("cells", []):
+            if cell.get("cell_type") != "code":
+                continue
+            source = "".join(cell.get("source", []))
+            for pat in _DRIVE_PATTERNS:
+                if re.search(pat, source, re.IGNORECASE):
+                    violations.append(f"{nb_path.name}: pattern {pat!r} found in code cell")
+
+    _ok("no Drive residuals in notebooks", len(violations) == 0,
+        "\n    " + "\n    ".join(violations) if violations else "")
+    print(f"  Checked {len(_DRIVE_PATTERNS)} patterns across 2 notebooks — all clean.")
 
 
 # =============================================================================
@@ -64,13 +112,13 @@ def test_guardrail():
 
 
 # =============================================================================
-# 2. Dataset integrity (notebook Cell 4)
+# 2. Dataset integrity (notebook Cell 4) — loads from versioned repo file
 # =============================================================================
 def test_dataset_integrity():
     print("\n[integrity] Checking dataset...")
     import pandas as pd
 
-    _ok("parquet exists", DATA_PATH.exists(), str(DATA_PATH))
+    _ok("parquet exists in repo", DATA_PATH.exists(), str(DATA_PATH))
     df = pd.read_parquet(DATA_PATH)
     n_rows, n_cols = df.shape
     _ok("n_cols == 201", n_cols == 201, f"got {n_cols}")
@@ -91,7 +139,7 @@ def test_t1_notebook(t1_timeout: float = 200.0):
     # mirror notebook Cell 5
     SAVE_T1.mkdir(parents=True, exist_ok=True)
 
-    # mirror notebook Cell 6
+    # mirror notebook Cell 4 — point config at local parquet
     import src.config as C
     C.DATA_PARQUET = DATA_PATH
 
@@ -107,7 +155,7 @@ def test_t1_notebook(t1_timeout: float = 200.0):
     elapsed = time.time() - t0
     _ok("T1 run elapsed < 200s", elapsed < t1_timeout, f"{elapsed:.1f}s")
 
-    # mirror notebook Cell 7
+    # mirror notebook Cell 7 — 5 required metrics per model
     for mn, res in results["model_results"].items():
         sp = res["spatial"]
         for metric in ("roc_auc", "f1", "accuracy", "recall", "precision"):
@@ -128,12 +176,15 @@ def test_t1_notebook(t1_timeout: float = 200.0):
     abl = results["ablations"]
     _ok("T1 ablations 4 configs", len(abl) == 4)
 
-    # mirror notebook Cell 12 — artefacts
+    # mirror notebook Cell 12 — artefacts (inside repo workspace, not Drive)
     _ok("T1 config.yaml written", (SAVE_T1 / "config.yaml").exists())
     _ok("T1 metrics.json written", (SAVE_T1 / "metrics.json").exists())
     with open(SAVE_T1 / "metrics.json") as fh:
         m = json.load(fh)
     _ok("T1 metrics.json has models", "models" in m)
+
+    # artifacts inside REPO_LOCAL (not Drive)
+    _ok("T1 artifacts inside repo", str(SAVE_T1).startswith(str(REPO_LOCAL)))
 
     # timing estimate
     from src.baselines_t1 import (SMOKE_N_WELLS, SMOKE_OUTER_K, OPTUNA_TRIALS_SMOKE,
@@ -146,7 +197,7 @@ def test_t1_notebook(t1_timeout: float = 200.0):
           f"(x{11333/SMOKE_N_WELLS:.0f} wells, "
           f"x{OUTER_SPATIAL_K/SMOKE_OUTER_K:.0f} folds, "
           f"x{OPTUNA_TRIALS_FULL/OPTUNA_TRIALS_SMOKE:.0f} Optuna trials)")
-    print(f"  On Colab GPU (n_jobs=-1): ~20-45 min expected.")
+    print(f"  On Colab (n_jobs=-1): ~20-45 min expected.")
 
     return elapsed
 
@@ -166,9 +217,10 @@ def test_t2_notebook(t2_timeout: float = 200.0):
     import src.splits as S
     import src.baselines_t2 as B
 
+    # mirror notebook Cell 4 — point config at local repo parquet (no Drive)
     C.DATA_PARQUET = DATA_PATH
 
-    # mirror Cell 5
+    # mirror notebook Cell 5
     SMOKE_TEST = True
     LABELS     = list(C.T2_LABELS)
     FEATURE_COLS = C.feature_columns(include_location=False, cocontam="core", include_air=False)
@@ -177,7 +229,7 @@ def test_t2_notebook(t2_timeout: float = 200.0):
     SMOKE_N = 800
     MAX_ITER = 60
 
-    # mirror Cell 6
+    # mirror notebook Cell 6
     t0 = time.time()
     df = D.load(smoke=True, smoke_n=SMOKE_N)
     _ok("T2 data loaded", len(df) > 50, f"n={len(df)}")
@@ -250,7 +302,7 @@ def test_t2_notebook(t2_timeout: float = 200.0):
         print(f"  [{nm}] AUROC sp={a_sp['macro_AUROC']:.3f}  "
               f"microF1={a_sp['micro_F1']:.3f}  ({time.time()-t1:.1f}s)")
 
-        # checkpoint
+        # checkpoint — written inside REPO_LOCAL, not Drive
         def _pack_lite(res):
             return {"aggregate": res["aggregate"],
                     "thresholds": res["thresholds"],
@@ -263,6 +315,7 @@ def test_t2_notebook(t2_timeout: float = 200.0):
         ckpt_path.write_text(json.dumps(ckpt, indent=2, default=float))
 
     _ok("T2 checkpoint written", ckpt_path.exists())
+    _ok("T2 checkpoint inside repo", str(ckpt_path).startswith(str(REPO_LOCAL)))
 
     # learned models must beat prevalence floor
     floor = results["Prevalence"]["spatial"]["aggregate"]["macro_AUROC"]
@@ -300,7 +353,7 @@ def test_t2_notebook(t2_timeout: float = 200.0):
                                  target_labels=("PFPeA", "PFPeS"), small=True)
     _ok("T2 pseudo probe ran", isinstance(probe, __import__("pandas").DataFrame))
 
-    # Save final metrics.json + config.yaml (mirror Cell 14)
+    # Save final metrics.json + config.yaml (mirror Cell 14) — inside repo workspace
     import yaml
     cfg = {
         "task": "T2_multilabel_baseline",
@@ -324,6 +377,7 @@ def test_t2_notebook(t2_timeout: float = 200.0):
     (SAVE_T2 / "metrics.json").write_text(json.dumps(metrics_out, indent=2, default=float))
     _ok("T2 config.yaml written", (SAVE_T2 / "config.yaml").exists())
     _ok("T2 metrics.json written", (SAVE_T2 / "metrics.json").exists())
+    _ok("T2 artifacts inside repo", str(SAVE_T2).startswith(str(REPO_LOCAL)))
 
     # 4 frequency classes visible
     Yf, Mf = B.masked_targets(df, labels=LABELS)
@@ -358,9 +412,10 @@ def test_t2_notebook(t2_timeout: float = 200.0):
 def main():
     t_global = time.time()
     print("=" * 60)
-    print("SMOKE TEST — Colab notebooks (T1 + T2)")
+    print("SMOKE TEST — Colab notebooks (T1 + T2) — zero-Drive policy")
     print("=" * 60)
 
+    test_no_drive_residuals()
     test_guardrail()
     test_dataset_integrity()
     t1_elapsed = test_t1_notebook()
@@ -370,13 +425,17 @@ def main():
     print("\n" + "=" * 60)
     print("ALL GREEN")
     print("=" * 60)
-    print(f"  T1 notebook smoke: {t1_elapsed:.1f}s")
-    print(f"  T2 notebook smoke: {t2_elapsed:.1f}s")
-    print(f"  Total:             {total:.1f}s ({total/60:.2f} min)")
+    print(f"  No Drive residuals:  ok")
+    print(f"  T1 notebook smoke:   {t1_elapsed:.1f}s")
+    print(f"  T2 notebook smoke:   {t2_elapsed:.1f}s")
+    print(f"  Total:               {total:.1f}s ({total/60:.2f} min)")
     print()
-    print("Artifacts written:")
+    print("Artifacts written (inside repo workspace, not Drive):")
     print(f"  T1: {SAVE_T1}")
     print(f"  T2: {SAVE_T2}")
+    print()
+    print("PERSISTENCE REMINDER: on Colab, run the download/git-push cell before")
+    print("the session ends — the workspace is ephemeral.")
 
 
 if __name__ == "__main__":

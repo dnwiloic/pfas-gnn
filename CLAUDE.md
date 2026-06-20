@@ -64,25 +64,33 @@ récite pas.
   entraînement, métriques) vit dans des **modules `src/` importables et testables sur
   CPU** ; le notebook ne fait qu'**orchestrer** (config, GPU, run complet, sauvegarde).
   Ainsi le MÊME code est mini-testé localement puis exécuté en entier sur Colab.
+- **Politique de stockage : ZÉRO Google Drive.** Ni pour le code, ni pour le dataset, ni
+  pour les sorties. Le dataset est **versionné dans le dépôt** (`data/CA-PFAS-ASGWS.parquet`)
+  et le code dans `src/` : un `git clone` ramène les deux. Toutes les sorties s'écrivent
+  **directement dans l'espace de travail** (le dépôt cloné sur Colab), dans
+  `experiments/<id>/`.
 - **Chaque notebook est AUTONOME.** Il sera ouvert et lancé SEUL sur Colab, sans dépôt
   local ni état partagé. Il doit donc, dans ses premières cellules et sans intervention
-  manuelle au-delà du choix du runtime GPU et de l'autorisation Drive :
+  manuelle au-delà du choix du runtime (et **aucune autorisation Drive**) :
   1. **détecter/activer le GPU** et imprimer les versions (Python, torch, CUDA) ;
   2. **installer les dépendances** épinglées et adaptées au runtime (PyTorch Geometric
      notamment, vérifier l'import) ;
-  3. **récupérer le code** : comme `src/` n'est pas présent sur Colab, le notebook
-     l'amène lui-même — soit `git clone` du dépôt (variable de version/commit), soit
-     copie de `src/` depuis Drive — pour que les imports fonctionnent ;
-  4. **monter Google Drive et TÉLÉCHARGER le dataset depuis Drive** via une cellule
-     paramétrée et explicite (chemin Drive monté, ou `gdown` avec un identifiant de
-     fichier), avec une **instruction claire** indiquant à l'utilisateur où définir ce
-     chemin/ID ; vérifier l'intégrité du fichier après téléchargement ;
-     Il est present sur github 
+  3. **récupérer le code ET le dataset depuis le dépôt** : comme `src/` et `data/` ne sont
+     pas présents sur Colab, le notebook les amène lui-même par **`git clone` du dépôt**
+     (variable `REPO_URL` + `GIT_REF` commit/branche). Le dataset versionné arrive AVEC le
+     clone — **pas de Drive, pas de `gdown`** ;
+  4. **charger le dataset depuis le dépôt cloné** : lire `data/CA-PFAS-ASGWS.parquet`
+     (chemin relatif paramétré par `DATA_PATH`) et **vérifier l'intégrité** (forme/colonnes
+     attendues) ; sinon arrêt avec message d'erreur explicite ;
   5. exposer le toggle `SMOKE_TEST` en tête.
 - Cellules **idempotentes** (réexécutables sans casse) ; artefacts, modèles et
-  **checkpoints** sauvegardés sur Drive dans `experiments/<id>/`.
+  **checkpoints** écrits **dans l'espace de travail** sous `experiments/<id>/`.
+- ⚠️ L'espace de travail Colab est **éphémère** (perdu à la déconnexion). Sans Drive, le
+  notebook doit, en fin de run, **proposer une persistance explicite** des sorties
+  (`files.download()` d'une archive `experiments/<id>/`, et/ou `git add/commit/push`), en
+  avertissant que sinon elles sont perdues à la fermeture du runtime.
 - Un notebook ne doit jamais supposer qu'un fichier (code ou données) est « déjà là » :
-  s'il manque, il le récupère ou s'arrête avec un message d'erreur explicite.
+  s'il manque, il le récupère par le clone ou s'arrête avec un message d'erreur explicite.
 
 ## 5. Discipline de MINI-TEST (obligatoire avant tout run long)
 
@@ -98,8 +106,10 @@ Aucun notebook destiné à un run long n'est livré sans avoir passé un **smoke
 - Il **estime la durée du run complet** (extrapolation) et alerte si elle est longue.
 - Règle : *smoke-test vert sur CPU → seulement ensuite run complet sur Colab GPU*.
   On ne découvre jamais une erreur de forme après 4 h de calcul.
-- **Checkpointing** systématique pour les runs longs (sauvegarde par époque/pli sur
-  Drive) afin qu'une déconnexion Colab ne perde pas le travail.
+- **Checkpointing** systématique pour les runs longs (sauvegarde incrémentale par
+  époque/pli dans l'espace de travail `experiments/<id>/`, p. ex. `metrics_incremental.json`)
+  afin qu'une déconnexion Colab ne perde pas le travail déjà fait ; persistance hors-session
+  par download/commit en fin de run (cf. §4, zéro Drive).
 
 ## 6. Exploration GNN : exhaustive et systématique
 

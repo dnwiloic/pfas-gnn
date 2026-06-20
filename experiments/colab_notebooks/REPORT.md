@@ -1,68 +1,108 @@
-# REPORT — Notebooks Colab autonomes (baselines T1 & T2)
+# REPORT — Notebooks Colab autonomes (baselines T1 & T2) — politique ZÉRO DRIVE
 
-> Agent : `colab-notebook-engineer`. Date : 2026-06-19. Graine 42.
-> Statut : **2 notebooks livrés + smoke-testés VERT sur CPU** (CLAUDE.md §4/§5).
+> Agent : `colab-notebook-engineer`. Mis à jour 2026-06-19. Graine 42.
+> Statut : **2 notebooks régénérés sans Google Drive + smoke-testés VERT sur CPU**.
+
+## Politique de stockage : aucun Google Drive
+
+- **Code + dataset via `git clone` UNIQUEMENT** : le dataset est versionné dans le dépôt
+  (`data/CA-PFAS-ASGWS.parquet`, tracké dans git) ; un seul `git clone` ramène `src/` ET
+  `data/`. Aucun `drive.mount`, aucun `gdown`, aucune autorisation Drive.
+- **Sorties dans l'espace de travail** : `experiments/<id>/` du dépôt cloné (smoke dans un
+  sous-dossier distinct). Checkpoint T2 incrémental (`metrics_incremental.json`) après
+  chaque modèle.
+- Vérifié : `grep -riE "drive|gdown"` sur les cellules de code = **0 appel** (seules
+  subsistent des mentions en texte « No Google Drive needed »).
 
 ## Livrables
 
-- `notebooks/baseline_t1_colab.ipynb` (27 cellules) — orchestre `src.baselines_t1.run_baselines`.
-- `notebooks/baseline_t2_colab.ipynb` (33 cellules) — orchestre le pipeline T2 (5 modèles
-  dont **FrequencyClassChain**).
-- `tests/test_colab_notebooks.py` — driver de smoke-test CPU des deux notebooks.
+- `notebooks/baseline_t1_colab.ipynb` (29 cellules) — `src.baselines_t1.run_baselines`.
+- `notebooks/baseline_t2_colab.ipynb` (33 cellules) — 5 modèles dont **FrequencyClassChain**.
+- `tests/test_colab_notebooks.py` — smoke-test CPU des deux notebooks + test anti-Drive.
 
-Chaque notebook est **autonome** : (1) détection GPU + versions, (2) install deps épinglées
-(xgboost/optuna/shap/imbalanced-learn ; pas de PyG, baselines non-graphe), (3) bootstrap
-`src/` (git OU drive), (4) montage Drive + dataset paramétré + contrôle d'intégrité
-(46338×201), (5) toggle `SMOKE_TEST` en tête, (6) cellules idempotentes + checkpoints Drive.
+Autonomie : (1) détection GPU + versions, (2) deps épinglées, (3) `git clone` (code+data),
+(4) chargement `DATA_PATH` + contrôle d'intégrité 46338×201 + colonnes clés, garde-fou
+anti-code-obsolète (`assert FrequencyClassChain` + `import src.metrics`), (5) toggle
+`SMOKE_TEST`, cellules idempotentes.
 
-## Smoke-test CPU (2026-06-19) — `python3 tests/test_colab_notebooks.py` → ALL GREEN
+## Smoke-test CPU — `python3 tests/test_colab_notebooks.py` → ALL GREEN (270 s total)
 
-| Notebook | Durée | 5 métriques | Détails |
-|---|---|---|---|
-| baseline_t1 | **153.9 s** (<200 s) | ✅ finies (LR/RF/XGB, spatial+random) | AUC sp LR 0.574 / RF 0.617 / XGB 0.623 ; SHAP + 4 ablations OK ; artefacts écrits |
-| baseline_t2 | **110.6 s** (<200 s) | ✅ micro+macro ∈[0,1] (5 modèles) | par-label f1/precision/recall/accuracy ; checkpoint incrémental ; BR 0.665 > floor 0.437 ; SMOTE PFNA 0.843→0.881 ; pseudo + Wilcoxon OK |
+**T1 — 145.8 s (<200 s)**, 5 métriques finies (CV spatiale) :
 
-FrequencyClassChain — 4 classes de fréquence (sous-échantillon smoke) :
-C1 (moins rare) PFPeA/PFBA/PFOS · C2 PFHxA/PFBS/PFOA · C3 PFHpA/PFPeS · C4 (plus rare) PFHxS/PFNA.
+| modèle | AUC-ROC | F1 | accuracy | recall | precision |
+|---|---|---|---|---|---|
+| LR | 0.574 | 0.328 | 0.525 | 0.445 | 0.328 |
+| RF | 0.617 | 0.496 | 0.469 | 0.791 | 0.394 |
+| XGB | 0.623 | 0.426 | 0.481 | 0.627 | 0.398 |
 
-## Paramètres à régler par l'utilisateur (cellule 1 « USER PARAMETERS »)
+SHAP non vide ; 4 ablations ; `config.yaml`+`metrics.json` écrits dans le workspace.
+
+**T2 — 118.2 s (<200 s)**, 5 métriques micro+macro ∈[0,1], 5 modèles :
+
+| modèle | macro AUROC | micro F1 | micro acc | micro rec | micro prec |
+|---|---|---|---|---|---|
+| Prevalence | 0.437 | 0.430 | 0.354 | 0.988 | 0.274 |
+| BinaryRelevance | 0.665 | 0.508 | 0.666 | 0.700 | 0.399 |
+| Chain | 0.654 | 0.500 | 0.660 | 0.691 | 0.392 |
+| Ensemble | 0.669 | 0.506 | 0.644 | 0.740 | 0.384 |
+| FreqClassChain | 0.659 | 0.499 | 0.647 | 0.715 | 0.384 |
+
+BR/Chain > plancher (0.437). SMOTE PFNA 0.843→0.881. Checkpoint incrémental OK.
+FreqClassChain 4 classes : C1 PFPeA/PFBA/PFOS · C2 PFHxA/PFBS/PFOA · C3 PFHpA/PFPeS ·
+C4 (plus rare) PFHxS/PFNA.
+
+## Paramètres à régler (cellule « USER PARAMETERS », aucun champ Drive)
 
 | Paramètre | Notebooks | Rôle |
 |---|---|---|
-| `SMOKE_TEST` | les 2 | `True` test CPU rapide / `False` run complet GPU |
-| `BOOTSTRAP` | les 2 | `"git"` (clone GitHub) ou `"drive"` (copie depuis Drive) |
-| `REPO_URL` | les 2 | `https://github.com/dnwiloic/pfas-gnn.git` (ou fork) |
-| `GIT_REF` | les 2 | branche ou SHA de commit (défaut `main`) |
-| `DRIVE_PROJECT_DIR` | les 2 | ex. `/content/drive/MyDrive/pfas-gnn` |
-| `DRIVE_DATA_PATH` | les 2 | chemin Drive du parquet (Option A) |
-| `GDRIVE_FILE_ID` | les 2 | ID gdown (Option B ; vide → Option A) |
+| `SMOKE_TEST` | les 2 | `True` test CPU / `False` run complet |
+| `REPO_URL` | les 2 | `https://github.com/dnwiloic/pfas-gnn.git` |
+| `GIT_REF` | les 2 | branche ou SHA (défaut `main`) |
+| `DATA_PATH` | les 2 | défaut `data/CA-PFAS-ASGWS.parquet` (relatif au dépôt cloné) |
 | `TARGET` | T1 | `"T1a"` (défaut) ou `"T1b"` |
 
-Colab : Runtime → GPU (ou High-RAM CPU) → Run all → autoriser Drive.
+Colab : Runtime → GPU **ou High-RAM CPU** → Run all. Aucune autorisation Drive.
+Pré-requis : pousser `src/`+`data/`+`notebooks/` à `GIT_REF` avant de lancer (le garde-fou
+stoppe si le code cloné est obsolète).
 
-## ⚠️ Pré-requis CRITIQUE : code à jour sur Colab
+## ⚠️ Workspace Colab éphémère → persistance explicite
 
-Le code des baselines (`src/baselines_t1.py`, `baselines_t2.py`, `metrics.py`,
-FrequencyClassChain, 5 métriques) **n'est pas encore poussé** sur le remote. Avant
-`BOOTSTRAP="git"` :
-```bash
-git add src/ tests/ experiments/ notebooks/
-git commit -m "feat: baselines T1/T2 + FreqClassChain + 5 métriques + notebooks Colab"
-git push origin main
-```
-Alternative `BOOTSTRAP="drive"` : copier le `src/` local à jour dans `DRIVE_PROJECT_DIR/src/`.
-Les deux notebooks contiennent un **garde-fou** après bootstrap
-(`assert hasattr(src.baselines_t2, "FrequencyClassChain")` + `from src.metrics import REQUIRED`)
-qui s'arrête avec un message explicite si le code Colab est obsolète.
+`/content/` est effacé à la déconnexion. Chaque notebook finit par une **cellule de
+persistance** : (A, recommandé) zip de `experiments/<id>/` + `files.download()` ; (B,
+optionnel) `git add/commit/push`. Sans cette étape, les sorties sont perdues. Le checkpoint
+T2 incrémental limite la perte à un seul modèle en cas de coupure.
 
-## Estimations run complet GPU/CPU
+## Estimations run complet
 
 | Tâche | Smoke CPU | Run complet Colab |
 |---|---|---|
-| T1 (8 plis, 20 trials Optuna, 11 333 puits) | 153.9 s | ~20–45 min |
-| T2 (10 labels, 8 plis, 5 modèles, 46 338 lignes) | 110.6 s | ~30–90 min |
+| T1 (8 plis, 20 trials, ~11 333 puits) | 145.8 s | ~20–45 min |
+| T2 (10 labels, 8 plis, 5 modèles, 46 338 lignes) | 118.2 s | ~30–90 min |
 
-**Vigilance** : sklearn/XGBoost tournent sur **CPU** même en runtime GPU → une instance
-**High-RAM CPU multi-cœurs** peut être préférable pour ces baselines (surtout T2, chaînes
-coûteuses peu parallélisées). Checkpoint T2 incrémental (`metrics_incremental.json`) écrit
-après chaque modèle → reprise possible après déconnexion.
+## Utilisation effective du GPU (ajout 2026-06-19)
+
+**Réalité technique** : parmi les baselines, **seul XGBoost peut utiliser le GPU**
+(`device="cuda"`, xgboost ≥ 2). RandomForest, HistGradientBoosting et LogisticRegression
+de scikit-learn sont **CPU-only**.
+
+- `src/config.gpu_available()` (détection cachée) + `xgb_device_params()` → `device="cuda"`
+  auto sur Colab GPU, repli CPU `hist` au smoke.
+- **T1** : XGBoost passe sur GPU quand un GPU est présent (LR/RF restent CPU).
+- **T2** : moteur de base **XGBoost-GPU** (`baselines_t2.default_base_kind()` → `"xgb"` sur
+  GPU), branché dans BinaryRelevance / chaînes / FreqClassChain / SMOTE → **tout le run
+  lourd T2 exploite le GPU** (imbalance via `scale_pos_weight`).
+- **Cellule de vérification GPU** ajoutée aux deux notebooks (après le garde-fou) : petit
+  fit XGBoost `device="cuda"` chronométré qui **prouve** l'usage GPU, et rappelle que
+  RF/HGB/LR restent CPU.
+
+⚠️ Pour ces baselines d'arbres, une instance **CPU High-RAM** multi-cœurs reste souvent
+aussi performante (XGBoost-GPU n'accélère vraiment qu'à grande échelle) et évite que Colab
+réclame un runtime GPU inactif. Le GPU sera surtout déterminant pour la **phase GNN**.
+
+## Visualisation des entraînements (ETA)
+
+`src/progress.py` (tqdm `auto`) affiche des **barres de progression avec temps écoulé et
+temps restant estimé**, sur les boucles de plis (T1 et T2) et de modèles, étiquetées
+`[GPU]`/`[CPU]`. Dégradation silencieuse hors notebook (smoke headless).
+
+Re-smoke après ces ajouts : **ALL GREEN** (T1 131.4 s, T2 105.6 s, zéro Drive résiduel).
