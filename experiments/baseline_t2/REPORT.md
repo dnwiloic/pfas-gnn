@@ -20,8 +20,10 @@
 - **L'inflation spatiale est le fait central** : macro‑AUROC **aléatoire ~0.90 vs spatial
   ~0.67**, soit **Δ ≈ +0.22 à +0.23**. Aucun modèle ne réduit ce Δ.
 - Positionnement Dong et al. 2024 : nos scores **aléatoires (~0.90) rejoignent la
-  littérature** ; nos scores **spatiaux (~0.67)** mesurent la généralisation géographique
-  réelle (jamais rapportée en protocole non spatial).
+  littérature** (cf. point externe **macro‑AUC 0.966** en split aléatoire, §1ter) ; nos
+  scores **spatiaux (~0.67)** mesurent la généralisation géographique réelle (jamais
+  rapportée en protocole non spatial). L'écart **0.966 → 0.68** est l'inflation
+  spatiale + censure + design. **Le chaînage n'aide pas, confirmé aussi côté externe** (§1ter).
 
 ## 1. Modèles × les 5 métriques (micro, CV spatiale) + AUROC aléatoire + Δ
 
@@ -37,6 +39,32 @@ AUROC = macro (sans seuil) ; F1/accuracy/rappel/précision = micro au seuil OOF 
 
 **Test apparié chaîne − BR (8 plis spatiaux)** : macro‑AUROC +0.020 (Wilcoxon p=0.078),
 micro‑F1 −0.013 (p=0.95) → **non significatif**. ⇒ **BR de référence.**
+
+## 1ter. Point externe — approche « class » de Dong et al. (split aléatoire)
+
+Run T2 d'un notebook antérieur (`ca-pfas-ml/.../06_multilabel_class_improvement_fullrun`,
+2026-06-21), approche **`class` = 4 chaînes indépendantes par palier de couverture**
+(= la stratégie de Dong et al.), **split aléatoire 80/20**, **27 labels PFAS**, 97 features,
+`drop_location=True`. ⚠️ **Régime aléatoire/optimiste**, à NE PAS comparer à notre spatial.
+
+| approche | macro‑AUC | micro‑F1 | Hamming | EMR |
+|---|---|---|---|---|
+| global | 0.9589 | — | — | — |
+| nested | 0.9604 | — | — | — |
+| **class (baseline Dong)** | **0.9661** | 0.856 | 0.154 | 0.187 |
+| + ordre sous‑famille chimique | 0.9658 | 0.852 | — | — |
+| + hyperparams XGBoost renforcés | 0.9670 | 0.862 | — | 0.215 |
+| **combo (meilleur)** | **0.9671** | 0.861 | 0.154 | 0.211 |
+
+**Deux enseignements majeurs, cohérents avec notre travail :**
+1. **Le chaînage/ordonnancement n'apporte quasi rien** : l'ordre chimique de Dong
+   (PFCA→FTS→PFSA→sulfonamides) donne **0.9658 < 0.9661** (aucun gain) ; le combo gagne
+   **+0.001** macro‑AUC. ⇒ **confirme indépendamment** notre conclusion (chaînes ≈ Binary
+   Relevance ; FreqClassChain n'aide pas).
+2. **Ce 0.966 est le point « littérature/Dong » de T2**, gonflé par : split **aléatoire**
+   (pas de groupage puits ni de blocs spatiaux), **27 labels** dont des ultra‑rares
+   (macro‑AUC moyennée), **pas de garde‑fou de détection** (labels `*_ngL`>seuil bruts,
+   censure incluse — cf. notre §2 sur FTS/FOSAA). **Notre référence spatiale reste ~0.68.**
 
 ## 2. Par‑label — Binary Relevance, CV spatiale (les 5 métriques au seuil OOF)
 
