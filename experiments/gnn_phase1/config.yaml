@@ -1,0 +1,50 @@
+# GNN phase 1 — T1a on the well-level spatial graph (reuses the frozen src/ socle).
+# Reproducible: PFAS_FORCE_CPU=1 python3 experiments/gnn_phase1/run_gnn_t1.py
+experiment: gnn_phase1
+task: T1a                      # EPA-2024 regulatory exceedance (binary), detection guard C1
+seed: 42
+
+graph:
+  node_granularity: well       # 11 333 nodes; eval at sampling level (46 338 rows) vs WALL
+  node_label: well_majority    # training label = majority target over the well's samplings
+  node_features:
+    aggregate: mean_mode       # numeric -> per-well mean; categorical -> mode
+    pipeline: FeaturePipeline  # src.features, fit on TRAIN wells only (anti-leak)
+    encode: frequency          # leak-free without y; 'target' (OOF) available as ablation
+    include_location: false    # C6: lat/lon NOT node features; geography via edges only
+    cocontam: core             # hydro-trusted hydrogeochemical core (no VOC/BTEX block)
+  edges:
+    kind: spatial_knn
+    k: 8
+    cap_km: 1.5                # C4 hard physical cap (~1-2 km; autocorr range 2-5 km)
+    metric: haversine
+    weight: gaussian_decay     # exp(-(d/cap)^2): closer = stronger
+    cut_cross_block: true      # C4: edges crossing a CV block boundary are removed per fold
+
+model:
+  arch: [graphsage, gcn]
+  hidden: 64
+  layers: 2
+  dropout: 0.5
+  norm: layernorm
+  residual: false              # ablation candidate
+  training: transductive_masked   # loss on train nodes; spatial val for early stopping
+  loss: bce_with_logits
+  pos_weight: balanced
+  optimizer: adam
+  lr: 0.005
+  weight_decay: 0.0005
+  max_epochs: 300
+  patience: 30                 # early stopping on a spatially-held-out train block
+
+cv:
+  reference: spatial_block_folds   # k=8 KMeans on well coords (the WALL's protocol)
+  delta: group_random_folds        # k=8 group-by-well random (for random-vs-spatial Δ)
+  group_key: gm_well_id            # C2
+  threshold: f1_optimal_on_oof     # decision threshold from validation (never test)
+
+wall:                          # the SPATIAL reference to beat (experiments/baseline_t1)
+  RF_spatial_auc: 0.601
+  XGB_spatial_auc: 0.588
+  RF_delta: 0.297
+  noise_floor: 0.03            # gain < 0.03 spatial AUC is within inter-fold noise
