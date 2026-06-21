@@ -19,6 +19,8 @@ WELL_ID = "gm_well_id"           # group key for all splits (eval C2)
 DATE_COL = "collection_date"     # used to derive temporal features, not a feature itself
 DATASET_COL = "gm_dataset_name"  # design confounder -> control/audit only, NOT a feature (C6)
 LAT, LON = "latitude", "longitude"
+SGMA_SUBBASIN = "sgma_subbasin_name"  # aquifer sub-basin: CONSTRAINS mechanistic edges only,
+                                      # NEVER a node feature (eval §2.4; full clique REFUSED)
 
 # ----------------------------------------------------------------------- analytes
 # The 31 measured PFAS analytes (each has *_ngL, *_detected, label_* in the raw file).

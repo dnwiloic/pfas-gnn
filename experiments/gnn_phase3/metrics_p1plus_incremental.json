@@ -1,0 +1,228 @@
+{
+  "spatial": {
+    "regime": "spatial",
+    "n_blocks": 8,
+    "encoder": "hetero_sage",
+    "decoder": "mlp",
+    "macro_AUROC": 0.6597309846509188,
+    "micro_AUROC": 0.7073164174843305,
+    "micro_F1": 0.5392384641181429,
+    "macro_F1": 0.49301491820356713,
+    "micro_recall": 0.7866247091178338,
+    "micro_precision": 0.4102261182949421,
+    "subset_accuracy": 0.0713546641197071,
+    "per_label": [
+      {
+        "label": "PFOS",
+        "n_measured": 46256,
+        "prevalence": 0.3940245589761328,
+        "roc_auc": 0.6033213921814657,
+        "pr_auc": 0.4878054360403187,
+        "f1": 0.572340291750503,
+        "precision": 0.40107953293677023,
+        "recall": 0.9988477998463733,
+        "accuracy": 0.41183846419923903
+      },
+      {
+        "label": "PFBS",
+        "n_measured": 44083,
+        "prevalence": 0.39235079282263,
+        "roc_auc": 0.5990109867572486,
+        "pr_auc": 0.4847869614880241,
+        "f1": 0.5635803776535949,
+        "precision": 0.39235079282263,
+        "recall": 1.0,
+        "accuracy": 0.39235079282263
+      },
+      {
+        "label": "PFHxA",
+        "n_measured": 44400,
+        "prevalence": 0.3837162162162162,
+        "roc_auc": 0.6411181910924673,
+        "pr_auc": 0.5308506588166292,
+        "f1": 0.5623706837095959,
+        "precision": 0.4622274290465213,
+        "recall": 0.7179080824088748,
+        "accuracy": 0.5712612612612613
+      },
+      {
+        "label": "PFOA",
+        "n_measured": 46252,
+        "prevalence": 0.3408933667733287,
+        "roc_auc": 0.637334352119436,
+        "pr_auc": 0.4663924457013356,
+        "f1": 0.538813805428348,
+        "precision": 0.4158907510862818,
+        "recall": 0.7648886915710027,
+        "accuracy": 0.5536409236357347
+      },
+      {
+        "label": "PFHpA",
+        "n_measured": 45099,
+        "prevalence": 0.2651278298853633,
+        "roc_auc": 0.6276907318712766,
+        "pr_auc": 0.3988454357777043,
+        "f1": 0.44956803455723543,
+        "precision": 0.33193796595303593,
+        "recall": 0.6963285104959438,
+        "accuracy": 0.5479278919709971
+      },
+      {
+        "label": "PFBA",
+        "n_measured": 25816,
+        "prevalence": 0.4103656647040595,
+        "roc_auc": 0.6762887615812562,
+        "pr_auc": 0.5791304462001334,
+        "f1": 0.6238252863067382,
+        "precision": 0.5225317101153675,
+        "recall": 0.7738342457995091,
+        "accuracy": 0.6170204524326
+      },
+      {
+        "label": "PFPeA",
+        "n_measured": 25738,
+        "prevalence": 0.40955008159142126,
+        "roc_auc": 0.6793108603956124,
+        "pr_auc": 0.5828275787852325,
+        "f1": 0.6083908175958385,
+        "precision": 0.5047535651738804,
+        "recall": 0.765582013091737,
+        "accuracy": 0.5963555831843966
+      },
+      {
+        "label": "PFHxS",
+        "n_measured": 44115,
+        "prevalence": 0.1537798934602743,
+        "roc_auc": 0.6232247313742991,
+        "pr_auc": 0.26388589776540544,
+        "f1": 0.33672999802774306,
+        "precision": 0.3039041177168625,
+        "recall": 0.3775058962264151,
+        "accuracy": 0.7713022781366882
+      },
+      {
+        "label": "PFPeS",
+        "n_measured": 25948,
+        "prevalence": 0.15762293818406042,
+        "roc_auc": 0.6920646231589045,
+        "pr_auc": 0.32281833983142194,
+        "f1": 0.4040009197516671,
+        "precision": 0.3812934027777778,
+        "recall": 0.4295843520782396,
+        "accuracy": 0.8002158162478804
+      },
+      {
+        "label": "PFNA",
+        "n_measured": 45112,
+        "prevalence": 0.025625110835254476,
+        "roc_auc": 0.8179452159772229,
+        "pr_auc": 0.13290999331101122,
+        "f1": 0.27052896725440806,
+        "precision": 0.1908315565031983,
+        "recall": 0.46453287197231835,
+        "accuracy": 0.9358042206064905
+      }
+    ],
+    "thresholds": {
+      "PFOS": 0.05,
+      "PFBS": 0.05,
+      "PFHxA": 0.15,
+      "PFOA": 0.1,
+      "PFHpA": 0.1,
+      "PFBA": 0.15,
+      "PFPeA": 0.15,
+      "PFHxS": 0.3,
+      "PFPeS": 0.35,
+      "PFNA": 0.15
+    },
+    "n_cross_block_bipartite": 0,
+    "n_cross_block_well": 0,
+    "n_removed_well_cross_total": 152,
+    "n_cross_block_edges": 0,
+    "per_fold": [
+      {
+        "fold": 0,
+        "n_train_edges": 98522,
+        "n_test_edges": 8694,
+        "n_well_edges_train": 57688,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 198
+      },
+      {
+        "fold": 1,
+        "n_train_edges": 91343,
+        "n_test_edges": 15873,
+        "n_well_edges_train": 50338,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 195
+      },
+      {
+        "fold": 2,
+        "n_train_edges": 78910,
+        "n_test_edges": 28306,
+        "n_well_edges_train": 37962,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 199
+      },
+      {
+        "fold": 3,
+        "n_train_edges": 98421,
+        "n_test_edges": 8795,
+        "n_well_edges_train": 57560,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 199
+      },
+      {
+        "fold": 4,
+        "n_train_edges": 91406,
+        "n_test_edges": 15810,
+        "n_well_edges_train": 53904,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 199
+      },
+      {
+        "fold": 5,
+        "n_train_edges": 97226,
+        "n_test_edges": 9990,
+        "n_well_edges_train": 57362,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 198
+      },
+      {
+        "fold": 6,
+        "n_train_edges": 92025,
+        "n_test_edges": 15191,
+        "n_well_edges_train": 53636,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 181
+      },
+      {
+        "fold": 7,
+        "n_train_edges": 102659,
+        "n_test_edges": 4557,
+        "n_well_edges_train": 58228,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 19,
+        "best_epoch": 196
+      }
+    ]
+  },
+  "encoder": "hetero_sage",
+  "decoder": "mlp",
+  "elapsed_min_so_far": 21.35
+}

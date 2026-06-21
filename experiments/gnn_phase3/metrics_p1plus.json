@@ -1,0 +1,426 @@
+{
+  "task": "T2",
+  "phase": "P1+",
+  "model": "HeteroCompletion[hetero_sage/mlp]",
+  "smoke": true,
+  "seed": 42,
+  "n_blocks": 3,
+  "encoder": "hetero_sage",
+  "decoder": "mlp",
+  "focal_gamma": 1.0,
+  "wall": {
+    "BinaryRelevance_macro_AUROC_spatial": 0.68,
+    "BinaryRelevance_macro_AUROC_random": 0.902,
+    "BinaryRelevance_delta": 0.222,
+    "BinaryRelevance_micro_F1_spatial": 0.542,
+    "Prevalence_macro_AUROC_spatial": 0.348
+  },
+  "p1_bipartite": {
+    "Bipartite_macro_AUROC_spatial": 0.681,
+    "Bipartite_macro_AUROC_random": 0.843,
+    "Bipartite_delta": 0.162,
+    "Bipartite_micro_F1_spatial": 0.547
+  },
+  "wall_per_label": {
+    "PFOS": {
+      "AUROC": 0.588,
+      "AP": 0.45
+    },
+    "PFBS": {
+      "AUROC": 0.632,
+      "AP": 0.487
+    },
+    "PFHxA": {
+      "AUROC": 0.656,
+      "AP": 0.519
+    },
+    "PFOA": {
+      "AUROC": 0.665,
+      "AP": 0.443
+    },
+    "PFHpA": {
+      "AUROC": 0.634,
+      "AP": 0.379
+    },
+    "PFBA": {
+      "AUROC": 0.728,
+      "AP": 0.592
+    },
+    "PFPeA": {
+      "AUROC": 0.689,
+      "AP": 0.559
+    },
+    "PFHxS": {
+      "AUROC": 0.66,
+      "AP": 0.288
+    },
+    "PFPeS": {
+      "AUROC": 0.721,
+      "AP": 0.367
+    },
+    "PFNA": {
+      "AUROC": 0.831,
+      "AP": 0.169
+    }
+  },
+  "p1_per_label_AUROC": {
+    "PFOS": 0.638,
+    "PFBS": 0.641,
+    "PFHxA": 0.669,
+    "PFOA": 0.663,
+    "PFHpA": 0.672,
+    "PFBA": 0.706,
+    "PFPeA": 0.698,
+    "PFHxS": 0.657,
+    "PFPeS": 0.702,
+    "PFNA": 0.766
+  },
+  "elapsed_min": 0.63,
+  "spatial": {
+    "regime": "spatial",
+    "n_blocks": 3,
+    "encoder": "hetero_sage",
+    "decoder": "mlp",
+    "macro_AUROC": 0.5555286904670502,
+    "micro_AUROC": 0.5816562694811529,
+    "micro_F1": 0.4871825115986475,
+    "macro_F1": 0.4435484399019202,
+    "micro_recall": 0.930954169797145,
+    "micro_precision": 0.3299163959742265,
+    "subset_accuracy": 0.07506950880444857,
+    "per_label": [
+      {
+        "label": "PFOS",
+        "n_measured": 5886,
+        "prevalence": 0.37359836901121307,
+        "roc_auc": 0.48088912372699916,
+        "pr_auc": 0.3954629061277843,
+        "f1": 0.5439703153988869,
+        "precision": 0.37359836901121307,
+        "recall": 1.0,
+        "accuracy": 0.37359836901121307
+      },
+      {
+        "label": "PFBS",
+        "n_measured": 5648,
+        "prevalence": 0.34490084985835695,
+        "roc_auc": 0.4930684971419058,
+        "pr_auc": 0.38975823929000386,
+        "f1": 0.5129015271195366,
+        "precision": 0.34490084985835695,
+        "recall": 1.0,
+        "accuracy": 0.34490084985835695
+      },
+      {
+        "label": "PFHxA",
+        "n_measured": 5687,
+        "prevalence": 0.35185510814137505,
+        "roc_auc": 0.4927473864803898,
+        "pr_auc": 0.4022344427300577,
+        "f1": 0.5205515088449532,
+        "precision": 0.35185510814137505,
+        "recall": 1.0,
+        "accuracy": 0.35185510814137505
+      },
+      {
+        "label": "PFOA",
+        "n_measured": 5883,
+        "prevalence": 0.304266530681625,
+        "roc_auc": 0.48353552256407245,
+        "pr_auc": 0.3413834152508256,
+        "f1": 0.46657109344454584,
+        "precision": 0.304266530681625,
+        "recall": 1.0,
+        "accuracy": 0.304266530681625
+      },
+      {
+        "label": "PFHpA",
+        "n_measured": 5785,
+        "prevalence": 0.23215211754537599,
+        "roc_auc": 0.621315336614587,
+        "pr_auc": 0.35058474159943465,
+        "f1": 0.39944945710353263,
+        "precision": 0.2513471901462664,
+        "recall": 0.9724497393894267,
+        "accuracy": 0.3211754537597234
+      },
+      {
+        "label": "PFBA",
+        "n_measured": 3338,
+        "prevalence": 0.3741761533852606,
+        "roc_auc": 0.5147064516141395,
+        "pr_auc": 0.4472250759072399,
+        "f1": 0.5445825158055374,
+        "precision": 0.3741761533852606,
+        "recall": 1.0,
+        "accuracy": 0.3741761533852606
+      },
+      {
+        "label": "PFPeA",
+        "n_measured": 3324,
+        "prevalence": 0.37936221419975935,
+        "roc_auc": 0.513447921019219,
+        "pr_auc": 0.4641921877454272,
+        "f1": 0.5500545256270447,
+        "precision": 0.37936221419975935,
+        "recall": 1.0,
+        "accuracy": 0.37936221419975935
+      },
+      {
+        "label": "PFHxS",
+        "n_measured": 5652,
+        "prevalence": 0.15587402689313518,
+        "roc_auc": 0.5867139507014927,
+        "pr_auc": 0.24968277406364098,
+        "f1": 0.3065764023210832,
+        "precision": 0.2670598146588037,
+        "recall": 0.3598183881952327,
+        "accuracy": 0.7462845010615711
+      },
+      {
+        "label": "PFPeS",
+        "n_measured": 3348,
+        "prevalence": 0.1484468339307049,
+        "roc_auc": 0.6916790112827085,
+        "pr_auc": 0.32770208664792383,
+        "f1": 0.4265975820379965,
+        "precision": 0.37367624810892586,
+        "recall": 0.4969818913480885,
+        "accuracy": 0.8016726403823178
+      },
+      {
+        "label": "PFNA",
+        "n_measured": 5785,
+        "prevalence": 0.024373379429559205,
+        "roc_auc": 0.6771837035249886,
+        "pr_auc": 0.07887448892403628,
+        "f1": 0.16422947131608548,
+        "precision": 0.09759358288770054,
+        "recall": 0.5177304964539007,
+        "accuracy": 0.8715643906655143
+      }
+    ],
+    "thresholds": {
+      "PFOS": 0.05,
+      "PFBS": 0.05,
+      "PFHxA": 0.05,
+      "PFOA": 0.05,
+      "PFHpA": 0.1,
+      "PFBA": 0.05,
+      "PFPeA": 0.05,
+      "PFHxS": 0.3,
+      "PFPeS": 0.39999999999999997,
+      "PFNA": 0.25
+    },
+    "n_cross_block_bipartite": 0,
+    "n_cross_block_well": 0,
+    "n_removed_well_cross_total": 0,
+    "n_cross_block_edges": 0,
+    "per_fold": [
+      {
+        "fold": 0,
+        "n_train_edges": 8884,
+        "n_test_edges": 5315,
+        "n_well_edges_train": 1462,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 0,
+        "best_epoch": 39
+      },
+      {
+        "fold": 1,
+        "n_train_edges": 8121,
+        "n_test_edges": 6078,
+        "n_well_edges_train": 888,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 0,
+        "best_epoch": 38
+      },
+      {
+        "fold": 2,
+        "n_train_edges": 11393,
+        "n_test_edges": 2806,
+        "n_well_edges_train": 1918,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 0,
+        "best_epoch": 39
+      }
+    ]
+  },
+  "random": {
+    "regime": "random",
+    "n_blocks": 3,
+    "encoder": "hetero_sage",
+    "decoder": "mlp",
+    "macro_AUROC": 0.7294296070844413,
+    "micro_AUROC": 0.7383960244720921,
+    "micro_F1": 0.5570466092334879,
+    "macro_F1": 0.5238153763853819,
+    "micro_recall": 0.7578512396694215,
+    "micro_precision": 0.44036496987688817,
+    "subset_accuracy": 0.2242817423540315,
+    "per_label": [
+      {
+        "label": "PFOS",
+        "n_measured": 5886,
+        "prevalence": 0.37359836901121307,
+        "roc_auc": 0.6846224699862957,
+        "pr_auc": 0.5352176160530489,
+        "f1": 0.5969257045260461,
+        "precision": 0.4344313238036047,
+        "recall": 0.9536152796725784,
+        "accuracy": 0.5188583078491336
+      },
+      {
+        "label": "PFBS",
+        "n_measured": 5648,
+        "prevalence": 0.34490084985835695,
+        "roc_auc": 0.6862475720073256,
+        "pr_auc": 0.5157993766256542,
+        "f1": 0.5543257989088075,
+        "precision": 0.3980299977613611,
+        "recall": 0.9127310061601642,
+        "accuracy": 0.49380311614730876
+      },
+      {
+        "label": "PFHxA",
+        "n_measured": 5687,
+        "prevalence": 0.35185510814137505,
+        "roc_auc": 0.6990723303567966,
+        "pr_auc": 0.5433702588270928,
+        "f1": 0.5764053840063341,
+        "precision": 0.4772205834152737,
+        "recall": 0.7276361819090454,
+        "accuracy": 0.62370318269738
+      },
+      {
+        "label": "PFOA",
+        "n_measured": 5883,
+        "prevalence": 0.304266530681625,
+        "roc_auc": 0.6920169604188646,
+        "pr_auc": 0.4843270366257072,
+        "f1": 0.5291370558375634,
+        "precision": 0.4156299840510367,
+        "recall": 0.7279329608938547,
+        "accuracy": 0.6058133605303416
+      },
+      {
+        "label": "PFHpA",
+        "n_measured": 5785,
+        "prevalence": 0.23215211754537599,
+        "roc_auc": 0.7090849613601703,
+        "pr_auc": 0.4229981030609238,
+        "f1": 0.4711366081032628,
+        "precision": 0.45435684647302904,
+        "recall": 0.4892032762472077,
+        "accuracy": 0.7450302506482281
+      },
+      {
+        "label": "PFBA",
+        "n_measured": 3338,
+        "prevalence": 0.3741761533852606,
+        "roc_auc": 0.7356619618337081,
+        "pr_auc": 0.5709753146072648,
+        "f1": 0.6283128636069812,
+        "precision": 0.526829268292683,
+        "recall": 0.77822257806245,
+        "accuracy": 0.6554823247453565
+      },
+      {
+        "label": "PFPeA",
+        "n_measured": 3324,
+        "prevalence": 0.37936221419975935,
+        "roc_auc": 0.72782317352331,
+        "pr_auc": 0.5799664324289173,
+        "f1": 0.6198083067092651,
+        "precision": 0.5189941144997324,
+        "recall": 0.7692307692307693,
+        "accuracy": 0.6419975932611311
+      },
+      {
+        "label": "PFHxS",
+        "n_measured": 5652,
+        "prevalence": 0.15587402689313518,
+        "roc_auc": 0.6796439232394164,
+        "pr_auc": 0.3341155843443667,
+        "f1": 0.44339125855713535,
+        "precision": 0.41355599214145383,
+        "recall": 0.4778660612939841,
+        "accuracy": 0.8129865534324133
+      },
+      {
+        "label": "PFPeS",
+        "n_measured": 3348,
+        "prevalence": 0.1484468339307049,
+        "roc_auc": 0.7993757000085395,
+        "pr_auc": 0.3911759654430303,
+        "f1": 0.5070224719101124,
+        "precision": 0.389428263214671,
+        "recall": 0.7263581488933601,
+        "accuracy": 0.7903225806451613
+      },
+      {
+        "label": "PFNA",
+        "n_measured": 5785,
+        "prevalence": 0.024373379429559205,
+        "roc_auc": 0.8807470181099869,
+        "pr_auc": 0.21195916217396157,
+        "f1": 0.3116883116883117,
+        "precision": 0.22429906542056074,
+        "recall": 0.5106382978723404,
+        "accuracy": 0.9450302506482282
+      }
+    ],
+    "thresholds": {
+      "PFOS": 0.15,
+      "PFBS": 0.15,
+      "PFHxA": 0.2,
+      "PFOA": 0.2,
+      "PFHpA": 0.39999999999999997,
+      "PFBA": 0.2,
+      "PFPeA": 0.2,
+      "PFHxS": 0.44999999999999996,
+      "PFPeS": 0.44999999999999996,
+      "PFNA": 0.3
+    },
+    "n_cross_block_bipartite": 0,
+    "n_cross_block_well": 0,
+    "n_removed_well_cross_total": 2349,
+    "n_cross_block_edges": 0,
+    "per_fold": [
+      {
+        "fold": 0,
+        "n_train_edges": 9467,
+        "n_test_edges": 4732,
+        "n_well_edges_train": 356,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 783,
+        "best_epoch": 39
+      },
+      {
+        "fold": 1,
+        "n_train_edges": 9459,
+        "n_test_edges": 4740,
+        "n_well_edges_train": 404,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 783,
+        "best_epoch": 36
+      },
+      {
+        "fold": 2,
+        "n_train_edges": 9472,
+        "n_test_edges": 4727,
+        "n_well_edges_train": 376,
+        "n_cross_block_bip": 0,
+        "n_cross_block_well": 0,
+        "n_removed_well_cross": 783,
+        "best_epoch": 39
+      }
+    ]
+  },
+  "delta_random_minus_spatial_macro_AUROC": 0.17390091661739104
+}

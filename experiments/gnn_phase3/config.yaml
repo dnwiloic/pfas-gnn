@@ -1,0 +1,52 @@
+# P1+ — T2 heterogeneous matrix completion (bipartite wells<->analytes + spatial well<->well)
+# Extends P1 (gnn_phase2). Same frozen socle: targets.build_T2, baselines_t2.measurement_mask,
+# splits (spatial-block reference + group-random Δ), features.FeaturePipeline, metrics.
+phase: P1+
+task: T2
+seed: 42
+
+graph:
+  node_types: [well, analyte]
+  well_features: FeaturePipeline(include_location=false, cocontam=core)  # lat/lon NOT a feature (C6)
+  analyte_features: learned id embedding (emb_dim=32)
+  relations:
+    - [analyte, measured_by, well]   # bipartite measured cell (MNAR mask, availability only)
+    - [well, measures, analyte]      # reverse of the above
+    - [well, near, well]             # spatial k-NN, hard cap 1.5 km, symmetrised
+  knn_k: 8
+  cap_km: 1.5
+
+model:
+  encoder: hetero_sage        # alternatives: hgt | rgcn  (P1PLUS_ENCODER)
+  decoder: mlp                # alternative: vgae         (P1PLUS_DECODER)
+  hidden: 64
+  emb_dim: 32
+  layers: 2
+  dropout: 0.3
+  heads: 2                    # HGT only
+  focal_gamma: 1.0           # down-weight easy negatives, help rare PFNA (target the AP)
+  beta_kl: 1.0e-3            # VGAE only
+
+train:
+  lr: 5.0e-3
+  weight_decay: 5.0e-4
+  max_epochs: 200
+  patience: 40
+  val_frac: 0.15
+  message_passing: train-only (inductive on labels); spatial edges restricted to train-train
+
+eval:
+  outer_cv: spatial_block (k=8, reference) + group_random (k=8, Δ)
+  level: row (broadcast well->rows), strict comparability with the wall and P1
+  mask: per-label measurement_mask (MNAR)
+  metrics: metrics.multilabel_metrics (5 micro/macro + per-label AUROC + AP) + OOF thresholds
+
+leakage_audit:   # C4 — never presumed, asserted every fold
+  cross_block_bipartite_edges: must be 0   # an edge touches one well = one block
+  cross_block_well_edges: must be 0        # well<->well edges CUT (cut_cross_block) per fold
+  removed_well_cross: reported              # how many well-edges the cut removed (meaningful)
+
+references:
+  wall_macro_AUROC_spatial: 0.680   # BinaryRelevance (baseline_t2)
+  p1_bipartite_macro_AUROC_spatial: 0.681
+  target: ">0.71 spatial = net gain (>0.03 out of noise ~0.06-0.09)"
