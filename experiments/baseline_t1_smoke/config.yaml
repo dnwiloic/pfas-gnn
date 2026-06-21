@@ -9,4 +9,4 @@ seed: 42
 xgboost_available: True
 optuna_available: True
 shap_available: True
-elapsed_s: 153.87840747833252
+elapsed_s: 131.35035467147827

@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(python3 -)",
+      "Bash(python3 -c ' *)",
+      "Bash(SMOKE_TEST=1 timeout 200 python3 experiments/baseline_t1/run_spatial_t1.py)",
+      "Bash(python3 experiments/baseline_t1/run_spatial_t1.py)",
+      "Bash(python3 -c \"import torch; print\\('torch', torch.__version__\\)\")",
+      "Bash(python3 -c \"import torch_geometric; print\\('pyg', torch_geometric.__version__\\)\")",
+      "Bash(python3 -c \"import sklearn, scipy; print\\('sklearn', sklearn.__version__, 'scipy', scipy.__version__\\)\")",
+      "Bash(PFAS_FORCE_CPU=1 python3 -)",
+      "Bash(PFAS_FORCE_CPU=1 timeout 280 python3 tests/test_gnn_smoke.py)",
+      "Bash(PFAS_FORCE_CPU=1 python3 experiments/gnn_phase1/run_gnn_t1.py)",
+      "Bash(PFAS_FORCE_CPU=1 python3 -c ' *)",
+      "Bash(PFAS_FORCE_CPU=1 python3 -c \"import json,nbformat; nb=nbformat.read\\('notebooks/gnn_phase1_t1_colab.ipynb',as_version=4\\); print\\('valid notebook,', len\\(nb.cells\\), 'cells'\\)\")",
+      "Bash(echo \"exit grep: $?\")",
+      "Bash(PFAS_FORCE_CPU=1 timeout 200 python3 -m pytest tests/test_gnn_smoke.py -q)",
+      "Bash(pkill -f run_gnn_t1)",
+      "Bash(python3 -c \"import torch,torch_geometric as g; print\\('torch',torch.__version__,'pyg',g.__version__\\)\")",
+      "Bash(PFAS_FORCE_CPU=1 timeout 120 python3 tests/test_gnn_smoke.py)",
+      "Bash(grep -vE \"Warning|warn|it/s\\\\]|^\\\\s*$\")",
+      "Bash(PFAS_FORCE_CPU=1 timeout 290 python3 tests/test_gnn_smoke.py)",
+      "Bash(PFAS_FORCE_CPU=1 SMOKE_TEST=1 timeout 200 python3 experiments/gnn_phase2/run_p1_t2.py)",
+      "Bash(PFAS_FORCE_CPU=1 SMOKE_TEST=1 timeout 200 python3 experiments/gnn_phase2/run_p0_t1.py)"
+    ]
+  }
+}

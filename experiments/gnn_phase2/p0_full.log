@@ -1,0 +1,4 @@
+graphsage: spatial=0.6152±0.063 random=0.8081 Δ=0.1929 best_ep=[137, 144, 104, 176, 144, 166, 144, 108]
+gcn: spatial=0.6306±0.047 random=0.8351 Δ=0.2044 best_ep=[163, 141, 122, 154, 165, 189, 173, 139]
+
+wrote /home/wiloic/M2/Recherche/tmp/pfas/pfas-gnn/experiments/gnn_phase2/metrics_p0.json in 33.43 min

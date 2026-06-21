@@ -1,0 +1,13 @@
+smoke: True
+outer_k: 3
+inner_k: 2
+gnn_epochs: 15
+gnn_patience: 6
+hidden: 32
+relations: ['subbasin_knn', 'spatial']
+feature_cols_count: 61
+prevalence: 0.3853554249064671
+seed: 42
+xgboost_available: True
+elapsed_s: 147.6803982257843
+cost_estimate: 160 GNN trainings (2 relations × 2 arms × 8 outer × (4 inner + 1 test)) = ~40 h on Colab GPU @ 15.0 min/GNN

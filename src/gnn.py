@@ -79,16 +79,33 @@ def build_model(name: str, in_dim: int, hidden: int = 64, layers: int = 2,
             self.dropout = dropout
             self._uses_weight = name in ("gcn", "graphconv")
 
-        def forward(self, x, edge_index, edge_weight=None):
+        def _embed(self, x, edge_index, edge_weight=None):
+            """Run the conv stack and return the PRE-HEAD hidden representation
+            [n_nodes, hidden] (the last LayerNorm+ReLU output, BEFORE dropout and the
+            final linear head). This is the embedding the hybrid extracts (contract §3.4:
+            "embedding extrait avant la tête, dimension figée et journalisée")."""
+            h = x
             for conv, norm in zip(self.convs, self.norms):
                 if self._uses_weight and edge_weight is not None:
-                    x = conv(x, edge_index, edge_weight)
+                    h = conv(h, edge_index, edge_weight)
                 else:
-                    x = conv(x, edge_index)
-                x = norm(x)
-                x = Fn.relu(x)
-                x = Fn.dropout(x, p=self.dropout, training=self.training)
-            return self.head(x).squeeze(-1)
+                    h = conv(h, edge_index)
+                h = norm(h)
+                h = Fn.relu(h)
+                # dropout is applied AFTER capturing the embedding in eval mode (training=False
+                # -> dropout is identity), so the returned embedding is deterministic.
+                h = Fn.dropout(h, p=self.dropout, training=self.training)
+            return h
+
+        def forward(self, x, edge_index, edge_weight=None, *, embed=False):
+            h = self._embed(x, edge_index, edge_weight)
+            if embed:
+                return h                              # [n_nodes, hidden] pre-head embedding
+            return self.head(h).squeeze(-1)           # [n_nodes] logits
+
+        @property
+        def embed_dim(self):
+            return self.head.in_features
 
     return GNN()
 
@@ -283,6 +300,194 @@ def train_eval_fold(df, y_row, feature_cols, fold_block, test_block, *,
                     n_edges=wg.edge_index.shape[1], best_epoch=best_epoch,
                     n_val_micro=int(n_micro_used), n_val_nodes=int(val_nodes.sum()))
     return fr, proba_row, test_row_mask
+
+
+# =====================================================================================
+# HYBRID PRIMITIVE — inductive train-and-embed (the building block the tabular agent calls)
+# =====================================================================================
+@dataclass
+class EmbedInfo:
+    """Diagnostics returned alongside the embeddings (logged per call, asserted in tests)."""
+    embed_dim: int                    # hidden width (= embedding dimension), fixed & logged
+    n_fit_nodes: int                  # wells whose label drove the loss
+    n_embed_nodes: int                # wells whose embedding is returned
+    n_edges: int                      # directed edges in the (post-C4) graph
+    n_removed_cross_block: int        # cross-block edges cut (per relation), C4 guard
+    n_cross_block_remaining: int      # MUST be 0 (asserted): no edge crosses a CV block
+    best_epoch: int
+    best_val_auc: float
+    final_loss: float
+    relation: str
+    cap_km: float
+    k: int
+    embed_block_ids: list             # the CV block id(s) the embeddings belong to
+    fit_block_ids: list
+
+
+def train_gnn_and_embed(df, y_row, feature_cols, fold_block, *,
+                        fit_blocks, embed_blocks, relation="subbasin_knn", k=8,
+                        cap_km=None, model_name="graphsage", hidden=64, layers=2,
+                        dropout=0.5, lr=5e-3, weight_decay=5e-4, max_epochs=400,
+                        patience=50, val_frac=0.18, n_val_micro=6, lr_schedule=True,
+                        encode="frequency", early_stop=True, seed=C.SEED, verbose=False):
+    """INDUCTIVE train-and-embed primitive (contract §3.2/§3.3). Reusable for BOTH
+    (a) inner-OOF train embeddings and (b) test embeddings of the nested-OOF hybrid.
+
+    What it does, in order:
+      1. Build the well graph over **fit ∪ embed** nodes with `cut_blocks=True`, so EVERY
+         edge from an embed-block node to a fit node across a CV block boundary is CUT
+         (C4, BOTH relations). Asserts 0 cross-block edges remain.
+      2. Fit the FeaturePipeline / node features on **FIT nodes only** (anti-leak, §3.4).
+      3. Train GraphSAGE (inductive SAGEConv, aggr mean) **supervised on `well_majority_target`
+         on FIT nodes only** — the loss and early-stop validation NEVER touch embed nodes
+         (the early-stop hold-out is carved out of FIT nodes, contract §3.2).
+      4. Return the **pre-head embeddings for the `embed_blocks` nodes** — wells that have
+         seen neither their own label (not in loss) nor any cross-block edge (C4).
+
+    Parameters
+    ----------
+    df, y_row, feature_cols : the usual row-level frame, T1a row labels, feature column list.
+    fold_block : per-ROW CV block id (spatial OUTER for test embeddings, or spatial INNER
+                 micro-blocks for OOF train embeddings). Reduced to per-well internally.
+    fit_blocks   : iterable of block ids whose nodes are TRAINED on (loss + early-stop).
+    embed_blocks : iterable of block ids whose nodes' embeddings are RETURNED (and never
+                   contribute to the loss / early-stop). MUST be disjoint from fit_blocks.
+    relation, k, cap_km : edge construction (default = mechanistic subbasin_knn k8 cap2km).
+    early_stop : if False, train a fixed `max_epochs` (no FIT hold-out); useful when the
+                 caller wants the whole FIT set in the loss (still no embed-node leakage).
+
+    Returns
+    -------
+    emb : np.ndarray [n_embed_nodes, hidden]  — pre-head embeddings, embed nodes in the
+          ORDER of `wg.well_ids` restricted to embed nodes. The companion `info.embed_well_ids`
+          / the returned `well_ids` let the caller align to its rows (use `info` + `row_to_node`).
+    info : EmbedInfo  (also carries `embed_well_ids`, `row_to_node`, `embed_node_idx`).
+    """
+    import torch
+    import torch.nn.functional as Fn
+
+    set_seed(seed)
+    dev = device()
+    fit_set = set(int(b) for b in fit_blocks)
+    embed_set = set(int(b) for b in embed_blocks)
+    if fit_set & embed_set:
+        raise AssertionError(f"fit_blocks and embed_blocks overlap: {sorted(fit_set & embed_set)}")
+
+    # 1) graph over fit ∪ embed, C4 cut (per relation) ------------------------------------
+    wg = G.build_well_graph(df, fold_block=fold_block, relation=relation, k=k,
+                            cap_km=cap_km, cut_blocks=True)
+    node_block = wg.node_block
+    fit_nodes_all = np.isin(node_block, list(fit_set))
+    embed_nodes = np.isin(node_block, list(embed_set))
+    if not embed_nodes.any():
+        raise AssertionError("no embed nodes — embed_blocks empty in this graph")
+    if not fit_nodes_all.any():
+        raise AssertionError("no fit nodes — fit_blocks empty in this graph")
+
+    # HARD C4 guard: 0 edge crosses a block boundary (so 0 fit<->embed cross-block edge).
+    a, b = wg.edge_index[0], wg.edge_index[1]
+    n_cross = int((node_block[a] != node_block[b]).sum())
+    if n_cross != 0:
+        raise AssertionError(f"{n_cross} cross-block edges remain after C4 ({relation}) — leak")
+
+    y_node = G.well_majority_target(df, y_row, wg.well_ids)
+
+    # 3a) early-stop validation carved out of FIT nodes ONLY (never embed) ----------------
+    if early_stop:
+        val_nodes, n_micro_used = _robust_val_mask_coords(
+            wg.coords, fit_nodes_all, n_micro=n_val_micro, val_frac=val_frac, seed=seed)
+        loss_nodes = fit_nodes_all & ~val_nodes
+        if val_nodes.sum() == 0 or loss_nodes.sum() == 0:      # degenerate guard
+            rng = np.random.RandomState(seed)
+            idx = np.where(fit_nodes_all)[0]
+            vi = rng.choice(idx, size=max(1, int(val_frac * len(idx))), replace=False)
+            val_nodes = np.zeros_like(fit_nodes_all); val_nodes[vi] = True
+            loss_nodes = fit_nodes_all & ~val_nodes
+    else:
+        val_nodes = np.zeros_like(fit_nodes_all)
+        loss_nodes = fit_nodes_all
+
+    # 2) node features fit on FIT nodes only (anti-leak, §3.4) ----------------------------
+    # the FeaturePipeline statistics come ONLY from loss_nodes (a subset of FIT); embed nodes
+    # never inform imputation/scaling/frequency codes.
+    X, names, _ = G.node_features(df, wg.well_ids, feature_cols,
+                                  train_node_mask=loss_nodes, y_node=y_node, encode=encode)
+
+    x = torch.tensor(X, dtype=torch.float32, device=dev)
+    ei = torch.tensor(wg.edge_index, dtype=torch.long, device=dev)
+    ew = edge_weight_from_dist(wg.edge_dist, cap_km if cap_km is not None else wg.meta["cap_km"]).to(dev)
+    y = torch.tensor(y_node, dtype=torch.float32, device=dev)
+    m_loss = torch.tensor(loss_nodes, dtype=torch.bool, device=dev)
+    m_val = torch.tensor(val_nodes, dtype=torch.bool, device=dev)
+
+    model = build_model(model_name, in_dim=X.shape[1], hidden=hidden,
+                        layers=layers, dropout=dropout).to(dev)
+    opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
+    sched = None
+    if lr_schedule and early_stop:
+        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            opt, mode="max", factor=0.5, patience=max(5, patience // 4), min_lr=1e-5)
+    pos = float(y[m_loss].sum()); neg = float(m_loss.sum().item() - pos)
+    pos_weight = torch.tensor([neg / pos if pos > 0 else 1.0], device=dev)
+
+    best_val, best_state, best_epoch, bad = -np.inf, None, 0, 0
+    last_loss = float("nan")
+    for epoch in range(max_epochs):
+        model.train(); opt.zero_grad()
+        out = model(x, ei, ew)
+        loss = Fn.binary_cross_entropy_with_logits(out[m_loss], y[m_loss], pos_weight=pos_weight)
+        loss.backward(); opt.step()
+        last_loss = float(loss.detach())
+        if not torch.isfinite(loss):
+            raise FloatingPointError("non-finite training loss")
+        if not early_stop:
+            continue
+        model.eval()
+        with torch.no_grad():
+            p = torch.sigmoid(model(x, ei, ew))
+            pv = p[m_val].cpu().numpy(); yv = y[m_val].cpu().numpy()
+            try:
+                from sklearn.metrics import roc_auc_score
+                vauc = roc_auc_score(yv, pv) if len(np.unique(yv)) > 1 else 0.0
+            except Exception:
+                vauc = 0.0
+        if sched is not None:
+            sched.step(vauc)
+        if vauc > best_val + 1e-4:
+            best_val, best_epoch, bad = vauc, epoch, 0
+            best_state = {kk: vv.detach().clone() for kk, vv in model.state_dict().items()}
+        else:
+            bad += 1
+            if bad >= patience:
+                break
+        if verbose and epoch % 20 == 0:
+            print(f"  ep{epoch} loss={last_loss:.4f} val_auc={vauc:.4f}")
+
+    if best_state is not None:
+        model.load_state_dict(best_state)
+
+    # 4) extract PRE-HEAD embeddings for embed nodes (eval mode -> dropout off, deterministic)
+    model.eval()
+    with torch.no_grad():
+        H = model(x, ei, ew, embed=True).cpu().numpy()
+    embed_node_idx = np.where(embed_nodes)[0]
+    emb = H[embed_node_idx].astype(np.float32)
+
+    info = EmbedInfo(
+        embed_dim=int(model.embed_dim), n_fit_nodes=int(loss_nodes.sum()),
+        n_embed_nodes=int(embed_nodes.sum()), n_edges=int(wg.edge_index.shape[1]),
+        n_removed_cross_block=int(wg.n_removed_cross_block),
+        n_cross_block_remaining=int(n_cross), best_epoch=int(best_epoch),
+        best_val_auc=float(best_val if np.isfinite(best_val) else 0.0),
+        final_loss=float(last_loss), relation=relation,
+        cap_km=float(wg.meta["cap_km"]), k=int(k),
+        embed_block_ids=sorted(embed_set), fit_block_ids=sorted(fit_set))
+    # attach alignment helpers (not dataclass fields so the signature stays clean)
+    info.embed_well_ids = wg.well_ids[embed_node_idx]
+    info.embed_node_idx = embed_node_idx
+    info.row_to_node = wg.row_to_node
+    info.well_ids = wg.well_ids
+    return emb, info
 
 
 def _f1_threshold(y, p):

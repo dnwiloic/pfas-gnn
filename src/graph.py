@@ -93,6 +93,75 @@ def knn_edges_km(coords: np.ndarray, k: int = 8, cap_km: float = 1.5):
     return ei, ed
 
 
+# ----------------------------------------------- mechanistic intra-subbasin k-NN
+def well_subbasin(df: pd.DataFrame, well_ids: np.ndarray) -> np.ndarray:
+    """Per-well SGMA sub-basin label (mode over the well's samplings), aligned to
+    well_ids/node order. Missing -> np.nan (object dtype). This is CONTEXT, not a target
+    derivative (eval §1: η(sgma_subbasin, T1a)=0.505 is a geographic confounder, already
+    handled by C5; it never enters node features, only the mechanistic edge constraint)."""
+    g = df.groupby(C.WELL_ID)[C.SGMA_SUBBASIN]
+    mode = g.agg(lambda s: s.mode().iloc[0] if not s.mode().empty else np.nan)
+    return mode.reindex(well_ids).to_numpy(dtype=object)
+
+
+def knn_edges_intra_subbasin(coords: np.ndarray, subbasin: np.ndarray,
+                             k: int = 8, cap_km: float = 2.0):
+    """MECHANISTIC edge: for each well, connect its `k` nearest neighbours THAT SHARE the
+    same SGMA sub-basin, with a hard great-circle distance cap `cap_km` (eval §2.4 — the
+    ONLY admissible mechanistic edge). This is k-NN spatial RESTRICTED to the same aquifer
+    sub-basin, NOT a full subbasin clique (the clique is REFUSED: 81.6 % of its pairs > 5 km,
+    Cramér V(block, subbasin)=0.981 = disguised spatial leakage C4 cannot catch).
+
+    Two wells 1 km apart across a hydrogeological divide (different sub-basins) are NOT
+    connected — that is the aquifer prior. Wells with a MISSING sub-basin get NO mechanistic
+    edge (documented: 1 475 wells, ~13 %; they remain isolated under this relation).
+
+    Implementation: query a generous spatial neighbourhood per well (the k nearest are not
+    enough when neighbours sit in other sub-basins), then keep, in increasing distance order,
+    up to `k` neighbours that (i) share the sub-basin and (ii) lie within `cap_km`. The
+    distance sort lets us stop early once the cap is exceeded.
+
+    Returns (edge_index[2,E] int64, edge_dist_km[E]); each undirected edge once (callers
+    symmetrise); self-loops excluded; EVERY returned edge satisfies subbasin[a]==subbasin[b].
+    """
+    from sklearn.neighbors import BallTree
+
+    n = coords.shape[0]
+    # query enough neighbours that ~k same-subbasin ones are reachable within the cap;
+    # cap the query at n. 64 is ample given degree<=k after filtering (verified vs eval counts).
+    kq = min(n, max(k + 1, 64))
+    tree = BallTree(np.radians(coords), metric="haversine")
+    dist, idx = tree.query(np.radians(coords), k=kq)
+    dist_km = dist * EARTH_R_KM
+
+    src, dst, dkm = [], [], []
+    for i in range(n):
+        si = subbasin[i]
+        if si is None or (isinstance(si, float) and np.isnan(si)) or pd.isna(si):
+            continue                                   # missing subbasin -> no mechanistic edge
+        cnt = 0
+        for jcol in range(1, kq):                      # skip self (column 0)
+            d = dist_km[i, jcol]
+            if d > cap_km:
+                break                                  # sorted by distance -> nothing closer left
+            j = int(idx[i, jcol])
+            sj = subbasin[j]
+            if sj is None or pd.isna(sj) or sj != si:
+                continue                               # must share the sub-basin
+            a, b = (i, j) if i < j else (j, i)
+            src.append(a); dst.append(b); dkm.append(d)
+            cnt += 1
+            if cnt >= k:
+                break
+    if not src:
+        return (np.zeros((2, 0), dtype=np.int64), np.zeros(0, dtype=np.float64))
+    key = np.array(src, dtype=np.int64) * n + np.array(dst, dtype=np.int64)
+    _, uniq = np.unique(key, return_index=True)        # dedup undirected (i in j's knn and v.v.)
+    ei = np.vstack([np.array(src)[uniq], np.array(dst)[uniq]]).astype(np.int64)
+    ed = np.array(dkm)[uniq].astype(np.float64)
+    return ei, ed
+
+
 def cut_cross_block(edge_index: np.ndarray, edge_dist: np.ndarray,
                     node_block: np.ndarray):
     """C4: drop every edge whose endpoints sit in DIFFERENT CV blocks.
@@ -163,15 +232,30 @@ class WellGraph:
 
 
 def build_well_graph(df: pd.DataFrame, *, fold_block: np.ndarray | None = None,
-                     k: int = 8, cap_km: float = 1.5, cut_blocks: bool = True) -> WellGraph:
-    """Assemble the well-level spatial graph (topology + block ids + row->node map).
+                     relation: str = "spatial", k: int = 8, cap_km: float | None = None,
+                     cut_blocks: bool = True) -> WellGraph:
+    """Assemble the well-level graph (topology + block ids + row->node map).
+
+    `relation` picks the (eval-approved, §2.4/contract §3) edge construction:
+      * "spatial"        : bare spatial k-NN, cap **1.5 km** by default (phase-1 baseline graph).
+      * "subbasin_knn"   : intra-sub-basin k-NN, k=8 cap **2 km** by default (the mechanistic
+                           graph — k-NN RESTRICTED to wells sharing `sgma_subbasin_name`).
+    Any other relation is REFUSED here (full subbasin clique / same-source-type cliques are
+    spatial leakage / signal-free — see eval §2.2-2.3); add a new one only after a fresh
+    eval-methodologist approval.
+
+    `cap_km=None` selects the relation's default cap (1.5 km spatial / 2 km subbasin).
 
     `fold_block` is a per-ROW block id (e.g. splits.spatial_block_folds(df)); it is reduced
     to a per-WELL block (a well lives in exactly one block by construction) and used both as
-    node_block and, when cut_blocks, to cut cross-block edges (C4).
+    `node_block` and, when `cut_blocks`, to cut cross-block edges (C4). **C4 applies to BOTH
+    relations** — the mechanistic edges are cut across block boundaries just like the spatial
+    ones (contract §2.1/§2.4): assert 0 cross-block edges remain.
     """
     well_ids, coords, well_to_node = well_table(df)
     n = len(well_ids)
+    if cap_km is None:
+        cap_km = 1.5 if relation == "spatial" else 2.0
 
     if fold_block is not None:
         bdf = pd.DataFrame({"w": df[C.WELL_ID].to_numpy(), "b": np.asarray(fold_block)})
@@ -184,7 +268,18 @@ def build_well_graph(df: pd.DataFrame, *, fold_block: np.ndarray | None = None,
     else:
         node_block = np.zeros(n, dtype=int)
 
-    ei, ed = knn_edges_km(coords, k=k, cap_km=cap_km)
+    if relation == "spatial":
+        ei, ed = knn_edges_km(coords, k=k, cap_km=cap_km)
+        n_isolated = None
+    elif relation == "subbasin_knn":
+        sub = well_subbasin(df, well_ids)
+        ei, ed = knn_edges_intra_subbasin(coords, sub, k=k, cap_km=cap_km)
+        n_isolated = int(pd.isna(sub).sum())          # wells with no possible mechanistic edge
+    else:
+        raise ValueError(
+            f"relation={relation!r} is not eval-approved; use 'spatial' or 'subbasin_knn' "
+            "(full subbasin clique / source-type cliques are REFUSED, eval §2.2-2.3)")
+
     removed = 0
     if cut_blocks and fold_block is not None:
         ei, ed, removed = cut_cross_block(ei, ed, node_block)
@@ -192,12 +287,16 @@ def build_well_graph(df: pd.DataFrame, *, fold_block: np.ndarray | None = None,
 
     row_to_node = df[C.WELL_ID].map(well_to_node).to_numpy().astype(np.int64)
 
+    meta = {"n_nodes": n, "n_edges_undirected": ei.shape[1] // 2,
+            "relation": relation, "k": k, "cap_km": cap_km,
+            "cut_blocks": bool(cut_blocks and fold_block is not None)}
+    if n_isolated is not None:
+        meta["n_wells_missing_subbasin"] = n_isolated
+
     return WellGraph(
         well_ids=well_ids, coords=coords, node_block=node_block,
         edge_index=ei, edge_dist=ed, row_to_node=row_to_node,
-        n_removed_cross_block=removed,
-        meta={"n_nodes": n, "n_edges_undirected": ei.shape[1] // 2,
-              "k": k, "cap_km": cap_km, "cut_blocks": bool(cut_blocks and fold_block is not None)},
+        n_removed_cross_block=removed, meta=meta,
     )
 
 

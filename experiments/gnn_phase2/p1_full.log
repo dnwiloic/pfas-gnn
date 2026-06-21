@@ -1,0 +1,4 @@
+spatial: macro_AUROC=0.6812 micro_F1=0.5469 cross_block_edges=0
+random:  macro_AUROC=0.8432 micro_F1=0.6855
+
+wrote /home/wiloic/M2/Recherche/tmp/pfas/pfas-gnn/experiments/gnn_phase2/metrics_p1.json in 65.37 min (macro_AUROC spatial 0.681 vs wall 0.680, Δ=0.162)
