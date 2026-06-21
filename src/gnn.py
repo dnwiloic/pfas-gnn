@@ -109,6 +109,8 @@ class FoldResult:
     n_removed_cross_block: int
     n_edges: int
     best_epoch: int
+    n_val_micro: int = 0
+    n_val_nodes: int = 0
 
 
 def _make_data(df, y_row, feature_cols, fold_block, *, k, cap_km, cut_blocks, encode):
@@ -121,15 +123,67 @@ def _make_data(df, y_row, feature_cols, fold_block, *, k, cap_km, cut_blocks, en
     return wg, y_node
 
 
+def _robust_val_mask(node_block, train_nodes_all, *, n_micro=6, val_frac=0.18,
+                     seed=C.SEED):
+    """P0: spatial validation = several MICRO-BLOCKS assembled, not a single spatial block.
+
+    Phase-1 took the single train block with the largest id as validation; that holdout is
+    one compact region, so its AUC is noisy and early-stop fired too soon on 2-3 folds
+    (EVAL_PROTOCOL §2.4 warns a single block is statistically under-powered). Here we split
+    the TRAIN wells into `n_micro` spatial micro-blocks (KMeans on their coords) and hold
+    out a `val_frac` slice of EACH micro-block, so validation spans the whole train extent
+    (more representative, less variance) while staying spatial WITHIN the train side. The
+    held-out wells are still TRAIN-side, so no test leakage; the FIT graph keeps all train
+    edges (we only mask the loss/early-stop nodes, transductive)."""
+    from sklearn.cluster import KMeans
+
+    train_idx = np.where(train_nodes_all)[0]
+    if len(train_idx) < 2 * n_micro:               # tiny smoke fallback: plain random slice
+        rng = np.random.RandomState(seed)
+        val_idx = rng.choice(train_idx, size=max(1, int(val_frac * len(train_idx))),
+                             replace=False)
+        val = np.zeros_like(train_nodes_all); val[val_idx] = True
+        return val
+    # we need coords; reuse node_block only as a fallback key. Caller passes coords below.
+    raise RuntimeError("call _robust_val_mask_coords")  # pragma: no cover
+
+
+def _robust_val_mask_coords(coords, train_nodes_all, *, n_micro=6, val_frac=0.18,
+                            seed=C.SEED):
+    """Assemble several spatial micro-blocks of the TRAIN wells and hold out a stratified
+    slice of each as the early-stop validation set (see _robust_val_mask docstring)."""
+    from sklearn.cluster import KMeans
+
+    train_idx = np.where(train_nodes_all)[0]
+    rng = np.random.RandomState(seed)
+    if len(train_idx) < max(2 * n_micro, 10):      # tiny smoke fallback
+        val_idx = rng.choice(train_idx, size=max(1, int(val_frac * len(train_idx))),
+                             replace=False)
+        val = np.zeros_like(train_nodes_all); val[val_idx] = True
+        return val, 1
+    n_micro = int(min(n_micro, max(2, len(train_idx) // 30)))
+    km = KMeans(n_clusters=n_micro, random_state=seed, n_init=10)
+    micro = km.fit_predict(coords[train_idx])
+    val = np.zeros_like(train_nodes_all)
+    for b in range(n_micro):                       # stratified hold-out per micro-block
+        members = train_idx[micro == b]
+        if len(members) == 0:
+            continue
+        n_hold = max(1, int(round(val_frac * len(members))))
+        val[rng.choice(members, size=min(n_hold, len(members)), replace=False)] = True
+    return val, n_micro
+
+
 def train_eval_fold(df, y_row, feature_cols, fold_block, test_block, *,
                     model_name="graphsage", k=8, cap_km=1.5, cut_blocks=True,
                     encode="frequency", hidden=64, layers=2, dropout=0.5,
-                    lr=5e-3, weight_decay=5e-4, max_epochs=300, patience=30,
-                    val_frac=0.15, seed=C.SEED, verbose=False):
+                    lr=5e-3, weight_decay=5e-4, max_epochs=400, patience=50,
+                    val_frac=0.18, n_val_micro=6, lr_schedule=True,
+                    seed=C.SEED, verbose=False):
     """Train on one outer fold (test = nodes whose block == test_block), early-stopped on a
-    spatially-held-out validation slice of the TRAIN blocks, score test nodes once, broadcast
-    to sampling rows and compute row-level binary metrics. Returns (FoldResult, proba_row,
-    test_row_mask)."""
+    ROBUST spatial validation (several train micro-blocks assembled, P0), with an optional
+    ReduceLROnPlateau schedule, score test nodes once, broadcast to sampling rows and
+    compute row-level binary metrics. Returns (FoldResult, proba_row, test_row_mask)."""
     import torch
     import torch.nn.functional as Fn
 
@@ -142,13 +196,12 @@ def train_eval_fold(df, y_row, feature_cols, fold_block, test_block, *,
     test_nodes = node_block == test_block
     train_nodes_all = ~test_nodes
 
-    # spatial validation: hold out the train-side block(s) closest to nothing — pick the
-    # train block with the largest id deterministically as val (a real spatial holdout).
-    train_blocks = sorted(set(node_block[train_nodes_all].tolist()))
-    val_block = train_blocks[-1] if len(train_blocks) > 1 else train_blocks[0]
-    val_nodes = (node_block == val_block) & train_nodes_all
+    # P0: robust spatial validation = several assembled micro-blocks of the TRAIN wells
+    # (replaces phase-1's single-block holdout that under-trained 2-3 folds).
+    val_nodes, n_micro_used = _robust_val_mask_coords(
+        wg.coords, train_nodes_all, n_micro=n_val_micro, val_frac=val_frac, seed=seed)
     fit_nodes = train_nodes_all & ~val_nodes
-    if val_nodes.sum() == 0:                       # tiny smoke fallback: random val split
+    if val_nodes.sum() == 0 or fit_nodes.sum() == 0:   # degenerate guard
         rng = np.random.RandomState(seed)
         idx = np.where(train_nodes_all)[0]
         val_idx = rng.choice(idx, size=max(1, int(val_frac * len(idx))), replace=False)
@@ -169,6 +222,10 @@ def train_eval_fold(df, y_row, feature_cols, fold_block, test_block, *,
     model = build_model(model_name, in_dim=X.shape[1], hidden=hidden,
                         layers=layers, dropout=dropout).to(dev)
     opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
+    sched = None
+    if lr_schedule:
+        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            opt, mode="max", factor=0.5, patience=max(5, patience // 4), min_lr=1e-5)
     pos = float(y[m_fit].sum()); neg = float(m_fit.sum().item() - pos)
     pos_weight = torch.tensor([neg / pos if pos > 0 else 1.0], device=dev)
 
@@ -190,6 +247,8 @@ def train_eval_fold(df, y_row, feature_cols, fold_block, test_block, *,
                 vauc = roc_auc_score(yv, pv) if len(np.unique(yv)) > 1 else 0.0
             except Exception:
                 vauc = 0.0
+        if sched is not None:
+            sched.step(vauc)
         if vauc > best_val + 1e-4:
             best_val, best_epoch, bad = vauc, epoch, 0
             best_state = {kk: vv.detach().clone() for kk, vv in model.state_dict().items()}
@@ -198,7 +257,8 @@ def train_eval_fold(df, y_row, feature_cols, fold_block, test_block, *,
             if bad >= patience:
                 break
         if verbose and epoch % 20 == 0:
-            print(f"  ep{epoch} loss={float(loss):.4f} val_auc={vauc:.4f}")
+            print(f"  ep{epoch} loss={float(loss):.4f} val_auc={vauc:.4f} "
+                  f"lr={opt.param_groups[0]['lr']:.1e}")
 
     if best_state is not None:
         model.load_state_dict(best_state)
@@ -220,7 +280,8 @@ def train_eval_fold(df, y_row, feature_cols, fold_block, test_block, *,
 
     fr = FoldResult(fold=int(test_block), metrics_spatial=mets,
                     n_removed_cross_block=wg.n_removed_cross_block,
-                    n_edges=wg.edge_index.shape[1], best_epoch=best_epoch)
+                    n_edges=wg.edge_index.shape[1], best_epoch=best_epoch,
+                    n_val_micro=int(n_micro_used), n_val_nodes=int(val_nodes.sum()))
     return fr, proba_row, test_row_mask
 
 
@@ -235,7 +296,8 @@ def _f1_threshold(y, p):
 
 def run_t1_cv(df, *, model_name="graphsage", feature_cols=None, regime="spatial",
               k=8, cap_km=1.5, cut_blocks=True, encode="frequency", n_blocks=None,
-              hidden=64, layers=2, dropout=0.5, max_epochs=300, patience=30,
+              hidden=64, layers=2, dropout=0.5, max_epochs=400, patience=50,
+              lr=5e-3, n_val_micro=6, val_frac=0.18, lr_schedule=True,
               seed=C.SEED, verbose=False):
     """Full leave-one-block-out CV for T1a on the well graph. `regime`:
        'spatial' -> spatial_block_folds (reference);  'random' -> group_random_folds (Δ).
@@ -258,11 +320,13 @@ def run_t1_cv(df, *, model_name="graphsage", feature_cols=None, regime="spatial"
             df, y_row, feature_cols, fold_block, b,
             model_name=model_name, k=k, cap_km=cap_km, cut_blocks=do_cut,
             encode=encode, hidden=hidden, layers=layers, dropout=dropout,
-            max_epochs=max_epochs, patience=patience, seed=seed, verbose=verbose)
+            lr=lr, max_epochs=max_epochs, patience=patience, n_val_micro=n_val_micro,
+            val_frac=val_frac, lr_schedule=lr_schedule, seed=seed, verbose=verbose)
         results.append(fr)
         if verbose:
             print(f"[{regime}] block {b}: AUC={fr.metrics_spatial['roc_auc']:.4f} "
-                  f"removed_xblock={fr.n_removed_cross_block} edges={fr.n_edges}")
+                  f"removed_xblock={fr.n_removed_cross_block} edges={fr.n_edges} "
+                  f"best_ep={fr.best_epoch} val_micro={fr.n_val_micro}")
 
     aucs = [r.metrics_spatial["roc_auc"] for r in results if not np.isnan(r.metrics_spatial["roc_auc"])]
     summary = {
@@ -273,5 +337,7 @@ def run_t1_cv(df, *, model_name="graphsage", feature_cols=None, regime="spatial"
         "total_removed_cross_block": int(sum(r.n_removed_cross_block for r in results)),
         "cap_km": cap_km, "k": k, "cut_blocks": do_cut, "encode": encode,
         "per_fold_auc": [float(a) for a in aucs],
+        "per_fold_best_epoch": [int(r.best_epoch) for r in results],
+        "per_fold_n_val_micro": [int(r.n_val_micro) for r in results],
     }
     return summary, results

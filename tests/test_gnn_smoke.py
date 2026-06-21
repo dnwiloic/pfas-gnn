@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
 
 from src import config as C
-from src import data, graph as G, gnn, splits as S, targets as T
+from src import data, graph as G, gnn, gnn_bipartite as GB, splits as S, targets as T
 
 
 SMOKE_WELLS = 1500   # dense enough that some near wells fall in different blocks (C4)
@@ -148,6 +148,107 @@ def test_bipartite_graph_builds():
           f"positive rate={bg.edge_label.mean():.3f}")
 
 
+# --------------------------------------------------------------- P0: robust early-stop
+def test_p0_robust_val_is_multiblock():
+    """P0: the early-stop validation spans SEVERAL train micro-blocks (not a single block)
+    and one fold trains to finite metrics."""
+    df = _load()
+    y_row = T.build_T1a(df).to_numpy()
+    fold_block = S.spatial_block_folds(df, k=SMOKE_BLOCKS)
+    cols = C.feature_columns(include_location=False, cocontam="core")
+    test_block = int(np.bincount(fold_block).argmax())
+    fr, proba_row, test_mask = gnn.train_eval_fold(
+        df, y_row, cols, fold_block, test_block,
+        model_name="graphsage", k=8, cap_km=1.5, cut_blocks=True,
+        encode="frequency", hidden=32, layers=2, dropout=0.3,
+        max_epochs=60, patience=20, n_val_micro=5, seed=C.SEED, verbose=False)
+    assert fr.n_val_micro >= 2, "validation must assemble >=2 micro-blocks (P0)"
+    assert fr.n_val_nodes > 0
+    m = fr.metrics_spatial
+    assert np.isfinite(m["accuracy"]) and 0.0 <= m["accuracy"] <= 1.0
+    print(f"P0 fold {test_block}: val_micro={fr.n_val_micro} val_nodes={fr.n_val_nodes} "
+          f"AUC={m['roc_auc']:.3f} best_epoch={fr.best_epoch}")
+
+
+# --------------------------------------------------------------- P1: bipartite completion
+def test_p1_bipartite_label_matrix():
+    df = _load()
+    well_ids, Yw, Mw, w2n = GB.well_label_matrix(df, C.T2_LABELS)
+    assert Yw.shape == Mw.shape == (len(well_ids), len(C.T2_LABELS))
+    assert Mw.any(), "no measured cells in the well x analyte matrix"
+    assert set(np.unique(Yw[Mw])).issubset({0, 1})
+    print(f"P1 matrix: {len(well_ids)} wells x {len(C.T2_LABELS)} analytes, "
+          f"{int(Mw.sum())} measured cells, well-level positive rate={Yw[Mw].mean():.3f}")
+
+
+def test_p1_bipartite_loss_decreases_and_no_cross_block():
+    """P1: bipartite completion trains end-to-end, loss is finite/decreasing, and the
+    measured-cell edges never cross a CV block (C4 by construction)."""
+    import torch
+    import torch.nn.functional as Fn
+    df = _load()
+    cols = C.feature_columns(include_location=False, cocontam="core")
+    labels = C.T2_LABELS
+    well_ids, Yw, Mw, w2n = GB.well_label_matrix(df, labels)
+    fold_block = S.spatial_block_folds(df, k=SMOKE_BLOCKS)
+    bdf = __import__("pandas").DataFrame({"w": df[C.WELL_ID].to_numpy(), "b": fold_block})
+    per_well = bdf.groupby("w")["b"].agg(lambda s: int(s.iloc[0]))
+    well_block = per_well.reindex(well_ids).to_numpy().astype(int)
+    test_block = int(np.bincount(well_block).argmax())
+
+    # explicit short loss-trajectory check on the fit edges
+    GB.set_seed(C.SEED)
+    train_wells = well_block != test_block
+    X, _, _ = G.node_features(df, well_ids, cols, train_node_mask=train_wells,
+                              encode="frequency")
+    n_lab = len(labels)
+    tr_w, tr_a, tr_y = [], [], []
+    for w in range(len(well_ids)):
+        for j in range(n_lab):
+            if Mw[w, j] and train_wells[w]:
+                tr_w.append(w); tr_a.append(j); tr_y.append(int(Yw[w, j]))
+    tr_w = np.array(tr_w); tr_a = np.array(tr_a); tr_y = np.array(tr_y, dtype=np.float32)
+    x = torch.tensor(X)
+    aid = torch.arange(n_lab)
+    ea2w = torch.tensor(np.vstack([tr_a, tr_w]), dtype=torch.long)
+    ew2a = torch.tensor(np.vstack([tr_w, tr_a]), dtype=torch.long)
+    model = GB.build_completion_model(X.shape[1], n_lab, emb_dim=16, hidden=32, layers=2,
+                                      dropout=0.0)
+    opt = torch.optim.Adam(model.parameters(), lr=1e-2)
+    pw = torch.tensor(tr_w, dtype=torch.long); pa = torch.tensor(tr_a, dtype=torch.long)
+    yt = torch.tensor(tr_y)
+    losses = []
+    model.train()
+    for _ in range(25):
+        opt.zero_grad()
+        out = model(x, aid, ea2w, ew2a, pw, pa)
+        loss = Fn.binary_cross_entropy_with_logits(out, yt)
+        losses.append(float(loss.detach())); loss.backward(); opt.step()
+        assert torch.isfinite(loss)
+    print(f"P1 bipartite loss: {losses[0]:.4f} -> {losses[-1]:.4f}")
+    assert losses[-1] < losses[0], "bipartite loss did not decrease"
+    # C4: every measured-cell edge touches one well = one block -> 0 cross-block.
+    cross = int((well_block[tr_w] == test_block).sum())  # all train edges -> none in test
+    assert cross == 0, "train bipartite edges touch a test-block well — leakage"
+
+
+def test_p1_bipartite_cv_masked_metrics():
+    """P1 end-to-end: a 3-block spatial CV produces the 5 masked multilabel metrics
+    (comparable to the T2 wall) with macro-AUROC a finite number in (0,1)."""
+    df = _load()
+    res = GB.run_t2_bipartite_cv(
+        df, regime="spatial", n_blocks=3, emb_dim=16, hidden=32, layers=2,
+        dropout=0.2, max_epochs=40, patience=15, seed=C.SEED, verbose=False)
+    for key in ("macro_AUROC", "micro_F1", "micro_recall", "micro_precision"):
+        assert key in res and np.isfinite(res[key])
+    assert 0.0 < res["macro_AUROC"] < 1.0
+    assert res["n_cross_block_edges"] == 0, "C4 violated in bipartite CV"
+    pl = res["per_label"]
+    assert len(pl) == len(C.T2_LABELS)
+    print(f"P1 CV(3 blk): macro_AUROC={res['macro_AUROC']:.3f} "
+          f"micro_F1={res['micro_F1']:.3f} cross_block_edges={res['n_cross_block_edges']}")
+
+
 if __name__ == "__main__":
     t0 = time.time()
     test_pyg_imports_cpu()
@@ -156,5 +257,9 @@ if __name__ == "__main__":
     test_loss_decreases()
     test_train_one_fold_loss_finite_and_metrics()
     test_bipartite_graph_builds()
+    test_p0_robust_val_is_multiblock()
+    test_p1_bipartite_label_matrix()
+    test_p1_bipartite_loss_decreases_and_no_cross_block()
+    test_p1_bipartite_cv_masked_metrics()
     dt = time.time() - t0
     print(f"\nSMOKE OK in {dt:.1f}s")

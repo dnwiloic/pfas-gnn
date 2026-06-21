@@ -1,0 +1,405 @@
+{
+  "task": "T2",
+  "phase": "P1",
+  "model": "BipartiteCompletion",
+  "smoke": false,
+  "seed": 42,
+  "n_blocks": 8,
+  "spatial": {
+    "regime": "spatial",
+    "n_blocks": 8,
+    "macro_AUROC": 0.6811799404148484,
+    "micro_AUROC": 0.7246657739269842,
+    "micro_F1": 0.5468552542043356,
+    "macro_F1": 0.5003527814252869,
+    "micro_recall": 0.6942123263521613,
+    "micro_precision": 0.4511020230485486,
+    "subset_accuracy": 0.3289557465775231,
+    "per_label": [
+      {
+        "label": "PFOS",
+        "n_measured": 46256,
+        "prevalence": 0.3940245589761328,
+        "roc_auc": 0.6381598735408313,
+        "pr_auc": 0.49229272574323524,
+        "f1": 0.5745914122701339,
+        "precision": 0.49051111887297705,
+        "recall": 0.693459892461319,
+        "accuracy": 0.5954038395019025
+      },
+      {
+        "label": "PFBS",
+        "n_measured": 44083,
+        "prevalence": 0.39235079282263,
+        "roc_auc": 0.641027048463006,
+        "pr_auc": 0.5009206334012177,
+        "f1": 0.574721931742561,
+        "precision": 0.48793381759483456,
+        "recall": 0.6990633672525439,
+        "accuracy": 0.5940838872127577
+      },
+      {
+        "label": "PFHxA",
+        "n_measured": 44400,
+        "prevalence": 0.3837162162162162,
+        "roc_auc": 0.6691151009611922,
+        "pr_auc": 0.5250535003115182,
+        "f1": 0.5887896942859172,
+        "precision": 0.4934899968243887,
+        "recall": 0.7297059341433351,
+        "accuracy": 0.6088963963963964
+      },
+      {
+        "label": "PFOA",
+        "n_measured": 46252,
+        "prevalence": 0.3408933667733287,
+        "roc_auc": 0.6632118523522164,
+        "pr_auc": 0.45597509569880523,
+        "f1": 0.562584794733933,
+        "precision": 0.4658206781776576,
+        "recall": 0.7100906957569607,
+        "accuracy": 0.623583845022918
+      },
+      {
+        "label": "PFHpA",
+        "n_measured": 45099,
+        "prevalence": 0.2651278298853633,
+        "roc_auc": 0.6717198279553087,
+        "pr_auc": 0.3913143166156058,
+        "f1": 0.4936318139590638,
+        "precision": 0.38464412478983745,
+        "recall": 0.688801538847537,
+        "accuracy": 0.6253353732898734
+      },
+      {
+        "label": "PFBA",
+        "n_measured": 25816,
+        "prevalence": 0.4103656647040595,
+        "roc_auc": 0.7057847054084726,
+        "pr_auc": 0.586160443436878,
+        "f1": 0.6436298791361205,
+        "precision": 0.5546752271019739,
+        "recall": 0.7665659807438172,
+        "accuracy": 0.6516501394484041
+      },
+      {
+        "label": "PFPeA",
+        "n_measured": 25738,
+        "prevalence": 0.40955008159142126,
+        "roc_auc": 0.6979295765344766,
+        "pr_auc": 0.5804096482136158,
+        "f1": 0.6241308470290771,
+        "precision": 0.5347640647214136,
+        "recall": 0.7493596432975999,
+        "accuracy": 0.6303520087030849
+      },
+      {
+        "label": "PFHxS",
+        "n_measured": 44115,
+        "prevalence": 0.1537798934602743,
+        "roc_auc": 0.6567574184481965,
+        "pr_auc": 0.25833697773877295,
+        "f1": 0.33781833418688023,
+        "precision": 0.24688669615515482,
+        "recall": 0.5347877358490566,
+        "accuracy": 0.6775926555593336
+      },
+      {
+        "label": "PFPeS",
+        "n_measured": 25948,
+        "prevalence": 0.15762293818406042,
+        "roc_auc": 0.7018237687084966,
+        "pr_auc": 0.3123280241314783,
+        "f1": 0.3801478352692714,
+        "precision": 0.29694803409403353,
+        "recall": 0.5281173594132029,
+        "accuracy": 0.7285339910590412
+      },
+      {
+        "label": "PFNA",
+        "n_measured": 45112,
+        "prevalence": 0.025625110835254476,
+        "roc_auc": 0.7662702317762871,
+        "pr_auc": 0.1304763018616367,
+        "f1": 0.22348127163991185,
+        "precision": 0.1756556160316675,
+        "recall": 0.3070934256055363,
+        "accuracy": 0.945313885440681
+      }
+    ],
+    "thresholds": {
+      "PFOS": 0.05,
+      "PFBS": 0.05,
+      "PFHxA": 0.05,
+      "PFOA": 0.05,
+      "PFHpA": 0.05,
+      "PFBA": 0.05,
+      "PFPeA": 0.05,
+      "PFHxS": 0.1,
+      "PFPeS": 0.15,
+      "PFNA": 0.5499999999999999
+    },
+    "n_cross_block_edges": 0,
+    "per_fold": [
+      {
+        "fold": 0,
+        "n_train_edges": 98522,
+        "n_test_edges": 8694,
+        "best_epoch": 294,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 1,
+        "n_train_edges": 91343,
+        "n_test_edges": 15873,
+        "best_epoch": 298,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 2,
+        "n_train_edges": 78910,
+        "n_test_edges": 28306,
+        "best_epoch": 293,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 3,
+        "n_train_edges": 98421,
+        "n_test_edges": 8795,
+        "best_epoch": 293,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 4,
+        "n_train_edges": 91406,
+        "n_test_edges": 15810,
+        "best_epoch": 298,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 5,
+        "n_train_edges": 97226,
+        "n_test_edges": 9990,
+        "best_epoch": 279,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 6,
+        "n_train_edges": 92025,
+        "n_test_edges": 15191,
+        "best_epoch": 296,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 7,
+        "n_train_edges": 102659,
+        "n_test_edges": 4557,
+        "best_epoch": 295,
+        "n_cross_block_edges": 0
+      }
+    ]
+  },
+  "random": {
+    "regime": "random",
+    "n_blocks": 8,
+    "macro_AUROC": 0.8432371840335439,
+    "micro_AUROC": 0.858094550210064,
+    "micro_F1": 0.6854519550419503,
+    "macro_F1": 0.6551334994007639,
+    "micro_recall": 0.7633453212044284,
+    "micro_precision": 0.6219834520799816,
+    "subset_accuracy": 0.4391515440942375,
+    "per_label": [
+      {
+        "label": "PFOS",
+        "n_measured": 46256,
+        "prevalence": 0.3940245589761328,
+        "roc_auc": 0.8025729524170286,
+        "pr_auc": 0.6863746749136476,
+        "f1": 0.6923129797227632,
+        "precision": 0.5943585506904284,
+        "recall": 0.8289257105234281,
+        "accuracy": 0.7096809062608094
+      },
+      {
+        "label": "PFBS",
+        "n_measured": 44083,
+        "prevalence": 0.39235079282263,
+        "roc_auc": 0.8213411184878605,
+        "pr_auc": 0.7189437616658747,
+        "f1": 0.7131482562768724,
+        "precision": 0.6591600431753508,
+        "recall": 0.7767691951896393,
+        "accuracy": 0.7548261234489486
+      },
+      {
+        "label": "PFHxA",
+        "n_measured": 44400,
+        "prevalence": 0.3837162162162162,
+        "roc_auc": 0.8211645428470837,
+        "pr_auc": 0.7152731609853602,
+        "f1": 0.7035730390726544,
+        "precision": 0.6418546123318168,
+        "recall": 0.7784234313552856,
+        "accuracy": 0.7483108108108109
+      },
+      {
+        "label": "PFOA",
+        "n_measured": 46252,
+        "prevalence": 0.3408933667733287,
+        "roc_auc": 0.8243258511196743,
+        "pr_auc": 0.6688138711329116,
+        "f1": 0.6779680764301527,
+        "precision": 0.6268785348774576,
+        "recall": 0.7381239297266443,
+        "accuracy": 0.7609616881432154
+      },
+      {
+        "label": "PFHpA",
+        "n_measured": 45099,
+        "prevalence": 0.2651278298853633,
+        "roc_auc": 0.8298936682709124,
+        "pr_auc": 0.6013277027972058,
+        "f1": 0.6296913125992486,
+        "precision": 0.5864233155388833,
+        "recall": 0.6798528058877645,
+        "accuracy": 0.7879997339187121
+      },
+      {
+        "label": "PFBA",
+        "n_measured": 25816,
+        "prevalence": 0.4103656647040595,
+        "roc_auc": 0.8503428194196535,
+        "pr_auc": 0.7641997316553741,
+        "f1": 0.750816377794524,
+        "precision": 0.6746163105627445,
+        "recall": 0.8464225033037568,
+        "accuracy": 0.7694453052370623
+      },
+      {
+        "label": "PFPeA",
+        "n_measured": 25738,
+        "prevalence": 0.40955008159142126,
+        "roc_auc": 0.8415237494041276,
+        "pr_auc": 0.76538690968578,
+        "f1": 0.7366960907944514,
+        "precision": 0.6614084081817496,
+        "recall": 0.8313253012048193,
+        "accuracy": 0.7566244463439272
+      },
+      {
+        "label": "PFHxS",
+        "n_measured": 44115,
+        "prevalence": 0.1537798934602743,
+        "roc_auc": 0.8384045734664347,
+        "pr_auc": 0.5327249096019827,
+        "f1": 0.556901774123756,
+        "precision": 0.5451849759954815,
+        "recall": 0.5691332547169812,
+        "accuracy": 0.8607276436586195
+      },
+      {
+        "label": "PFPeS",
+        "n_measured": 25948,
+        "prevalence": 0.15762293818406042,
+        "roc_auc": 0.8642224898606499,
+        "pr_auc": 0.5702166410520045,
+        "f1": 0.6050005606009642,
+        "precision": 0.5587078069993787,
+        "recall": 0.6596577017114914,
+        "accuracy": 0.8642284569138277
+      },
+      {
+        "label": "PFNA",
+        "n_measured": 45112,
+        "prevalence": 0.025625110835254476,
+        "roc_auc": 0.9385800750420128,
+        "pr_auc": 0.4164418619455353,
+        "f1": 0.4852265265922521,
+        "precision": 0.391005291005291,
+        "recall": 0.639273356401384,
+        "accuracy": 0.9652420641957794
+      }
+    ],
+    "thresholds": {
+      "PFOS": 0.05,
+      "PFBS": 0.15,
+      "PFHxA": 0.15,
+      "PFOA": 0.2,
+      "PFHpA": 0.39999999999999997,
+      "PFBA": 0.1,
+      "PFPeA": 0.1,
+      "PFHxS": 0.44999999999999996,
+      "PFPeS": 0.44999999999999996,
+      "PFNA": 0.3
+    },
+    "n_cross_block_edges": 0,
+    "per_fold": [
+      {
+        "fold": 0,
+        "n_train_edges": 93784,
+        "n_test_edges": 13432,
+        "best_epoch": 292,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 1,
+        "n_train_edges": 93864,
+        "n_test_edges": 13352,
+        "best_epoch": 290,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 2,
+        "n_train_edges": 93790,
+        "n_test_edges": 13426,
+        "best_epoch": 299,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 3,
+        "n_train_edges": 93828,
+        "n_test_edges": 13388,
+        "best_epoch": 290,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 4,
+        "n_train_edges": 93843,
+        "n_test_edges": 13373,
+        "best_epoch": 291,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 5,
+        "n_train_edges": 93855,
+        "n_test_edges": 13361,
+        "best_epoch": 287,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 6,
+        "n_train_edges": 93810,
+        "n_test_edges": 13406,
+        "best_epoch": 295,
+        "n_cross_block_edges": 0
+      },
+      {
+        "fold": 7,
+        "n_train_edges": 93738,
+        "n_test_edges": 13478,
+        "best_epoch": 294,
+        "n_cross_block_edges": 0
+      }
+    ]
+  },
+  "delta_random_minus_spatial_macro_AUROC": 0.16205724361869545,
+  "wall": {
+    "BinaryRelevance_macro_AUROC_spatial": 0.68,
+    "BinaryRelevance_macro_AUROC_random": 0.902,
+    "BinaryRelevance_delta": 0.222,
+    "BinaryRelevance_micro_F1_spatial": 0.542,
+    "Prevalence_macro_AUROC_spatial": 0.348
+  },
+  "elapsed_min": 65.37
+}
