@@ -1,0 +1,471 @@
+{
+  "spatial": {
+    "regime": "spatial",
+    "model": "rgcn",
+    "n_blocks": 3,
+    "auc_oof_global": 0.6464144309851965,
+    "auc_oof_ci95": {
+      "ci_low": 0.5440681785957769,
+      "ci_high": 0.7327892064711368,
+      "n_boot": 1000
+    },
+    "per_fold_auc": [
+      0.6138015463917526,
+      0.5582619225037259,
+      0.46022857142857143
+    ],
+    "auc_mean": 0.5440973467746834,
+    "auc_std": 0.06349089732105068,
+    "global_metrics": {
+      "roc_auc": 0.6464144309851965,
+      "f1": 0.6076519129782446,
+      "accuracy": 0.6577225130890052,
+      "recall": 0.6899488926746167,
+      "precision": 0.5428954423592494,
+      "pr_auc": 0.5001905003732093,
+      "balanced_accuracy": 0.6637842231704645,
+      "brier": 0.24470790740241063,
+      "threshold_used": 0.25,
+      "ece": 0.16690084024117996
+    },
+    "reliability_curve": [
+      {
+        "bin_lo": 0.0,
+        "bin_hi": 0.1,
+        "n": 375,
+        "mean_conf": 0.06527405093331799,
+        "frac_pos": 0.2613333333333333
+      },
+      {
+        "bin_lo": 0.1,
+        "bin_hi": 0.2,
+        "n": 314,
+        "mean_conf": 0.14704267559632375,
+        "frac_pos": 0.1942675159235669
+      },
+      {
+        "bin_lo": 0.2,
+        "bin_hi": 0.30000000000000004,
+        "n": 170,
+        "mean_conf": 0.2539001931162441,
+        "frac_pos": 0.45294117647058824
+      },
+      {
+        "bin_lo": 0.30000000000000004,
+        "bin_hi": 0.4,
+        "n": 145,
+        "mean_conf": 0.3552014320061125,
+        "frac_pos": 0.4068965517241379
+      },
+      {
+        "bin_lo": 0.4,
+        "bin_hi": 0.5,
+        "n": 191,
+        "mean_conf": 0.4457785204755074,
+        "frac_pos": 0.6858638743455497
+      },
+      {
+        "bin_lo": 0.5,
+        "bin_hi": 0.6000000000000001,
+        "n": 27,
+        "mean_conf": 0.5596435710235879,
+        "frac_pos": 0.6666666666666666
+      },
+      {
+        "bin_lo": 0.6000000000000001,
+        "bin_hi": 0.7000000000000001,
+        "n": 132,
+        "mean_conf": 0.6524843280062531,
+        "frac_pos": 0.5
+      },
+      {
+        "bin_lo": 0.7000000000000001,
+        "bin_hi": 0.8,
+        "n": 134,
+        "mean_conf": 0.7441110166151133,
+        "frac_pos": 0.44029850746268656
+      },
+      {
+        "bin_lo": 0.8,
+        "bin_hi": 0.9,
+        "n": 39,
+        "mean_conf": 0.8375380360163175,
+        "frac_pos": 0.4358974358974359
+      },
+      {
+        "bin_lo": 0.9,
+        "bin_hi": 1.0,
+        "n": 1,
+        "mean_conf": 0.9078235030174255,
+        "frac_pos": 1.0
+      }
+    ],
+    "per_fold": [
+      {
+        "fold": 0,
+        "metrics": {
+          "roc_auc": 0.6138015463917526,
+          "f1": 0.17142857142857143,
+          "accuracy": 0.7665995975855131,
+          "recall": 0.12371134020618557,
+          "precision": 0.27906976744186046,
+          "pr_auc": 0.28484033558051947,
+          "balanced_accuracy": 0.5231056701030927,
+          "brier": 0.1698761457390538,
+          "threshold_used": 0.5499999999999999,
+          "ece": 0.11441109079110552
+        },
+        "best_epoch": 12,
+        "n_val_nodes": 46,
+        "n_val_micro": 3,
+        "audit": {
+          "n_removed_cross_block_near": 0,
+          "n_removed_cross_block_subbasin": 0,
+          "n_cross_block_near": 0,
+          "n_cross_block_subbasin": 0,
+          "n_edges_near_directed": 176,
+          "n_edges_subbasin_directed": 224,
+          "n_wells_missing_subbasin": 37
+        },
+        "n_edges_near": 176,
+        "n_edges_subbasin": 224
+      },
+      {
+        "fold": 1,
+        "metrics": {
+          "roc_auc": 0.5582619225037259,
+          "f1": 0.4954367666232073,
+          "accuracy": 0.5198511166253101,
+          "recall": 0.4318181818181818,
+          "precision": 0.581039755351682,
+          "pr_auc": 0.5838895506135608,
+          "balanced_accuracy": 0.5287506209637357,
+          "brier": 0.30321381748238607,
+          "threshold_used": 0.44999999999999996,
+          "ece": 0.26140903744375144
+        },
+        "best_epoch": 4,
+        "n_val_nodes": 40,
+        "n_val_micro": 3,
+        "audit": {
+          "n_removed_cross_block_near": 0,
+          "n_removed_cross_block_subbasin": 0,
+          "n_cross_block_near": 0,
+          "n_cross_block_subbasin": 0,
+          "n_edges_near_directed": 176,
+          "n_edges_subbasin_directed": 224,
+          "n_wells_missing_subbasin": 37
+        },
+        "n_edges_near": 176,
+        "n_edges_subbasin": 224
+      },
+      {
+        "fold": 2,
+        "metrics": {
+          "roc_auc": 0.46022857142857143,
+          "f1": 0.3218390804597701,
+          "accuracy": 0.7377777777777778,
+          "recall": 0.28,
+          "precision": 0.3783783783783784,
+          "pr_auc": 0.305664312452917,
+          "balanced_accuracy": 0.5742857142857143,
+          "brier": 0.20042178305675812,
+          "threshold_used": 0.35,
+          "ece": 0.19574961514936556
+        },
+        "best_epoch": 10,
+        "n_val_nodes": 59,
+        "n_val_micro": 3,
+        "audit": {
+          "n_removed_cross_block_near": 0,
+          "n_removed_cross_block_subbasin": 0,
+          "n_cross_block_near": 0,
+          "n_cross_block_subbasin": 0,
+          "n_edges_near_directed": 176,
+          "n_edges_subbasin_directed": 224,
+          "n_wells_missing_subbasin": 37
+        },
+        "n_edges_near": 176,
+        "n_edges_subbasin": 224
+      }
+    ],
+    "n_cross_block_total": 0
+  },
+  "random": {
+    "regime": "random",
+    "model": "rgcn",
+    "n_blocks": 3,
+    "auc_oof_global": 0.6625178549768541,
+    "auc_oof_ci95": {
+      "ci_low": 0.5501897574326288,
+      "ci_high": 0.7574922342037251,
+      "n_boot": 1000
+    },
+    "per_fold_auc": [
+      0.7428073164459303,
+      0.5808026755852844,
+      0.6654471150739806
+    ],
+    "auc_mean": 0.6630190357017317,
+    "auc_std": 0.06616039899202127,
+    "global_metrics": {
+      "roc_auc": 0.6625178549768541,
+      "f1": 0.562610229276896,
+      "accuracy": 0.675392670157068,
+      "recall": 0.5434412265758092,
+      "precision": 0.583180987202925,
+      "pr_auc": 0.5840730755950546,
+      "balanced_accuracy": 0.6505728980913053,
+      "brier": 0.24213091123868194,
+      "threshold_used": 0.35,
+      "ece": 0.16943180804501692
+    },
+    "reliability_curve": [
+      {
+        "bin_lo": 0.0,
+        "bin_hi": 0.1,
+        "n": 523,
+        "mean_conf": 0.032002743565073204,
+        "frac_pos": 0.28107074569789675
+      },
+      {
+        "bin_lo": 0.1,
+        "bin_hi": 0.2,
+        "n": 164,
+        "mean_conf": 0.15515006969614728,
+        "frac_pos": 0.2682926829268293
+      },
+      {
+        "bin_lo": 0.2,
+        "bin_hi": 0.30000000000000004,
+        "n": 202,
+        "mean_conf": 0.23975072528171068,
+        "frac_pos": 0.3118811881188119
+      },
+      {
+        "bin_lo": 0.30000000000000004,
+        "bin_hi": 0.4,
+        "n": 107,
+        "mean_conf": 0.3317262794926902,
+        "frac_pos": 0.19626168224299065
+      },
+      {
+        "bin_lo": 0.4,
+        "bin_hi": 0.5,
+        "n": 136,
+        "mean_conf": 0.450107453719658,
+        "frac_pos": 0.5588235294117647
+      },
+      {
+        "bin_lo": 0.5,
+        "bin_hi": 0.6000000000000001,
+        "n": 126,
+        "mean_conf": 0.5604003242083958,
+        "frac_pos": 0.48412698412698413
+      },
+      {
+        "bin_lo": 0.6000000000000001,
+        "bin_hi": 0.7000000000000001,
+        "n": 15,
+        "mean_conf": 0.6607399185498556,
+        "frac_pos": 0.8
+      },
+      {
+        "bin_lo": 0.7000000000000001,
+        "bin_hi": 0.8,
+        "n": 79,
+        "mean_conf": 0.7576878644243071,
+        "frac_pos": 0.34177215189873417
+      },
+      {
+        "bin_lo": 0.8,
+        "bin_hi": 0.9,
+        "n": 84,
+        "mean_conf": 0.8532693996315911,
+        "frac_pos": 0.7261904761904762
+      },
+      {
+        "bin_lo": 0.9,
+        "bin_hi": 1.0,
+        "n": 92,
+        "mean_conf": 0.9346965693909189,
+        "frac_pos": 0.8152173913043478
+      }
+    ],
+    "per_fold": [
+      {
+        "fold": 0,
+        "metrics": {
+          "roc_auc": 0.7428073164459303,
+          "f1": 0.5990338164251208,
+          "accuracy": 0.6745098039215687,
+          "recall": 0.6138613861386139,
+          "precision": 0.5849056603773585,
+          "pr_auc": 0.7274477089060783,
+          "balanced_accuracy": 0.6640735502121641,
+          "brier": 0.18944854507798503,
+          "threshold_used": 0.25,
+          "ece": 0.16425977366812092
+        },
+        "best_epoch": 14,
+        "n_val_nodes": 49,
+        "n_val_micro": 3,
+        "audit": {
+          "n_removed_cross_block_near": 62,
+          "n_removed_cross_block_subbasin": 78,
+          "n_cross_block_near": 0,
+          "n_cross_block_subbasin": 0,
+          "n_edges_near_directed": 52,
+          "n_edges_subbasin_directed": 68,
+          "n_wells_missing_subbasin": 37
+        },
+        "n_edges_near": 52,
+        "n_edges_subbasin": 68
+      },
+      {
+        "fold": 1,
+        "metrics": {
+          "roc_auc": 0.5808026755852844,
+          "f1": 0.3551912568306011,
+          "accuracy": 0.5363457760314342,
+          "recall": 0.3532608695652174,
+          "precision": 0.35714285714285715,
+          "pr_auc": 0.4658309891068446,
+          "balanced_accuracy": 0.4966304347826087,
+          "brier": 0.2514990064999877,
+          "threshold_used": 0.49999999999999994,
+          "ece": 0.2159808930485328
+        },
+        "best_epoch": 2,
+        "n_val_nodes": 48,
+        "n_val_micro": 3,
+        "audit": {
+          "n_removed_cross_block_near": 62,
+          "n_removed_cross_block_subbasin": 78,
+          "n_cross_block_near": 0,
+          "n_cross_block_subbasin": 0,
+          "n_edges_near_directed": 52,
+          "n_edges_subbasin_directed": 68,
+          "n_wells_missing_subbasin": 37
+        },
+        "n_edges_near": 52,
+        "n_edges_subbasin": 68
+      },
+      {
+        "fold": 2,
+        "metrics": {
+          "roc_auc": 0.6654471150739806,
+          "f1": 0.5482456140350878,
+          "accuracy": 0.5952848722986247,
+          "recall": 0.6218905472636815,
+          "precision": 0.49019607843137253,
+          "pr_auc": 0.5527917650499822,
+          "balanced_accuracy": 0.5999063125928797,
+          "brier": 0.28554868383976406,
+          "threshold_used": 0.05,
+          "ece": 0.26897899363709576
+        },
+        "best_epoch": 14,
+        "n_val_nodes": 48,
+        "n_val_micro": 3,
+        "audit": {
+          "n_removed_cross_block_near": 62,
+          "n_removed_cross_block_subbasin": 78,
+          "n_cross_block_near": 0,
+          "n_cross_block_subbasin": 0,
+          "n_edges_near_directed": 52,
+          "n_edges_subbasin_directed": 68,
+          "n_wells_missing_subbasin": 37
+        },
+        "n_edges_near": 52,
+        "n_edges_subbasin": 68
+      }
+    ],
+    "n_cross_block_total": 0
+  },
+  "delta_random_minus_spatial": 0.01610342399165765,
+  "meta": {
+    "task": "T1a",
+    "model": "rgcn",
+    "smoke": true,
+    "seed": 42,
+    "feature_cols": [
+      "county",
+      "regional_board",
+      "dwr_region",
+      "dwr_basin",
+      "sgma_basin_name",
+      "sgma_subbasin_name",
+      "sgma_region_office",
+      "gm_well_category",
+      "well_depth_ft",
+      "dist_geotracker_km",
+      "nearest_geotracker_type",
+      "n_geotracker_within_1km",
+      "n_geotracker_within_3km",
+      "n_geotracker_within_10km",
+      "n_geotracker_within_50km",
+      "cocontam_no3n",
+      "cocontam_tds",
+      "cocontam_mn",
+      "cocontam_as",
+      "cocontam_so4",
+      "cocontam_fe",
+      "soil_sand_pct",
+      "soil_clay_pct",
+      "soil_silt_pct",
+      "soil_om_pct",
+      "soil_ph",
+      "soil_ksat_um_s",
+      "soil_awc_cm_cm",
+      "soil_bulk_density",
+      "soil_sand_vfine_pct",
+      "soil_sand_fine_pct",
+      "soil_sand_medium_pct",
+      "soil_sand_coarse_pct",
+      "soil_sand_vcoarse_pct",
+      "soil_water_1bar_pct",
+      "soil_water_15bar_pct",
+      "soil_texture_class",
+      "soil_ratio_water_clay",
+      "rainfall_mm_month",
+      "et_mm_month",
+      "runoff_mm",
+      "soil_moi_0_10_kg_m2",
+      "soil_moi_10_40_kg_m2",
+      "soil_moi_40_100_kg_m2",
+      "soil_moi_100_200_kg_m2",
+      "root_zone_moist_kg_m2",
+      "temp_c",
+      "snowpack_mm",
+      "gldas_dist_km",
+      "soil_moisture_total_mm",
+      "year",
+      "month_sin",
+      "month_cos",
+      "aqs_pm25_ugm3",
+      "aqs_pm10_ugm3",
+      "aqs_no2_ppb",
+      "aqs_so2_ppb",
+      "aqs_wind_ms",
+      "aqs_humidity_pct",
+      "aqs_ozone_ppb",
+      "aqs_co_ppm"
+    ],
+    "include_location": false,
+    "n_features": 61,
+    "inductive": true,
+    "k_spatial": 8,
+    "cap_km_spatial": 1.5,
+    "k_subbasin": 8,
+    "cap_km_subbasin": 2.0,
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.3,
+    "heads": 4,
+    "relations": [
+      "near",
+      "same_subbasin_knn"
+    ]
+  }
+}

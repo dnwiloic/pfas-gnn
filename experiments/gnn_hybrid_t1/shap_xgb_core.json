@@ -1,0 +1,502 @@
+{
+  "in_sample_auc": 0.9790375794586081,
+  "n_features": 97,
+  "ranked": [
+    {
+      "feature": "n_geotracker_within_50km",
+      "mean_abs_shap": 0.5240532755851746,
+      "dir_corr_value_shap": 0.6064529356789603
+    },
+    {
+      "feature": "dwr_region=South Coast",
+      "mean_abs_shap": 0.28669026494026184,
+      "dir_corr_value_shap": 0.8847866177134224
+    },
+    {
+      "feature": "dist_geotracker_km",
+      "mean_abs_shap": 0.23274902999401093,
+      "dir_corr_value_shap": -0.6443568977265909
+    },
+    {
+      "feature": "gldas_dist_km",
+      "mean_abs_shap": 0.1992272585630417,
+      "dir_corr_value_shap": 0.3162565022047846
+    },
+    {
+      "feature": "gm_well_category=MONITORING",
+      "mean_abs_shap": 0.19611869752407074,
+      "dir_corr_value_shap": 0.750900226000641
+    },
+    {
+      "feature": "dwr_basin__enc",
+      "mean_abs_shap": 0.17842870950698853,
+      "dir_corr_value_shap": -0.3802226691841309
+    },
+    {
+      "feature": "n_geotracker_within_10km",
+      "mean_abs_shap": 0.17128531634807587,
+      "dir_corr_value_shap": 0.5195868323651052
+    },
+    {
+      "feature": "root_zone_moist_kg_m2",
+      "mean_abs_shap": 0.10973202437162399,
+      "dir_corr_value_shap": 0.24832239906228454
+    },
+    {
+      "feature": "year",
+      "mean_abs_shap": 0.10004632920026779,
+      "dir_corr_value_shap": 0.7892362262746621
+    },
+    {
+      "feature": "cocontam_as",
+      "mean_abs_shap": 0.09987663477659225,
+      "dir_corr_value_shap": -0.26314510236473504
+    },
+    {
+      "feature": "soil_sand_fine_pct",
+      "mean_abs_shap": 0.09737792611122131,
+      "dir_corr_value_shap": -0.6087661626841997
+    },
+    {
+      "feature": "aqs_wind_ms",
+      "mean_abs_shap": 0.0747201144695282,
+      "dir_corr_value_shap": 0.015861516229014057
+    },
+    {
+      "feature": "soil_ph",
+      "mean_abs_shap": 0.05932975187897682,
+      "dir_corr_value_shap": -0.15648940146913945
+    },
+    {
+      "feature": "soil_bulk_density",
+      "mean_abs_shap": 0.05609915032982826,
+      "dir_corr_value_shap": 0.40908597203768166
+    },
+    {
+      "feature": "aqs_no2_ppb",
+      "mean_abs_shap": 0.05573320388793945,
+      "dir_corr_value_shap": 0.49269320290946683
+    },
+    {
+      "feature": "soil_awc_cm_cm",
+      "mean_abs_shap": 0.05572143942117691,
+      "dir_corr_value_shap": -0.4925024722530743
+    },
+    {
+      "feature": "county__enc",
+      "mean_abs_shap": 0.05329934507608414,
+      "dir_corr_value_shap": 0.23890281395430238
+    },
+    {
+      "feature": "temp_c",
+      "mean_abs_shap": 0.05013604834675789,
+      "dir_corr_value_shap": 0.778168095610053
+    },
+    {
+      "feature": "aqs_humidity_pct",
+      "mean_abs_shap": 0.049807850271463394,
+      "dir_corr_value_shap": 0.42982161402934554
+    },
+    {
+      "feature": "aqs_pm10_ugm3",
+      "mean_abs_shap": 0.04955276474356651,
+      "dir_corr_value_shap": -0.3812970426617528
+    },
+    {
+      "feature": "soil_moi_100_200_kg_m2",
+      "mean_abs_shap": 0.049227237701416016,
+      "dir_corr_value_shap": 0.535038412120638
+    },
+    {
+      "feature": "aqs_ozone_ppb",
+      "mean_abs_shap": 0.04913196712732315,
+      "dir_corr_value_shap": -0.4916735370577712
+    },
+    {
+      "feature": "cocontam_fe",
+      "mean_abs_shap": 0.049130991101264954,
+      "dir_corr_value_shap": -0.4373861972207875
+    },
+    {
+      "feature": "soil_water_15bar_pct",
+      "mean_abs_shap": 0.04873398318886757,
+      "dir_corr_value_shap": -0.08032985729337379
+    },
+    {
+      "feature": "sgma_basin_name__enc",
+      "mean_abs_shap": 0.04725252836942673,
+      "dir_corr_value_shap": -0.7220752704411881
+    },
+    {
+      "feature": "soil_ratio_water_clay",
+      "mean_abs_shap": 0.047128062695264816,
+      "dir_corr_value_shap": 0.09487433671279964
+    },
+    {
+      "feature": "aqs_pm25_ugm3",
+      "mean_abs_shap": 0.04634011164307594,
+      "dir_corr_value_shap": 0.5309896087114706
+    },
+    {
+      "feature": "sgma_subbasin_name__enc",
+      "mean_abs_shap": 0.04613316431641579,
+      "dir_corr_value_shap": -0.08042392882408243
+    },
+    {
+      "feature": "gm_well_category=MUNICIPAL",
+      "mean_abs_shap": 0.045796480029821396,
+      "dir_corr_value_shap": -0.3088153236537414
+    },
+    {
+      "feature": "soil_om_pct",
+      "mean_abs_shap": 0.045770905911922455,
+      "dir_corr_value_shap": -0.4922430131963116
+    },
+    {
+      "feature": "soil_sand_vcoarse_pct",
+      "mean_abs_shap": 0.0429820716381073,
+      "dir_corr_value_shap": -0.49347727541631814
+    },
+    {
+      "feature": "soil_ksat_um_s",
+      "mean_abs_shap": 0.040925733745098114,
+      "dir_corr_value_shap": 0.2861246927451663
+    },
+    {
+      "feature": "well_depth_ft__missing",
+      "mean_abs_shap": 0.03987553343176842,
+      "dir_corr_value_shap": 0.8850255462949788
+    },
+    {
+      "feature": "soil_water_1bar_pct",
+      "mean_abs_shap": 0.039067551493644714,
+      "dir_corr_value_shap": -0.34265209827210014
+    },
+    {
+      "feature": "soil_silt_pct",
+      "mean_abs_shap": 0.039009734988212585,
+      "dir_corr_value_shap": -0.26618875227900307
+    },
+    {
+      "feature": "cocontam_so4",
+      "mean_abs_shap": 0.038588374853134155,
+      "dir_corr_value_shap": 0.1571006075031648
+    },
+    {
+      "feature": "soil_sand_vfine_pct",
+      "mean_abs_shap": 0.03641291707754135,
+      "dir_corr_value_shap": 0.13773761860957728
+    },
+    {
+      "feature": "soil_texture_class__enc",
+      "mean_abs_shap": 0.03472438454627991,
+      "dir_corr_value_shap": 0.21878572493826892
+    },
+    {
+      "feature": "soil_sand_medium_pct",
+      "mean_abs_shap": 0.03342418745160103,
+      "dir_corr_value_shap": -0.14315128104653374
+    },
+    {
+      "feature": "regional_board=SAN DIEGO",
+      "mean_abs_shap": 0.032962437719106674,
+      "dir_corr_value_shap": 0.8797216413542785
+    },
+    {
+      "feature": "cocontam_mn",
+      "mean_abs_shap": 0.031614676117897034,
+      "dir_corr_value_shap": -0.61658432925475
+    },
+    {
+      "feature": "n_geotracker_within_3km",
+      "mean_abs_shap": 0.03006076067686081,
+      "dir_corr_value_shap": -0.26719753739808916
+    },
+    {
+      "feature": "nearest_geotracker_type=Refinery",
+      "mean_abs_shap": 0.029768653213977814,
+      "dir_corr_value_shap": 0.598765627609887
+    },
+    {
+      "feature": "aqs_co_ppm",
+      "mean_abs_shap": 0.029393529519438744,
+      "dir_corr_value_shap": 0.37795655994465205
+    },
+    {
+      "feature": "cocontam_no3n",
+      "mean_abs_shap": 0.028675030916929245,
+      "dir_corr_value_shap": 0.6214300488233904
+    },
+    {
+      "feature": "soil_sand_coarse_pct",
+      "mean_abs_shap": 0.028065644204616547,
+      "dir_corr_value_shap": 0.23360562364141546
+    },
+    {
+      "feature": "aqs_so2_ppb__missing",
+      "mean_abs_shap": 0.02391352318227291,
+      "dir_corr_value_shap": -0.6844602966064616
+    },
+    {
+      "feature": "well_depth_ft",
+      "mean_abs_shap": 0.023647427558898926,
+      "dir_corr_value_shap": -0.7698673614273204
+    },
+    {
+      "feature": "soil_sand_pct",
+      "mean_abs_shap": 0.02230774611234665,
+      "dir_corr_value_shap": -0.28971835614681374
+    },
+    {
+      "feature": "month_cos",
+      "mean_abs_shap": 0.021404780447483063,
+      "dir_corr_value_shap": 0.7636830266140842
+    },
+    {
+      "feature": "soil_clay_pct",
+      "mean_abs_shap": 0.021301910281181335,
+      "dir_corr_value_shap": -0.27153114742411383
+    },
+    {
+      "feature": "et_mm_month",
+      "mean_abs_shap": 0.021152911707758904,
+      "dir_corr_value_shap": -0.6067566763597814
+    },
+    {
+      "feature": "sgma_region_office=NRO",
+      "mean_abs_shap": 0.018272221088409424,
+      "dir_corr_value_shap": 0.8248752016084506
+    },
+    {
+      "feature": "soil_moi_0_10_kg_m2",
+      "mean_abs_shap": 0.018116304650902748,
+      "dir_corr_value_shap": 0.6303791591685045
+    },
+    {
+      "feature": "aqs_so2_ppb",
+      "mean_abs_shap": 0.018034717068076134,
+      "dir_corr_value_shap": -0.31026882108458137
+    },
+    {
+      "feature": "n_geotracker_within_1km",
+      "mean_abs_shap": 0.01753848046064377,
+      "dir_corr_value_shap": 0.7423378155003348
+    },
+    {
+      "feature": "nearest_geotracker_type=Bulk Terminal",
+      "mean_abs_shap": 0.017484717071056366,
+      "dir_corr_value_shap": -0.6386166296263034
+    },
+    {
+      "feature": "cocontam_tds",
+      "mean_abs_shap": 0.016649486497044563,
+      "dir_corr_value_shap": 0.45905171828450775
+    },
+    {
+      "feature": "soil_moi_40_100_kg_m2",
+      "mean_abs_shap": 0.016631051898002625,
+      "dir_corr_value_shap": 0.1238851590420744
+    },
+    {
+      "feature": "nearest_geotracker_type=Chrome Plater",
+      "mean_abs_shap": 0.01592268794775009,
+      "dir_corr_value_shap": -0.5995229898411173
+    },
+    {
+      "feature": "sgma_region_office=NCRO",
+      "mean_abs_shap": 0.015683487057685852,
+      "dir_corr_value_shap": -0.7845861542976618
+    },
+    {
+      "feature": "soil_moisture_total_mm",
+      "mean_abs_shap": 0.014967190101742744,
+      "dir_corr_value_shap": 0.683704165278531
+    },
+    {
+      "feature": "rainfall_mm_month",
+      "mean_abs_shap": 0.0144804110750556,
+      "dir_corr_value_shap": 0.2140624530631698
+    },
+    {
+      "feature": "nearest_geotracker_type=Airport",
+      "mean_abs_shap": 0.01418971549719572,
+      "dir_corr_value_shap": 0.7191435554269098
+    },
+    {
+      "feature": "runoff_mm",
+      "mean_abs_shap": 0.011419661343097687,
+      "dir_corr_value_shap": 0.26744066416126994
+    },
+    {
+      "feature": "cocontam_fe__missing",
+      "mean_abs_shap": 0.010802622884511948,
+      "dir_corr_value_shap": 0.7020632263581057
+    },
+    {
+      "feature": "month_sin",
+      "mean_abs_shap": 0.01041482388973236,
+      "dir_corr_value_shap": -0.35701862030367654
+    },
+    {
+      "feature": "dwr_region=Sacramento River",
+      "mean_abs_shap": 0.01014343649148941,
+      "dir_corr_value_shap": 0.8118484985232249
+    },
+    {
+      "feature": "soil_moi_10_40_kg_m2",
+      "mean_abs_shap": 0.010103406384587288,
+      "dir_corr_value_shap": 0.0329069062033683
+    },
+    {
+      "feature": "regional_board=SANTA ANA",
+      "mean_abs_shap": 0.008129063062369823,
+      "dir_corr_value_shap": 0.7827150591810264
+    },
+    {
+      "feature": "sgma_region_office=SCRO",
+      "mean_abs_shap": 0.007087341975420713,
+      "dir_corr_value_shap": -0.5536408406186039
+    },
+    {
+      "feature": "cocontam_tds__missing",
+      "mean_abs_shap": 0.006542120594531298,
+      "dir_corr_value_shap": 0.2076390896415084
+    },
+    {
+      "feature": "regional_board=CENTRAL COAST",
+      "mean_abs_shap": 0.006517680361866951,
+      "dir_corr_value_shap": -0.7702988482143176
+    },
+    {
+      "feature": "regional_board=CENTRAL VALLEY",
+      "mean_abs_shap": 0.006514658685773611,
+      "dir_corr_value_shap": 0.6399562967582836
+    },
+    {
+      "feature": "gm_well_category=WATER SUPPLY, OTHER",
+      "mean_abs_shap": 0.006022226996719837,
+      "dir_corr_value_shap": 0.7323919127111514
+    },
+    {
+      "feature": "snowpack_mm",
+      "mean_abs_shap": 0.00531215313822031,
+      "dir_corr_value_shap": -0.03179539298961035
+    },
+    {
+      "feature": "regional_board=NORTH COAST",
+      "mean_abs_shap": 0.0052676633931696415,
+      "dir_corr_value_shap": -0.9105234982957875
+    },
+    {
+      "feature": "cocontam_mn__missing",
+      "mean_abs_shap": 0.004238588735461235,
+      "dir_corr_value_shap": 0.07805171004429198
+    },
+    {
+      "feature": "sgma_region_office=__nan__",
+      "mean_abs_shap": 0.0042282575741410255,
+      "dir_corr_value_shap": -0.818697276234109
+    },
+    {
+      "feature": "regional_board=LOS ANGELES",
+      "mean_abs_shap": 0.003860103664919734,
+      "dir_corr_value_shap": -0.7347136130351744
+    },
+    {
+      "feature": "regional_board=SAN FRANCISCO BAY",
+      "mean_abs_shap": 0.0035338038578629494,
+      "dir_corr_value_shap": 0.024802231288384213
+    },
+    {
+      "feature": "dwr_region=Tulare Lake",
+      "mean_abs_shap": 0.0032724656630307436,
+      "dir_corr_value_shap": -0.3668033992293354
+    },
+    {
+      "feature": "dwr_region=San Joaquin River",
+      "mean_abs_shap": 0.0032543898560106754,
+      "dir_corr_value_shap": 0.7086944818340858
+    },
+    {
+      "feature": "regional_board=LAHONTAN",
+      "mean_abs_shap": 0.0030077705159783363,
+      "dir_corr_value_shap": -0.9010769729591277
+    },
+    {
+      "feature": "cocontam_so4__missing",
+      "mean_abs_shap": 0.0025512739084661007,
+      "dir_corr_value_shap": 0.5405367619796195
+    },
+    {
+      "feature": "sgma_region_office=SRO",
+      "mean_abs_shap": 0.0025501784402877092,
+      "dir_corr_value_shap": 0.5133962723391511
+    },
+    {
+      "feature": "dwr_region=Central Coast",
+      "mean_abs_shap": 0.0023259413428604603,
+      "dir_corr_value_shap": -0.913966985668747
+    },
+    {
+      "feature": "cocontam_as__missing",
+      "mean_abs_shap": 0.0017647396307438612,
+      "dir_corr_value_shap": 0.6809531280440074
+    },
+    {
+      "feature": "regional_board=COLORADO RIVER",
+      "mean_abs_shap": 0.0012341922847554088,
+      "dir_corr_value_shap": -0.9198678860256564
+    },
+    {
+      "feature": "dwr_region=San Francisco Bay",
+      "mean_abs_shap": 0.0011174073442816734,
+      "dir_corr_value_shap": -0.8119867841729018
+    },
+    {
+      "feature": "dwr_region=North Coast",
+      "mean_abs_shap": 0.0008593755774199963,
+      "dir_corr_value_shap": -0.9863298512134037
+    },
+    {
+      "feature": "gm_well_category=IRRIGATION / INDUSTRIAL",
+      "mean_abs_shap": 0.0007542881066910923,
+      "dir_corr_value_shap": -0.9840925196824579
+    },
+    {
+      "feature": "cocontam_no3n__missing",
+      "mean_abs_shap": 0.0006687446148134768,
+      "dir_corr_value_shap": -0.24857561265855488
+    },
+    {
+      "feature": "dwr_region=South Lahontan",
+      "mean_abs_shap": 0.0005196743295527995,
+      "dir_corr_value_shap": -0.7767620240491356
+    },
+    {
+      "feature": "gm_well_category=DOMESTIC",
+      "mean_abs_shap": 0.00033437064848840237,
+      "dir_corr_value_shap": 0.6502977492705587
+    },
+    {
+      "feature": "dwr_region=Colorado River",
+      "mean_abs_shap": 7.583751721540466e-05,
+      "dir_corr_value_shap": 0.2797193034774263
+    },
+    {
+      "feature": "dwr_region=North Lahontan",
+      "mean_abs_shap": 0.0,
+      "dir_corr_value_shap": NaN
+    }
+  ],
+  "family_share": {
+    "well": 0.015101830057108242,
+    "source_proximity": 0.25035076630638203,
+    "cocontaminant": 0.06920635097937487,
+    "soil": 0.2038434000425764,
+    "climate_hydro": 0.09781984300300545,
+    "temporal": 0.031349560655674985,
+    "air_quality": 0.09429354779688497,
+    "other": 0.23803470115899306
+  },
+  "gm_dataset_name_in_features": false
+}
