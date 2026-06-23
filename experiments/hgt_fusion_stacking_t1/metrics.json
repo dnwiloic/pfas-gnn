@@ -1,0 +1,501 @@
+{
+  "meta": {
+    "task": "T1a",
+    "smoke": false,
+    "seed": 42,
+    "n_features": 61,
+    "include_location": false,
+    "feature_cols": [
+      "county",
+      "regional_board",
+      "dwr_region",
+      "dwr_basin",
+      "sgma_basin_name",
+      "sgma_subbasin_name",
+      "sgma_region_office",
+      "gm_well_category",
+      "well_depth_ft",
+      "dist_geotracker_km",
+      "nearest_geotracker_type",
+      "n_geotracker_within_1km",
+      "n_geotracker_within_3km",
+      "n_geotracker_within_10km",
+      "n_geotracker_within_50km",
+      "cocontam_no3n",
+      "cocontam_tds",
+      "cocontam_mn",
+      "cocontam_as",
+      "cocontam_so4",
+      "cocontam_fe",
+      "soil_sand_pct",
+      "soil_clay_pct",
+      "soil_silt_pct",
+      "soil_om_pct",
+      "soil_ph",
+      "soil_ksat_um_s",
+      "soil_awc_cm_cm",
+      "soil_bulk_density",
+      "soil_sand_vfine_pct",
+      "soil_sand_fine_pct",
+      "soil_sand_medium_pct",
+      "soil_sand_coarse_pct",
+      "soil_sand_vcoarse_pct",
+      "soil_water_1bar_pct",
+      "soil_water_15bar_pct",
+      "soil_texture_class",
+      "soil_ratio_water_clay",
+      "rainfall_mm_month",
+      "et_mm_month",
+      "runoff_mm",
+      "soil_moi_0_10_kg_m2",
+      "soil_moi_10_40_kg_m2",
+      "soil_moi_40_100_kg_m2",
+      "soil_moi_100_200_kg_m2",
+      "root_zone_moist_kg_m2",
+      "temp_c",
+      "snowpack_mm",
+      "gldas_dist_km",
+      "soil_moisture_total_mm",
+      "year",
+      "month_sin",
+      "month_cos",
+      "aqs_pm25_ugm3",
+      "aqs_pm10_ugm3",
+      "aqs_no2_ppb",
+      "aqs_so2_ppb",
+      "aqs_wind_ms",
+      "aqs_humidity_pct",
+      "aqs_ozone_ppb",
+      "aqs_co_ppm"
+    ],
+    "inductive": true,
+    "k_spatial": 8,
+    "cap_km_spatial": 1.5,
+    "k_subbasin": 8,
+    "cap_km_subbasin": 2.0,
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.3,
+    "heads": 4,
+    "pca_variance_target": 0.95,
+    "n_blocks": 8,
+    "relations": [
+      "near",
+      "same_subbasin_knn"
+    ],
+    "wall_xgb_spatial_auc": 0.5877739078600925,
+    "wall_rf_spatial_auc": 0.6009263696712559,
+    "elapsed_s": 1051.7881090641022
+  },
+  "spatial": {
+    "regime": "spatial",
+    "n_cross_block_total": 0,
+    "n_wells": 11333,
+    "n_blocks": 8,
+    "n_tabular_features": 97,
+    "hidden": 64,
+    "architectures": {
+      "hgt_standalone": {
+        "metrics": {
+          "roc_auc": 0.6537075514451184,
+          "f1": 0.614306224136475,
+          "accuracy": 0.605766325693815,
+          "recall": 0.7050840885959385,
+          "precision": 0.544237028169541,
+          "pr_auc": 0.5637982849511936,
+          "balanced_accuracy": 0.6155648025162148,
+          "brier": 0.3191499780427939,
+          "threshold_used": 0.41999999999999993,
+          "ece": 0.28924087259040787
+        },
+        "auc_ci95": {
+          "ci_low": 0.6339821182946684,
+          "ci_high": 0.672877768812816,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.49625447374850606,
+          0.7964491217294737,
+          0.5297780536514849,
+          0.577797227084549,
+          0.6543432709037287,
+          0.6713949923520881,
+          0.6412710380387198,
+          0.6221730453317404
+        ]
+      },
+      "embedding_fusion": {
+        "metrics": {
+          "roc_auc": 0.6670146524623651,
+          "f1": 0.5639183430779903,
+          "accuracy": 0.6201389788078898,
+          "recall": 0.5515921097271361,
+          "precision": 0.5768080685216157,
+          "pr_auc": 0.5738229302291438,
+          "balanced_accuracy": 0.6133762921714848,
+          "brier": 0.2671906890101616,
+          "threshold_used": 0.3,
+          "ece": 0.18323292540916347
+        },
+        "auc_ci95": {
+          "ci_low": 0.649570403951195,
+          "ci_high": 0.6837432361474907,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.5954134172835267,
+          0.6632172943425398,
+          0.5601853923056208,
+          0.6525943354525501,
+          0.722028834791353,
+          0.7107338361463774,
+          0.6892539806077115,
+          0.5087113241104037
+        ],
+        "pca_n_components_per_fold": [
+          47,
+          48,
+          49,
+          48,
+          46,
+          48,
+          48,
+          48
+        ],
+        "pca_n_components_mean": 47.75,
+        "pca_variance_target": 0.95
+      },
+      "stacking": {
+        "metrics": {
+          "roc_auc": 0.6815465785085472,
+          "f1": 0.6378200860959482,
+          "accuracy": 0.6477620959040097,
+          "recall": 0.6965540638782532,
+          "precision": 0.5882208488519625,
+          "pr_auc": 0.5799880702196222,
+          "balanced_accuracy": 0.6525758064966057,
+          "brier": 0.24669698642303364,
+          "threshold_used": 0.4799999999999999,
+          "ece": 0.12834977076210302
+        },
+        "auc_ci95": {
+          "ci_low": 0.663302322949088,
+          "ci_high": 0.6990651788001956,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.5587028853201619,
+          0.691639172872071,
+          0.5435243146767779,
+          0.6682620781457991,
+          0.6913619111853873,
+          0.744443288172661,
+          0.6930207913499089,
+          0.5361961524362925
+        ],
+        "meta_features": [
+          "hgt_p",
+          "xgb_p",
+          "lgbm_p",
+          "mean_p",
+          "std_p",
+          "agree_hgt_xgb",
+          "agree_hgt_lgbm",
+          "agree_xgb_lgbm",
+          "mean_entropy"
+        ]
+      }
+    },
+    "base_references": {
+      "xgb_tabular": {
+        "metrics": {
+          "roc_auc": 0.6878614511666653,
+          "f1": 0.6522585408416672,
+          "accuracy": 0.6645733523242263,
+          "recall": 0.7064896040323754,
+          "precision": 0.6057596409574468,
+          "pr_auc": 0.5767073198226411,
+          "balanced_accuracy": 0.6687087195419609,
+          "brier": 0.25936589000831567,
+          "threshold_used": 0.21999999999999997,
+          "ece": 0.19705801614874813
+        },
+        "auc_ci95": {
+          "ci_low": 0.6703394864940578,
+          "ci_high": 0.7037407676445336,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.6259368458587287,
+          0.66664920585674,
+          0.5052217831608237,
+          0.7062551622754174,
+          0.732677141373097,
+          0.7170268453271753,
+          0.7024795120889099,
+          0.48717772920428476
+        ]
+      },
+      "lgbm_tabular": {
+        "metrics": {
+          "roc_auc": 0.6792735245564256,
+          "f1": 0.6076758045292014,
+          "accuracy": 0.6448271397125469,
+          "recall": 0.6177482673387292,
+          "precision": 0.5979265375052775,
+          "pr_auc": 0.5830843620144006,
+          "balanced_accuracy": 0.6421555964198022,
+          "brier": 0.2646996324466157,
+          "threshold_used": 0.24,
+          "ece": 0.20296883895735593
+        },
+        "auc_ci95": {
+          "ci_low": 0.6611716537359508,
+          "ci_high": 0.6959906818513283,
+          "n_boot": 1000
+        }
+      }
+    }
+  },
+  "random": {
+    "regime": "random",
+    "n_cross_block_total": 0,
+    "n_wells": 11333,
+    "n_blocks": 8,
+    "n_tabular_features": 97,
+    "hidden": 64,
+    "architectures": {
+      "hgt_standalone": {
+        "metrics": {
+          "roc_auc": 0.8027487537432858,
+          "f1": 0.7162456905649758,
+          "accuracy": 0.7388968017609737,
+          "recall": 0.7400765763582611,
+          "precision": 0.6939016631827684,
+          "pr_auc": 0.7652435069302648,
+          "balanced_accuracy": 0.7390131957846547,
+          "brier": 0.1863860437449029,
+          "threshold_used": 0.5199999999999999,
+          "ece": 0.07951220588001587
+        },
+        "auc_ci95": {
+          "ci_low": 0.7858522350872109,
+          "ci_high": 0.818794053709522,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.8214321636576963,
+          0.7918075596552089,
+          0.8451168276635475,
+          0.816153457831373,
+          0.7701813545554111,
+          0.8298955816339781,
+          0.7839069106580517,
+          0.7645926186137396
+        ]
+      },
+      "embedding_fusion": {
+        "metrics": {
+          "roc_auc": 0.8572309248314952,
+          "f1": 0.7451661003691119,
+          "accuracy": 0.7750226595882429,
+          "recall": 0.7387195269713566,
+          "precision": 0.751726178733478,
+          "pr_auc": 0.8285743210766323,
+          "balanced_accuracy": 0.7714410706243673,
+          "brier": 0.15950706678355955,
+          "threshold_used": 0.41999999999999993,
+          "ece": 0.07795159797397506
+        },
+        "auc_ci95": {
+          "ci_low": 0.8439627874527779,
+          "ci_high": 0.869692657804753,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.8725285721435797,
+          0.8798697885359885,
+          0.8881123841208582,
+          0.8779177463120619,
+          0.8053902138103927,
+          0.8779418399364574,
+          0.8617712445451386,
+          0.7996796959428967
+        ],
+        "pca_n_components_per_fold": [
+          47,
+          47,
+          46,
+          46,
+          47,
+          46,
+          47,
+          46
+        ],
+        "pca_n_components_mean": 46.5,
+        "pca_variance_target": 0.95
+      },
+      "stacking": {
+        "metrics": {
+          "roc_auc": 0.8962381483846038,
+          "f1": 0.8112739989346673,
+          "accuracy": 0.8241400146747809,
+          "recall": 0.8488828575582804,
+          "precision": 0.7768562050918123,
+          "pr_auc": 0.8697101803168332,
+          "balanced_accuracy": 0.8265810903235868,
+          "brier": 0.134366209275508,
+          "threshold_used": 0.5599999999999999,
+          "ece": 0.06803236710224765
+        },
+        "auc_ci95": {
+          "ci_low": 0.8852516511958494,
+          "ci_high": 0.9067530644077593,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.9013989137099125,
+          0.9092286743494455,
+          0.9098897124600025,
+          0.9140700000757049,
+          0.8688418858948725,
+          0.9127677856834286,
+          0.8961760540826617,
+          0.8593146151838271
+        ],
+        "meta_features": [
+          "hgt_p",
+          "xgb_p",
+          "lgbm_p",
+          "mean_p",
+          "std_p",
+          "agree_hgt_xgb",
+          "agree_hgt_lgbm",
+          "agree_xgb_lgbm",
+          "mean_entropy"
+        ]
+      }
+    },
+    "base_references": {
+      "xgb_tabular": {
+        "metrics": {
+          "roc_auc": 0.8974855179984158,
+          "f1": 0.8053385874791827,
+          "accuracy": 0.8209029306400795,
+          "recall": 0.8320166723210392,
+          "precision": 0.7803181818181818,
+          "pr_auc": 0.8688692733232863,
+          "balanced_accuracy": 0.8219993884849701,
+          "brier": 0.13050486942130865,
+          "threshold_used": 0.4799999999999999,
+          "ece": 0.04734752852868637
+        },
+        "auc_ci95": {
+          "ci_low": 0.8872237141650895,
+          "ci_high": 0.9079218742382007,
+          "n_boot": 1000
+        },
+        "per_fold_auc": [
+          0.9094826839431003,
+          0.9070681023223155,
+          0.9126678259976986,
+          0.9207338300132748,
+          0.8679017287904398,
+          0.9146446755314551,
+          0.8903268117105476,
+          0.8596027790585061
+        ]
+      },
+      "lgbm_tabular": {
+        "metrics": {
+          "roc_auc": 0.8993493887720332,
+          "f1": 0.8037032696589711,
+          "accuracy": 0.8192628080624973,
+          "recall": 0.8309504192313285,
+          "precision": 0.7781862745098039,
+          "pr_auc": 0.8746063960697816,
+          "balanced_accuracy": 0.8204158826364774,
+          "brier": 0.12843555079846486,
+          "threshold_used": 0.36999999999999994,
+          "ece": 0.032188346192572735
+        },
+        "auc_ci95": {
+          "ci_low": 0.8888321901810471,
+          "ci_high": 0.9095861347722917,
+          "n_boot": 1000
+        }
+      }
+    }
+  },
+  "delta_random_minus_spatial": {
+    "hgt_standalone": 0.14904120229816742,
+    "embedding_fusion": 0.19021627236913008,
+    "stacking": 0.21469156987605664
+  },
+  "comparison": {
+    "_gain_vs_committed_wall_comparable": false,
+    "_comparability_note": "gain_vs_committed_wall is NOT a valid graph-vs-tabular gain: the committed wall (baseline_t1, 0.5878) differs from this run in (a) feature set (cocontam='all', 96 feats, target-encoded) vs this run (cocontam='core', 61 feats, frequency-encoded), and (b) AUC definition (committed = per-fold-mean np.nanmean; here headline = global-OOF, ~+0.03-0.04 higher). The ONLY valid comparison is gain_vs_in_run_wall (matched folds+features), which is negative for all three architectures. Verdict: no_robust_gain. See eval_validation.md.",
+    "in_run_xgb_wall_auc_mean": 0.6878614511666653,
+    "committed_xgb_wall_auc": 0.5877739078600925,
+    "committed_rf_wall_auc": 0.6009263696712559,
+    "noise_threshold": 0.03,
+    "n_tr_mean": 40545,
+    "n_te_mean": 5792,
+    "by_architecture": {
+      "hgt_standalone": {
+        "auc_mean": 0.6236826528550363,
+        "auc_oof_global": 0.6537075514451184,
+        "gain_vs_in_run_wall": -0.06417879831162898,
+        "gain_vs_committed_wall": 0.06593364358502585,
+        "nadeau_bengio": {
+          "t": -0.3522829572454499,
+          "p": 0.7349938908613634,
+          "mean_diff": -0.019245375288110773
+        },
+        "wilcoxon": {
+          "w": 16.0,
+          "p": 0.84375
+        },
+        "significant": false,
+        "above_noise": true,
+        "verdict": "no_robust_gain"
+      },
+      "embedding_fusion": {
+        "auc_mean": 0.6377673018800104,
+        "auc_oof_global": 0.6670146524623651,
+        "gain_vs_in_run_wall": -0.0500941492866549,
+        "gain_vs_committed_wall": 0.0792407446022726,
+        "nadeau_bengio": {
+          "t": -0.30622224061669584,
+          "p": 0.7683425291740869,
+          "mean_diff": -0.005160726263136718
+        },
+        "wilcoxon": {
+          "w": 13.0,
+          "p": 0.546875
+        },
+        "significant": false,
+        "above_noise": true,
+        "verdict": "no_robust_gain"
+      },
+      "stacking": {
+        "auc_mean": 0.6408938242698825,
+        "auc_oof_global": 0.6815465785085472,
+        "gain_vs_in_run_wall": -0.0469676268967828,
+        "gain_vs_committed_wall": 0.09377267064845463,
+        "nadeau_bengio": {
+          "t": -0.09129993983495024,
+          "p": 0.9298120261161571,
+          "mean_diff": -0.0020342038732646603
+        },
+        "wilcoxon": {
+          "w": 17.0,
+          "p": 0.9453125
+        },
+        "significant": false,
+        "above_noise": true,
+        "verdict": "no_robust_gain"
+      }
+    }
+  }
+}

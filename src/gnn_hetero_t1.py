@@ -173,25 +173,44 @@ def build_multirel_graph(df, well_ids, coords, subbasin, node_block, *,
 # =====================================================================================
 # 2. MODELS (multi-relational encoders over a single real node type)
 # =====================================================================================
-def build_model_t1(name, in_dim, *, hidden=64, layers=2, dropout=0.3, heads=4):
+def build_model_t1(name, in_dim, *, hidden=64, layers=2, dropout=0.3, heads=4,
+                   drop_edge=0.0, use_graphnorm=False):
     """Build a multi-relational node classifier returning [n_nodes] logits.
 
-    name in {'hgt','rgcn','hetero_sage'}. All share: an input Linear to `hidden`, `layers`
-    relational conv blocks (LayerNorm + ReLU + dropout, skip connection when in_dim==hidden
-    on the first block / always between hidden blocks), and a Linear(hidden,1) head.
+    name in {'hgt','rgcn','hetero_sage','hetero_sage_v1'}. All share: an input Linear to
+    `hidden`, `layers` relational conv blocks (norm + ReLU + dropout, skip connection when
+    in_dim==hidden), and a Linear(hidden,1) head.
+
+    Encoders
+    --------
+    * 'hgt'            : HGTConv typed per-relation attention (reference, LayerNorm).
+    * 'rgcn'          : RGCNConv (one weight per relation).
+    * 'hetero_sage'   : HeteroConv{rel: SAGEConv(mean)} aggr='sum', LayerNorm (ablation
+                        baseline, NO extra regularisation — kept for back-compat).
+    * 'hetero_sage_v1': the V1 INDUCTIVE GraphSAGE-hetero. HeteroConv{rel: SAGEConv(mean)}
+                        aggr='sum', plus the explicitly-requested regularisation:
+                          - DropEdge   : per-relation random edge dropout at TRAIN time
+                                         (`drop_edge`, applied in the message-passing path),
+                          - GraphNorm  : torch_geometric.nn.GraphNorm in place of LayerNorm,
+                          - neighbour sampling is handled OUTSIDE the model (fan-out subset of
+                            the per-relation edge index per layer at train time — see
+                            train_eval_fold(neighbor_fanout=...)).
+                        Inductive by construction: it consumes whatever edge_index_dict the
+                        fold trainer feeds (train-train at fit time, cross-block-free at score
+                        time), exactly like the HGT path.
 
     forward signatures:
-      * hgt / hetero_sage : forward(x_dict, edge_index_dict) -> logits[n_nodes]
-        where x_dict = {'well': X}, edge_index_dict = {R_NEAR: ei, R_SUBBASIN: ei}.
-      * rgcn              : forward(x, edge_index, edge_type) -> logits[n_nodes]
-        (merged edge list of both relations with a 0/1 relation type vector).
+      * hetero variants : forward(x_dict, edge_index_dict) -> logits[n_nodes].
+      * rgcn            : forward(x, edge_index, edge_type) -> logits[n_nodes].
     """
     import torch
     import torch.nn as nn
     import torch.nn.functional as Fn
-    from torch_geometric.nn import HeteroConv, HGTConv, RGCNConv, SAGEConv
+    from torch_geometric.nn import GraphNorm, HeteroConv, HGTConv, RGCNConv, SAGEConv
+    from torch_geometric.utils import dropout_edge
 
     name = name.lower()
+    is_v1 = name == "hetero_sage_v1"
 
     class MultiRelGNN(nn.Module):
         def __init__(self):
@@ -199,6 +218,7 @@ def build_model_t1(name, in_dim, *, hidden=64, layers=2, dropout=0.3, heads=4):
             self.name = name
             self.hidden = hidden
             self.dropout = dropout
+            self.drop_edge = float(drop_edge) if is_v1 else 0.0
             self.in_proj = nn.Linear(in_dim, hidden)
             self.convs = nn.ModuleList()
             self.norms = nn.ModuleList()
@@ -209,23 +229,42 @@ def build_model_t1(name, in_dim, *, hidden=64, layers=2, dropout=0.3, heads=4):
                 elif name == "rgcn":
                     self.convs.append(RGCNConv(hidden, hidden, num_relations=len(RELATIONS),
                                                aggr="mean"))
-                elif name == "hetero_sage":
+                elif name in ("hetero_sage", "hetero_sage_v1"):
                     self.convs.append(HeteroConv({
                         R_NEAR: SAGEConv(hidden, hidden, aggr="mean"),
                         R_SUBBASIN: SAGEConv(hidden, hidden, aggr="mean"),
                     }, aggr="sum"))
                 else:
                     raise ValueError(f"unknown model {name!r}")
-                self.norms.append(nn.LayerNorm(hidden))
+                # GraphNorm for V1 (requested), LayerNorm otherwise (back-compat).
+                self.norms.append(GraphNorm(hidden) if (is_v1 and use_graphnorm)
+                                  else nn.LayerNorm(hidden))
             self.head = nn.Linear(hidden, 1)
+            self._dropout_edge = dropout_edge
+
+        def _maybe_dropedge(self, edge_index_dict):
+            """DropEdge (V1 only): drop a fraction of edges PER RELATION at TRAIN time. The
+            inter-block cut is upstream, so dropping a subset only removes legal intra-block
+            edges — never re-opens the spatial leak."""
+            if not (is_v1 and self.training and self.drop_edge > 0.0):
+                return edge_index_dict
+            out = {}
+            for rel, ei in edge_index_dict.items():
+                if ei.numel():
+                    ei2, _ = self._dropout_edge(ei, p=self.drop_edge, force_undirected=False)
+                    out[rel] = ei2
+                else:
+                    out[rel] = ei
+            return out
 
         # ----------------------------------------------------------- hetero path
         def _embed_hetero(self, x_dict, edge_index_dict):
             h = Fn.relu(self.in_proj(x_dict["well"]))
             for conv, norm in zip(self.convs, self.norms):
+                eid = self._maybe_dropedge(edge_index_dict)
                 xd = {"well": h}
-                out = conv(xd, edge_index_dict)["well"]
-                out = Fn.relu(norm(out))
+                out = conv(xd, eid)["well"]
+                out = Fn.relu(norm(out))            # GraphNorm/LayerNorm on the well nodes
                 out = out + h                       # skip connection (hidden==hidden)
                 h = Fn.dropout(out, p=self.dropout, training=self.training)
             return h
@@ -370,6 +409,10 @@ class FoldResult:
     audit: dict                          # per-relation cross-block audit (must be 0)
     n_edges_near: int
     n_edges_subbasin: int
+    # V1 overfitting diagnostic: node-level AUC/F1 on the FIT set and the VAL set at the
+    # best (early-stopped) epoch, both scored with the TRAIN-side edges (inductive). The
+    # fit-minus-val gap quantifies overfitting; populated by train_eval_fold.
+    train_diag: dict = field(default_factory=dict)
 
 
 def _build_edge_tensors(mrg, dev, *, train_only_mask=None):
@@ -404,6 +447,7 @@ def _build_edge_tensors(mrg, dev, *, train_only_mask=None):
 
 def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, *,
                     name="hgt", hidden=64, layers=2, dropout=0.3, heads=4,
+                    drop_edge=0.0, use_graphnorm=False, neighbor_fanout=None,
                     k_spatial=8, cap_km_spatial=1.5, k_subbasin=8, cap_km_subbasin=2.0,
                     lr=5e-3, weight_decay=5e-4, max_epochs=400, patience=50,
                     val_frac=0.18, n_val_micro=6, lr_schedule=True, inductive=True,
@@ -471,11 +515,41 @@ def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, 
             return model(x, rei, ret, embed=embed)
         return model({"well": x}, eid, embed=embed)
 
+    def _sample_neighbors(eid, fanout, rng):
+        """NEIGHBOR SAMPLING (V1): per relation, cap each destination node's incoming edges
+        at `fanout` by random subset. Resampled every epoch from the TRAIN-TRAIN edges, so it
+        only ever drops legal intra-block edges — the inter-block cut and inductive guarantee
+        are untouched. Returns a new edge_index_dict (torch tensors on `dev`)."""
+        if not fanout:
+            return eid
+        out = {}
+        for rel, ei in eid.items():
+            E = ei.shape[1]
+            if E == 0:
+                out[rel] = ei; continue
+            dst = ei[1].cpu().numpy()
+            order = np.argsort(dst, kind="stable")
+            dst_sorted = dst[order]
+            keep_local = []
+            bounds = np.flatnonzero(np.diff(dst_sorted)) + 1
+            seg_starts = np.concatenate([[0], bounds])
+            seg_ends = np.concatenate([bounds, [len(dst_sorted)]])
+            for s, e in zip(seg_starts, seg_ends):
+                idxs = order[s:e]
+                if len(idxs) > fanout:
+                    idxs = rng.choice(idxs, size=fanout, replace=False)
+                keep_local.append(idxs)
+            keep = np.concatenate(keep_local) if keep_local else np.zeros(0, dtype=int)
+            out[rel] = ei[:, torch.as_tensor(np.sort(keep), device=ei.device)]
+        return out
+
     train_pack = (eid_train, rgcn_ei_train, rgcn_et_train)
     score_pack = (eid_all, rgcn_ei_all, rgcn_et_all)
+    _sampler_rng = np.random.RandomState(seed)
 
     model = build_model_t1(name, in_dim=X.shape[1], hidden=hidden, layers=layers,
-                           dropout=dropout, heads=heads).to(dev)
+                           dropout=dropout, heads=heads,
+                           drop_edge=drop_edge, use_graphnorm=use_graphnorm).to(dev)
     opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     sched = None
     if lr_schedule:
@@ -484,10 +558,16 @@ def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, 
     pos = float(y[m_fit].sum()); neg = float(m_fit.sum().item() - pos)
     pos_weight = torch.tensor([neg / pos if pos > 0 else 1.0], device=dev)
 
+    use_sampling = bool(neighbor_fanout) and name.lower() != "rgcn"
     best_val, best_state, best_epoch, bad = -np.inf, None, 0, 0
+    history = []   # per-epoch (loss, val_auc, fit_auc) — under-training diagnostic (§3.8)
     for epoch in range(max_epochs):
         model.train(); opt.zero_grad()
-        out = _fwd(model, train_pack)
+        if use_sampling:
+            eid_s = _sample_neighbors(eid_train, neighbor_fanout, _sampler_rng)
+            out = _fwd(model, (eid_s, rgcn_ei_train, rgcn_et_train))
+        else:
+            out = _fwd(model, train_pack)
         loss = Fn.binary_cross_entropy_with_logits(out[m_fit], y[m_fit],
                                                    pos_weight=pos_weight)
         if not torch.isfinite(loss):
@@ -499,11 +579,14 @@ def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, 
             # validation also uses TRAIN-side edges (val nodes ARE train-side, inductive)
             p = torch.sigmoid(_fwd(model, train_pack))
             pv = p[m_val].cpu().numpy(); yv = y[m_val].cpu().numpy()
+            pf = p[m_fit].cpu().numpy(); yf = y[m_fit].cpu().numpy()
             try:
                 from sklearn.metrics import roc_auc_score
                 vauc = roc_auc_score(yv, pv) if len(np.unique(yv)) > 1 else 0.0
+                fauc = roc_auc_score(yf, pf) if len(np.unique(yf)) > 1 else float("nan")
             except Exception:
-                vauc = 0.0
+                vauc, fauc = 0.0, float("nan")
+        history.append((int(epoch), float(loss.detach()), float(vauc), float(fauc)))
         if sched is not None:
             sched.step(vauc)
         if vauc > best_val + 1e-4:
@@ -526,6 +609,34 @@ def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, 
         # Scored with the SAME cross-block-free edge set as the probas so a test well's
         # embedding aggregates ONLY from its TRAIN neighbours (C-SPAT.4 inductive).
         emb_node = _fwd(model, score_pack, embed=True).cpu().numpy().astype(np.float32)
+        # OVERFITTING DIAGNOSTIC (V1): at the best epoch, score FIT and VAL nodes with the
+        # TRAIN-side edges (inductive); report AUC/F1 on each so the fit-minus-val gap is
+        # comparable HGT vs hetero-SAGE. Full-graph (no sampling) for a stable estimate.
+        p_train = torch.sigmoid(_fwd(model, train_pack)).cpu().numpy()
+    from sklearn.metrics import roc_auc_score, f1_score
+    def _node_diag(mask):
+        yy = y_well[mask]; pp = p_train[mask]
+        thr_d = _f1_threshold(yy, pp)
+        auc = float(roc_auc_score(yy, pp)) if len(np.unique(yy)) > 1 else float("nan")
+        return {"auc": auc, "f1": float(f1_score(yy, (pp >= thr_d).astype(int),
+                                                 zero_division=0)), "n": int(mask.sum())}
+    fit_d = _node_diag(fit_nodes); val_d = _node_diag(val_nodes)
+    train_diag = {
+        "fit_auc": fit_d["auc"], "val_auc": val_d["auc"],
+        "fit_f1": fit_d["f1"], "val_f1": val_d["f1"],
+        "gap_auc_fit_minus_val": (float(fit_d["auc"] - val_d["auc"])
+                                  if np.isfinite(fit_d["auc"]) and np.isfinite(val_d["auc"])
+                                  else float("nan")),
+        "gap_f1_fit_minus_val": float(fit_d["f1"] - val_d["f1"]),
+        "n_fit": fit_d["n"], "n_val": val_d["n"],
+        # per-epoch curves (§3.8): detect under-training / premature early-stop.
+        "history_epochs": [h[0] for h in history],
+        "history_train_loss": [h[1] for h in history],
+        "history_val_auc": [h[2] for h in history],
+        "history_fit_auc": [h[3] for h in history],
+        "n_epochs_ran": len(history), "max_epochs": int(max_epochs),
+        "early_stopped": bool(len(history) < max_epochs),
+    }
 
     # OOF threshold from VAL nodes (C-THR: never from test)
     thr = _f1_threshold(y_well[val_nodes], proba_node[val_nodes])
@@ -545,7 +656,8 @@ def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, 
         n_val_micro=int(n_micro_used), n_val_nodes=int(val_nodes.sum()),
         audit=dict(mrg.audit),
         n_edges_near=int(mrg.rel[R_NEAR][0].shape[1]),
-        n_edges_subbasin=int(mrg.rel[R_SUBBASIN][0].shape[1]))
+        n_edges_subbasin=int(mrg.rel[R_SUBBASIN][0].shape[1]),
+        train_diag=train_diag)
     return fr, proba_node, emb_node
 
 
