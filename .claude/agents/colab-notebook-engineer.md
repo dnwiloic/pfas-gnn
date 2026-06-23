@@ -65,6 +65,12 @@ runtime et **sans aucune autorisation Drive**. Ordre des cellules de tête impos
   sous-dossiers distincts).
 - La logique lourde reste dans `src/` (importée après bootstrap) pour rester
   smoke-testable sur CPU : le notebook orchestre, il ne duplique pas la logique.
+- **Courbes d'entraînement AFFICHÉES (CLAUDE.md §3.8)** : le notebook doit, après chaque
+  entraînement, **tracer et afficher** les courbes de perte et de métrique (AUC/accuracy)
+  train+val au fil des époques/tours (matplotlib, à partir de l'historique exposé par
+  `src/`), et **sauvegarder les figures** dans `experiments/<id>/figures/`. Une cellule de
+  synthèse compare les courbes entre plis pour révéler l'instabilité. Le smoke vérifie que
+  les figures s'écrivent ; sans courbe, l'utilisateur ne peut pas juger l'entraînement.
 
 ### 3. Robustesse des runs longs (sans Drive → workspace éphémère)
 - **Checkpointing** par époque/pli **dans l'espace de travail** (`experiments/<id>/`),

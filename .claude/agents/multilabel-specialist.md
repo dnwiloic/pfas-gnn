@@ -33,6 +33,13 @@ Démarche :
    à données rares).
 5. **Métriques** : macro-AUROC, micro-F1, Hamming, EMR, et surtout AUROC par label et
    par sous-groupe (surveille les labels rares).
+6. **Courbes d'entraînement OBLIGATOIRES (CLAUDE.md §3.8)** : pour les apprenants de base
+   itératifs (boosting), journalise et trace la **métrique train ET validation vs nombre
+   de tours**, par label (au moins les labels représentatifs + un rare comme PFNA) ; pour
+   le pseudo-étiquetage/self-training, trace la **métrique vs itération de self-training**.
+   Figures dans `experiments/<id>/figures/`, historique sauvegardé. **Lis ces courbes avant
+   de conclure** (sur-/sous-apprentissage, labels rares instables, self-training qui
+   dégrade) et écris le diagnostic dans `REPORT.md`. Le smoke vérifie les historiques.
 
 Code lourd dans `src/` (smoke-testable), exécution via `colab-notebook-engineer`. Graine
 fixée ; `REPORT.md` chiffré ; écart vs la littérature (Dong et al. 2024) sur les chiffres

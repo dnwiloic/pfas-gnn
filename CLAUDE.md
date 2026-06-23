@@ -55,6 +55,16 @@ récite pas.
    `experiments/<id>/` : `config.yaml`, `metrics.json`, `REPORT.md`.
 7. **Positionnement** vs la littérature, dont Dong et al. (2024), sans présumer de
    chiffres : l'agent rédacteur compare aux résultats réellement obtenus.
+8. **Diagnostic d'entraînement — COURBES SYSTÉMATIQUES.** Tout entraînement itératif
+   (époques GNN/réseaux, tours de boosting XGBoost, arbres RF) DOIT **journaliser puis
+   afficher/sauvegarder les courbes de PERTE et de MÉTRIQUE (accuracy/AUC) au fil des
+   itérations, en TRAIN ET VALIDATION**, par pli. On ne rapporte JAMAIS un score final
+   sans avoir regardé la dynamique : ces courbes servent à **diagnostiquer** convergence,
+   sur-/sous-apprentissage, point d'arrêt précoce, instabilité inter-pli, et l'agent en
+   **tire des conclusions explicites dans `REPORT.md`** (p. ex. « pli k sous-entraîné,
+   early-stop à l'époque 9 » — exactement le défaut corrigé en P0). Historiques sauvegardés
+   (p. ex. `history.json`) et figures dans `experiments/<id>/figures/`
+   (`{loss,metric}_curves*.png`). Pas de courbe possible (modèle non itératif) → le justifier.
 
 ## 4. Environnement d'exécution : Google Colab (pas de GPU local)
 
@@ -102,7 +112,9 @@ Aucun notebook destiné à un run long n'est livré sans avoir passé un **smoke
 - Le smoke-test **vérifie le bout-en-bout** : les données se chargent, les formes
   concordent, le graphe se construit (bon nombre de nœuds/arêtes), la passe avant
   s'exécute, la perte est finie (et idéalement décroît), les métriques se calculent,
-  les artefacts s'écrivent.
+  les artefacts s'écrivent. Il vérifie aussi que les **courbes d'entraînement** (cf.
+  §3.8) sont bien produites : historiques perte/métrique train+val **non vides** et de
+  longueur = nombre d'époques/tours, figures écrites.
 - Il **estime la durée du run complet** (extrapolation) et alerte si elle est longue.
 - Règle : *smoke-test vert sur CPU → seulement ensuite run complet sur Colab GPU*.
   On ne découvre jamais une erreur de forme après 4 h de calcul.

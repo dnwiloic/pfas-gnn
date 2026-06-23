@@ -26,6 +26,14 @@ Pratiques imposées :
 - Interprétabilité : importances + SHAP, transmis à `hydro-domain-expert`.
 - Sortie décision : courbe de gain cumulé (% positifs capturés en prélevant les k %
   mieux classés) quand pertinent.
+- **Courbes d'entraînement OBLIGATOIRES (CLAUDE.md §3.8)** : pour le boosting, journalise
+  et trace la **métrique d'éval (AUC/logloss) train ET validation vs nombre de tours**
+  (`XGBoost.evals_result()` avec `eval_set` train+val) — c'est le diagnostic de
+  sur-/sous-apprentissage et le vrai `best_iteration` ; pour RF, la courbe **OOB (ou
+  métrique val) vs `n_estimators`**. Figures dans `experiments/<id>/figures/`, historique
+  sauvegardé. **Tu lis ces courbes avant de conclure** et écris le diagnostic dans
+  `REPORT.md` (convergence, écart train↔val = sur-apprentissage, tours utiles). Le smoke
+  vérifie que les historiques sont non vides.
 
 Tout code de modélisation lourd doit vivre dans `src/` (importable, smoke-testable sur
 CPU) puis être orchestré par un notebook Colab via `colab-notebook-engineer`. Tu écris

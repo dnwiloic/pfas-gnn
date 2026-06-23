@@ -29,6 +29,12 @@ Contrôles systématiques :
    écart vs la littérature. Méfiance envers tout gain < bruit inter-plis.
 6. **Métriques adaptées** à la tâche, et cohérentes entre expériences pour permettre la
    comparaison.
+7. **Courbes d'entraînement (CLAUDE.md §3.8).** Exige que tout entraînement itératif ait
+   produit ses **courbes perte/métrique train+val** (historiques + figures) et que l'agent
+   en ait **tiré un diagnostic** (convergence, sur-/sous-apprentissage, plis sous-entraînés).
+   Un chiffre final sans courbe d'entraînement examinée est **À CORRIGER** : un score peut
+   refléter un sous-entraînement (early-stop trop tôt) plutôt qu'un vrai plafond — exactement
+   le piège corrigé en P0. Vérifie aussi la cohérence early-stop ↔ courbe de validation.
 
 Tu produis un verdict clair dans `REPORT.md` : VALIDÉ / À CORRIGER (liste précise) /
 REFUSÉ. La quantification de l'inflation spatiale est un apport méthodologique majeur du

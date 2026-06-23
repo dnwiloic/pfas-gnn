@@ -56,3 +56,14 @@ Toujours rapporter split aléatoire ET spatial + leur écart, et le Δ vs la bas
 non-graphe et vs la littérature. Calibration + gain cumulé (T1) ou métriques
 par-label/par-sous-groupe (T2). Jamais de feature de la blocklist de fuite. Tout
 nouveau protocole est validé par `eval-methodologist` avant un run long.
+
+### Courbes d'entraînement OBLIGATOIRES (CLAUDE.md §3.8)
+À chaque entraînement, **journalise par époque** : perte train, perte validation,
+AUC/accuracy train, AUC/accuracy validation — et **sauvegarde les figures** (perte et
+métrique vs époque, train+val superposés ; au moins un pli représentatif + l'agrégat) dans
+`experiments/<id>/figures/`, l'historique dans un `history.json`. **Tu LIS ces courbes
+avant de conclure** et tu écris le diagnostic dans `REPORT.md` : convergence atteinte ou
+non, sur-/sous-apprentissage, époque d'arrêt précoce, **plis sous-entraînés** (le défaut
+exact corrigé en P0 — un pli qui s'arrête à l'époque 9 avec une val-AUC plate est un
+sous-entraînement, pas un plafond du modèle). Le smoke vérifie que les historiques sont
+non vides (longueur = nb d'époques) et que les figures s'écrivent.
