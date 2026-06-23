@@ -1,0 +1,99 @@
+{
+  "smoke": false,
+  "seed": 42,
+  "k": 8,
+  "n_predictive_features": 96,
+  "n_confirmatory_features": 127,
+  "n_ngl_added": 31,
+  "target": "T1a",
+  "prevalence": 0.4452716992533126,
+  "mode": "confirmatory",
+  "caveat": "TAUTOLOGICAL CEILING: T1a = (PFOA_ngL>4) | (PFOS_ngL>4) | (HI>=1). The NGL_COLS for PFOA, PFOS, PFHxS, PFNA, HFPO_DA, PFBS are direct components of the label definition. Including them makes the model partially tautological. Do NOT use these scores to claim a deployable model. *_detected columns remain excluded (near-direct binary label components).",
+  "models": {
+    "XGB": {
+      "spatial": {
+        "roc_auc": 0.999873917896723,
+        "f1": 0.9954588230648613,
+        "accuracy": 0.9961724563725003,
+        "recall": 0.996980637314391,
+        "precision": 0.9939643239781057,
+        "pr_auc": 0.9998160474542181,
+        "balanced_accuracy": 0.9962246814680334,
+        "brier": 0.0028603678347303672,
+        "roc_auc_std": 9.754221811114652e-05,
+        "f1_std": 0.0030948394049421096,
+        "accuracy_std": 0.002983234167370443,
+        "recall_std": 0.0020886326339593655,
+        "precision_std": 0.006075019965557378,
+        "n_folds": 8
+      },
+      "random": {
+        "roc_auc": 0.9999662057083865,
+        "f1": 0.9984419138806948,
+        "accuracy": 0.9986188813919066,
+        "recall": 0.9984412213124728,
+        "precision": 0.998443306149135,
+        "pr_auc": 0.999954715435886,
+        "balanced_accuracy": 0.9985995402000459,
+        "brier": 0.0011152330887415156,
+        "roc_auc_std": 3.3292950491992485e-05,
+        "f1_std": 0.0006801834037733663,
+        "accuracy_std": 0.0005916775576612649,
+        "recall_std": 0.0009149581489057393,
+        "precision_std": 0.0008868049074832701,
+        "n_folds": 8
+      },
+      "delta_random_minus_spatial": {
+        "roc_auc": 0.0001,
+        "f1": 0.003,
+        "accuracy": 0.0024,
+        "recall": 0.0015,
+        "precision": 0.0045
+      },
+      "elapsed_s": 486.4
+    },
+    "RF": {
+      "spatial": {
+        "roc_auc": 0.9985403204882085,
+        "f1": 0.9860409089709204,
+        "accuracy": 0.9888925200399785,
+        "recall": 0.9929750145198999,
+        "precision": 0.9792983880887329,
+        "pr_auc": 0.997330540708625,
+        "balanced_accuracy": 0.9892376234725495,
+        "brier": 0.023026986356908016,
+        "roc_auc_std": 0.0008831851597804678,
+        "f1_std": 0.00813599333087395,
+        "accuracy_std": 0.006975022049642852,
+        "recall_std": 0.005155639251030592,
+        "precision_std": 0.01400925186777846,
+        "n_folds": 8
+      },
+      "random": {
+        "roc_auc": 0.999526772956882,
+        "f1": 0.9903121343166603,
+        "accuracy": 0.991346164563967,
+        "recall": 0.9942842334303315,
+        "precision": 0.9863927748815788,
+        "pr_auc": 0.9993830716493111,
+        "balanced_accuracy": 0.9916011351894272,
+        "brier": 0.01514851672748297,
+        "roc_auc_std": 0.0001848551878287896,
+        "f1_std": 0.0016032939214640207,
+        "accuracy_std": 0.0013932872708918075,
+        "recall_std": 0.003365148218318856,
+        "precision_std": 0.003857921905162011,
+        "n_folds": 8
+      },
+      "delta_random_minus_spatial": {
+        "roc_auc": 0.001,
+        "f1": 0.0043,
+        "accuracy": 0.0025,
+        "recall": 0.0013,
+        "precision": 0.0071
+      },
+      "elapsed_s": 1189.6
+    }
+  },
+  "wall_s": 1677.4
+}

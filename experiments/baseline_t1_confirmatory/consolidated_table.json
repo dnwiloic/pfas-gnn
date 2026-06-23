@@ -1,0 +1,63 @@
+{
+  "table": [
+    {
+      "mode": "predictive",
+      "model": "XGB",
+      "AUC_spatial": 0.5877739078600925,
+      "AUC_random": 0.9004275887452768,
+      "delta_AUC": 0.3127,
+      "F1_spatial": 0.5200612336901989,
+      "recall_spatial": 0.7495420305419956,
+      "precision_spatial": 0.4110141390341973,
+      "pr_auc_spatial": 0.4744726043883176,
+      "brier_spatial": null,
+      "balanced_acc_spatial": 0.5525703571511975
+    },
+    {
+      "mode": "predictive",
+      "model": "RF",
+      "AUC_spatial": 0.6009263696712559,
+      "AUC_random": 0.8982215638012714,
+      "delta_AUC": 0.2973,
+      "F1_spatial": 0.5539408404134507,
+      "recall_spatial": 0.9681001670105164,
+      "precision_spatial": 0.39690423206142444,
+      "pr_auc_spatial": 0.4895714351677386,
+      "brier_spatial": null,
+      "balanced_acc_spatial": 0.5440632292098919
+    },
+    {
+      "mode": "confirmatory",
+      "model": "XGB",
+      "AUC_spatial": 0.999873917896723,
+      "AUC_random": 0.9999662057083865,
+      "delta_AUC": 0.0001,
+      "F1_spatial": 0.9954588230648613,
+      "recall_spatial": 0.996980637314391,
+      "precision_spatial": 0.9939643239781057,
+      "pr_auc_spatial": 0.9998160474542181,
+      "brier_spatial": 0.0028603678347303672,
+      "balanced_acc_spatial": 0.9962246814680334
+    },
+    {
+      "mode": "confirmatory",
+      "model": "RF",
+      "AUC_spatial": 0.9985403204882085,
+      "AUC_random": 0.999526772956882,
+      "delta_AUC": 0.001,
+      "F1_spatial": 0.9860409089709204,
+      "recall_spatial": 0.9929750145198999,
+      "precision_spatial": 0.9792983880887329,
+      "pr_auc_spatial": 0.997330540708625,
+      "brier_spatial": 0.023026986356908016,
+      "balanced_acc_spatial": 0.9892376234725495
+    }
+  ],
+  "confirmatory_minus_predictive_AUC_spatial_XGB": 0.41210001003663044,
+  "interpretation": {
+    "gap": "Chemistry adds this much AUC in spatial CV (partially tautological for T1a)",
+    "spatial": "honest generalisation metric (GNN must beat this)",
+    "random": "optimistic/upper-bound only",
+    "delta": "spatial inflation (random minus spatial)"
+  }
+}

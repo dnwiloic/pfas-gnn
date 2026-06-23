@@ -522,6 +522,10 @@ def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, 
     model.eval()
     with torch.no_grad():
         proba_node = torch.sigmoid(_fwd(model, score_pack)).cpu().numpy()
+        # per-node pre-head embedding (for the fusion / stacking arms, arch #2/#3).
+        # Scored with the SAME cross-block-free edge set as the probas so a test well's
+        # embedding aggregates ONLY from its TRAIN neighbours (C-SPAT.4 inductive).
+        emb_node = _fwd(model, score_pack, embed=True).cpu().numpy().astype(np.float32)
 
     # OOF threshold from VAL nodes (C-THR: never from test)
     thr = _f1_threshold(y_well[val_nodes], proba_node[val_nodes])
@@ -542,7 +546,7 @@ def train_eval_fold(df, well_ids, y_well, node_block, test_block, feature_cols, 
         audit=dict(mrg.audit),
         n_edges_near=int(mrg.rel[R_NEAR][0].shape[1]),
         n_edges_subbasin=int(mrg.rel[R_SUBBASIN][0].shape[1]))
-    return fr, proba_node
+    return fr, proba_node, emb_node
 
 
 # =====================================================================================
@@ -570,7 +574,7 @@ def _run_one_regime(df, *, name, regime, feature_cols, n_blocks, well_ids, coord
     proba_node_oof = np.full(len(well_ids), np.nan, dtype=np.float64)
     folds = []
     for b in blocks:
-        fr, proba_node = train_eval_fold(
+        fr, proba_node, _emb_node = train_eval_fold(
             df, well_ids, y_well, node_block, b, feature_cols,
             name=name, coords=coords, subbasin=subbasin, y_row=y_row, seed=seed,
             verbose=verbose, **model_kw, **train_kw)
