@@ -1,0 +1,42 @@
+{
+  "_note": "Compact summary of the full Colab run. The complete metrics.json (with per-epoch training histories for all 16 folds) + training_curves_*.png are the authoritative artifacts to commit from the Colab download. Every number here traces to that metrics.json (smoke:false, seed 42, k=8).",
+  "experiment": "v1_inductive_sage",
+  "task": "T1a",
+  "smoke": false,
+  "seed": 42,
+  "n_features": 61,
+  "n_blocks": 8,
+  "elapsed_s": 1687.86,
+  "relations": ["near", "same_subbasin_knn"],
+  "v1_regularisation": {"drop_edge": 0.2, "use_graphnorm": true, "neighbor_fanout": 10},
+  "in_run_xgb_wall_spatial": {"auc_oof_global": 0.6879, "auc_per_fold_mean": 0.6429},
+  "encoders": {
+    "hgt": {
+      "spatial_auc_oof_global": 0.6487,
+      "spatial_auc_per_fold_mean": 0.6177,
+      "random_auc_oof_global": 0.8012,
+      "delta_random_minus_spatial": 0.1525,
+      "n_cross_block_total": 0,
+      "overfit_gap_fit_minus_val_auc": 0.0492,
+      "val_auc_mean": 0.9136,
+      "convergence": {"n_epochs_ran_mean": 175.1, "early_stopped_frac": 1.0, "under_training_flag": false}
+    },
+    "hetero_sage_v1": {
+      "spatial_auc_oof_global": 0.6278,
+      "spatial_auc_per_fold_mean": 0.5819,
+      "random_auc_oof_global": 0.8314,
+      "delta_random_minus_spatial": 0.2037,
+      "n_cross_block_total": 0,
+      "overfit_gap_fit_minus_val_auc": 0.0572,
+      "val_auc_mean": 0.9137,
+      "convergence": {"n_epochs_ran_mean": 113.9, "early_stopped_frac": 1.0, "under_training_flag": false}
+    }
+  },
+  "comparison": {
+    "hgt_vs_wall": {"gain_per_fold_mean": -0.0252, "nb_p": 0.651, "wilcoxon_p": 0.461, "verdict": "no_robust_gain"},
+    "hetero_sage_v1_vs_wall": {"gain_per_fold_mean": -0.0610, "nb_p": 0.218, "wilcoxon_p": 0.109, "verdict": "no_robust_gain"},
+    "hetero_sage_v1_vs_hgt": {"per_fold_mean_diff": -0.0358, "nb_p": 0.223, "wilcoxon_p": 0.195, "verdict": "no_robust_diff"},
+    "overfit_gap_reduction_sage_vs_hgt": -0.0080
+  },
+  "verdict": "V1_REJECTED: inductive hetero-SAGE neither beats HGT nor reduces the fit-val gap; both stay below the XGB wall. Negative result."
+}

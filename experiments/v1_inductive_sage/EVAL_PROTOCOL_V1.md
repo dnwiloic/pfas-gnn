@@ -134,3 +134,91 @@ contrôles anti-fuite restent valides. Conditions de suivi (non bloquantes) : su
 Colab complet, examiner les `training_curves_<enc>.png` et le tableau de convergence du
 REPORT ; si `under_training_flag = YES`, relever max_epochs/patience et relancer avant
 d'endosser les AUC finales.
+
+---
+
+## CLÔTURE BOUCLE C — RÉSULTATS (audit de traçabilité, lecture seule)
+
+Méthodologiste : eval-methodologist. Date : 2026-06-24. Mode : AUDIT-ONLY (recoupement
+déterministe REPORT.md ↔ metrics_summary.json + recalculs ; AUCUN ré-entraînement, aucune
+relecture du metrics.json complet — non encore committé en local).
+
+### VERDICT FINAL : **ENDOSSÉ — V1 REJETÉE (négatif honnête)**, sous condition de commit
+
+Le verdict « V1 REJETÉE » du fil principal est **endossé**. Les chiffres headline sont
+internement cohérents (REPORT ↔ summary ↔ recalculs per-fold), les comparaisons sont
+valides (mur in-run, tests appariés per-fold, règle de réalité), et l'interprétation
+méthodologique (goulot = extrapolation spatiale, pas sur-apprentissage de nœuds) est
+soutenue par les chiffres.
+
+**Condition suspensive (non bloquante sur le fond, bloquante sur la traçabilité finale) :**
+l'endossement n'est définitif qu'après commit en local de :
+- `metrics.json` complet (histories par époque, 16 plis) — artefact AUTORITAIRE ;
+- `training_curves_hgt.png` et `training_curves_hetero_sage_v1.png` ;
+- `config.yaml`.
+Tant que ces fichiers ne sont pas versionnés, le résumé n'est pas indépendamment
+reproductible : §3.8 (courbes examinées) et le recalcul OOF reposent sur un fichier non
+présent. Verdict = **ENDOSSÉ-CONDITIONNEL**.
+
+### Point 1 — TRAÇABILITÉ : **PASS**
+Tous les chiffres headline du REPORT tracent au summary et se recalculent au rounding près :
+
+| grandeur | recalcul | REPORT/summary |
+|---|---|---|
+| HGT pfm (8 plis) | 0,6178 | 0,6177 |
+| SAGE pfm (8 plis) | 0,5820 | 0,5819 |
+| SAGE−HGT pfm diff | −0,0358 | −0,0358 |
+| SAGE−mur gain | −0,0609 | −0,0610 |
+| HGT−mur gain | −0,0252 | −0,0252 |
+| Δ(rd−sp) HGT (OOF−OOF) | 0,1525 | 0,1525 |
+| Δ(rd−sp) SAGE (OOF−OOF) | 0,2036 | 0,2037 |
+| réduction gap SAGE vs HGT | −0,0080 | −0,0080 |
+
+n_plis = 8 = n_blocks (k=8) pour les deux encodeurs : cohérent.
+**Réserve rédactionnelle mineure (non bloquante) :** le tableau du REPORT (§0) affiche
+le Δ(rd−sp) sur la même ligne que la colonne spatiale « per-fold-mean / OOF ». Or le Δ
+est calculé OOF−OOF (random n'est rapporté qu'en OOF-global), pas pfm−pfm. Cohérent et
+correct, mais à expliciter pour éviter la lecture pfm−pfm (qui donnerait 0,1834 / 0,2494).
+À clarifier d'une note de bas de tableau lors de la mise au propre — n'affecte pas le verdict.
+
+### Point 2 — COMPARAISON VALIDE : **PASS**
+- Le verdict s'appuie bien sur le **mur XGB IN-RUN** (pfm 0,6429 / OOF 0,6879), pas sur le
+  mur committé 0,588 — comparaison sur les mêmes plis spatiaux, donc appariée et légitime.
+- Tests appariés per-fold vs per-fold : SAGE−mur NB p=0,218 / Wilcoxon p=0,109 ; HGT−mur
+  NB p=0,651 / Wilcoxon p=0,461 ; SAGE−HGT NB p=0,223 / Wilcoxon p=0,195. **Aucun p<0,05.**
+- Règle de réalité (p<0,05 ET |Δ|>0,03 AUC) : aucune paire ne la franchit. Les deux verdicts
+  `no_robust_gain` (vs mur) et `no_robust_diff` (SAGE vs HGT) sont **correctement justifiés**.
+- Contrôle de bruit : l'écart SAGE−HGT (−0,036) est INFÉRIEUR à l'écart-type inter-plis du
+  HGT (0,085) → gain sous le bruit inter-plis, conforme à la méfiance exigée (§5 du mandat).
+
+### Point 3 — ENDOSSEMENT DU NÉGATIF : **PASS**
+- (a) SAGE < HGT < mur : confirmé numériquement (0,582 < 0,618 < 0,643), tous écarts non
+  significatifs → « ne bat ni le HGT ni le mur » est exact (négatif honnête, pas sur-vendu).
+- (b) Réduction du gap fit−val = −0,008 (le SAGE a un gap PLUS GRAND, 0,057 ≥ 0,049) :
+  l'objectif de V1 (réduire le sur-apprentissage) est réfuté, signe correct.
+- (c) Inflation spatiale aggravée : Δ passe de 0,1525 (HGT) à 0,2037 (SAGE) : confirmé.
+- **Interprétation méthodologique clé — VALIDÉE.** L'affirmation « l'écart fit−val (~0,05)
+  sous-estime l'échec réel ; le vrai goulot est l'extrapolation spatiale » est soutenue par
+  les chiffres : val_auc_mean ~0,914 (les deux) vs test spatial pfm ~0,60. L'effondrement
+  **val→test = −0,296 (HGT) / −0,332 (SAGE)** écrase d'un facteur ~6 l'écart fit→val (~0,05).
+  Le val étant des micro-blocs internes au train (proches), il est optimiste ; le test est un
+  bloc KMeans tenu (région non vue). Conclusion correcte : une régularisation inductive qui
+  cible fit−val ne PEUT PAS corriger un déficit d'extrapolation hors-région. C'est l'apport
+  méthodologique majeur du projet (quantification de l'inflation spatiale) — soigné et juste.
+  **Nuance à garder :** ce diagnostic est lui-même conditionné à la lecture des courbes du
+  metrics.json complet (val_auc par époque, fit_auc par époque) — d'où la condition de commit.
+
+### Point 4 — §3.8 (under-training) : **PASS**
+`under_training_flag = false` pour les deux ; early_stopped_frac = 1,0. La logique du flag
+(best_epoch dans les 20% finaux ⇒ rising) avait été auditée et validée (boucle précédente).
+Headroom d'époques confortable (HGT 175/400, SAGE 114/400) : l'early-stop ne se déclenche pas
+au plafond du budget, donc le pic val n'est pas tronqué. La réserve de suivi (relever
+max_epochs/patience si under-training) est correctement **levée**. AUC **endossables** sur ce
+critère — **sous réserve** d'inspection visuelle des deux PNG au commit (cohérence axvline
+best_epoch ↔ plateau val), que je n'ai pu vérifier (PNG non committés).
+
+### Synthèse de clôture
+VALIDÉ sur les 4 points. Verdict V1 REJETÉE **endossé**. Endossement DÉFINITIF dès que
+`metrics.json` (complet) + 2 PNG + `config.yaml` sont committés en local. Réserve
+rédactionnelle (note OOF sur le Δ du tableau §0) à corriger à la mise au propre, sans impact
+sur le verdict.

@@ -249,6 +249,43 @@ def build_oof_backbone(df, *, feature_cols, n_blocks, regime, hidden, layers, dr
     )
 
 
+# ============================================================= V2 accessor (non-breaking)
+def oof_embeddings_and_tabular(oof):
+    """Reusable accessor for V2 fusion variants (does NOT alter the V0 backbone).
+
+    Returns a dict aligning, BY WELL ROW, the leak-free OOF arrays a downstream fusion
+    head / XGBoost needs:
+
+        well_ids   : np.ndarray[str]   shape (n_wells,)   well identity, row order
+        node_block : np.ndarray[int]   shape (n_wells,)   spatial block id (k=8) per well
+        y_well     : np.ndarray[int]   shape (n_wells,)   well-level majority T1a label
+        hgt_emb    : np.ndarray[f32]   shape (n_wells, H) leak-free OOF HGT embedding
+        tabular    : np.ndarray[f32]   shape (n_wells, d) per-well freq-encoded features
+        row_to_node: np.ndarray[int]   maps each sampling ROW -> well index (broadcast)
+        valid_emb  : np.ndarray[bool]  rows whose hgt_emb is finite (every well in a full run)
+
+    LEAK GUARANTEE (inherited from build_oof_backbone): row i of `hgt_emb` was produced by
+    an HGT trained on the OTHER 7 spatial blocks and scored on well i's block via the
+    cross-block-free edge set, so the embedding of a held-out-block well aggregates ONLY
+    from its TRAIN neighbours (C-SPAT.4). The fusion head must STILL be fit nested-LOBO on
+    these rows (never fit on the held-out block) — see v2_fusion_gating.train_gating_oof.
+
+    Row order is identical across all returned arrays: index i is always well_ids[i].
+    """
+    valid_emb = ~np.isnan(oof.hgt_emb).any(axis=1)
+    return {
+        "well_ids": oof.well_ids,
+        "node_block": oof.node_block,
+        "y_well": oof.y_well.astype(int),
+        "hgt_emb": oof.hgt_emb,
+        "tabular": oof.tabular,
+        "row_to_node": oof.row_to_node,
+        "valid_emb": valid_emb,
+        "hidden": int(oof.meta["hidden"]),
+        "n_tabular_features": int(oof.meta["n_tabular_features"]),
+    }
+
+
 # ============================================================= row-level scoring helper
 def _row_metrics(oof, proba_well, y_row, df, *, thr_source_well=None):
     """Broadcast a per-well OOF probability to sampling rows, threshold from OOF wells,
