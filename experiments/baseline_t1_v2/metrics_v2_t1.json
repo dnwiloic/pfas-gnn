@@ -1,0 +1,194 @@
+{
+  "smoke": false,
+  "seed": 42,
+  "k": 8,
+  "n_features": 105,
+  "dataset": "v2",
+  "target": "T1a",
+  "prevalence": 0.4452716992533126,
+  "models": {
+    "RF": {
+      "spatial": {
+        "roc_auc": 0.6523682487060372,
+        "f1": 0.5610262256031546,
+        "accuracy": 0.4702714266758887,
+        "recall": 0.9531342613415268,
+        "precision": 0.40710149034543297,
+        "pr_auc": 0.5242381408346699,
+        "balanced_accuracy": 0.5615272099485584,
+        "roc_auc_std": 0.0676966156000864,
+        "f1_std": 0.11862466182669612,
+        "accuracy_std": 0.09240464253308404,
+        "recall_std": 0.05442663887382017,
+        "precision_std": 0.11739621905552337,
+        "n_folds": 8
+      },
+      "random": {
+        "roc_auc": 0.9083711417355199,
+        "f1": 0.7758385980421235,
+        "accuracy": 0.7627438466409736,
+        "recall": 0.9221252355247971,
+        "precision": 0.6703322019116054,
+        "pr_auc": 0.8955738102547287,
+        "balanced_accuracy": 0.7787373161979392,
+        "roc_auc_std": 0.012741324883219801,
+        "f1_std": 0.021643911666892758,
+        "accuracy_std": 0.023521997317814562,
+        "recall_std": 0.016647541837287633,
+        "precision_std": 0.031732381796082156,
+        "n_folds": 8
+      },
+      "delta": {
+        "roc_auc": 0.256,
+        "f1": 0.2148,
+        "accuracy": 0.2925,
+        "recall": -0.031,
+        "precision": 0.2632
+      },
+      "elapsed_s": 995.0
+    },
+    "XGB": {
+      "spatial": {
+        "roc_auc": 0.6446481504916639,
+        "f1": 0.5507805002992705,
+        "accuracy": 0.5783223526937462,
+        "recall": 0.7446028316436375,
+        "precision": 0.44587126821089335,
+        "pr_auc": 0.5102544972637626,
+        "balanced_accuracy": 0.5970304945880203,
+        "roc_auc_std": 0.051216336363616506,
+        "f1_std": 0.13694128074476083,
+        "accuracy_std": 0.04760176141241493,
+        "recall_std": 0.13807052943430398,
+        "precision_std": 0.13770372830556735,
+        "n_folds": 8
+      },
+      "random": {
+        "roc_auc": 0.9070249712082077,
+        "f1": 0.7802199505627179,
+        "accuracy": 0.7699299655447183,
+        "recall": 0.9189089090068884,
+        "precision": 0.6782179045247243,
+        "pr_auc": 0.8962018354983782,
+        "balanced_accuracy": 0.7845177928101966,
+        "roc_auc_std": 0.010827368142716008,
+        "f1_std": 0.01921483913452979,
+        "accuracy_std": 0.01620504211624892,
+        "recall_std": 0.023270457186141076,
+        "precision_std": 0.022150783986683197,
+        "n_folds": 8
+      },
+      "delta": {
+        "roc_auc": 0.2624,
+        "f1": 0.2294,
+        "accuracy": 0.1916,
+        "recall": 0.1743,
+        "precision": 0.2323
+      },
+      "elapsed_s": 1053.6
+    }
+  },
+  "shap_top25": [
+    {
+      "feature": "dwr_basin__enc",
+      "mean_abs_shap": 0.5757057666778564
+    },
+    {
+      "feature": "sgma_subbasin_name__enc",
+      "mean_abs_shap": 0.39389434456825256
+    },
+    {
+      "feature": "depth_to_water_m",
+      "mean_abs_shap": 0.23422673344612122
+    },
+    {
+      "feature": "flow_dir_sin",
+      "mean_abs_shap": 0.21624861657619476
+    },
+    {
+      "feature": "gm_well_category=MONITORING",
+      "mean_abs_shap": 0.21513189375400543
+    },
+    {
+      "feature": "screen_mid_ft",
+      "mean_abs_shap": 0.20903854072093964
+    },
+    {
+      "feature": "dist_geotracker_km",
+      "mean_abs_shap": 0.20853914320468903
+    },
+    {
+      "feature": "depth_eff_ft",
+      "mean_abs_shap": 0.19792164862155914
+    },
+    {
+      "feature": "hydr_grad_mag_permil",
+      "mean_abs_shap": 0.1704525649547577
+    },
+    {
+      "feature": "elevation_m",
+      "mean_abs_shap": 0.16602884232997894
+    },
+    {
+      "feature": "screen_length_ft",
+      "mean_abs_shap": 0.158870130777359
+    },
+    {
+      "feature": "year",
+      "mean_abs_shap": 0.14707325398921967
+    },
+    {
+      "feature": "flow_dir_cos",
+      "mean_abs_shap": 0.14635738730430603
+    },
+    {
+      "feature": "n_geotracker_within_50km",
+      "mean_abs_shap": 0.13616637885570526
+    },
+    {
+      "feature": "dev_intensity",
+      "mean_abs_shap": 0.120584636926651
+    },
+    {
+      "feature": "n_geotracker_within_10km",
+      "mean_abs_shap": 0.10537822544574738
+    },
+    {
+      "feature": "cocontam_pce",
+      "mean_abs_shap": 0.10400426387786865
+    },
+    {
+      "feature": "cocontam_as",
+      "mean_abs_shap": 0.10126660019159317
+    },
+    {
+      "feature": "cocontam_dca11",
+      "mean_abs_shap": 0.10037693381309509
+    },
+    {
+      "feature": "soil_texture_class__enc",
+      "mean_abs_shap": 0.08565288037061691
+    },
+    {
+      "feature": "soil_ph",
+      "mean_abs_shap": 0.08201860636472702
+    },
+    {
+      "feature": "county__enc",
+      "mean_abs_shap": 0.06927230954170227
+    },
+    {
+      "feature": "aqs_no2_ppb",
+      "mean_abs_shap": 0.0690407082438469
+    },
+    {
+      "feature": "temp_c",
+      "mean_abs_shap": 0.06812003254890442
+    },
+    {
+      "feature": "soil_ratio_water_clay",
+      "mean_abs_shap": 0.06657037138938904
+    }
+  ],
+  "wall_s": 2079.5
+}

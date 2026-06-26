@@ -1,0 +1,8 @@
+[v2-stacking] SMOKE=False n_features=98 GPU=False
+
+=== spatial (in-run XGB wall per-fold-mean = 0.7439) ===
+  hgt_standalone     OOF=0.7070 pfm=0.6600 gain_vs_wall=-0.0839 NBp=0.514 verdict=no_robust_gain
+  embedding_fusion   OOF=0.7115 pfm=0.6928 gain_vs_wall=-0.0510 NBp=0.973 verdict=no_robust_gain
+  stacking           OOF=0.7315 pfm=0.6912 gain_vs_wall=-0.0526 NBp=0.912 verdict=no_robust_gain
+
+wall_s=4736 -> /home/wiloic/M2/Recherche/tmp/pfas/pfas-gnn/experiments/hgt_fusion_stacking_t1_v2/metrics.json

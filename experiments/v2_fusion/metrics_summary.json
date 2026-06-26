@@ -1,0 +1,47 @@
+{
+  "_note": "Résumé compact du run Colab complet. Le metrics.json complet (histories gating par époque, 8 plis) + figures/*.png sont les artefacts autoritaires à committer depuis le téléchargement Colab. Chaque chiffre ici trace à ce metrics.json (smoke:false, seed 42, k=8, n_cross_block_total=0).",
+  "experiment": "v2_fusion",
+  "task": "T1a",
+  "smoke": false,
+  "seed": 42,
+  "n_blocks": 8,
+  "n_tabular_features": 97,
+  "hgt_embed_dim": 64,
+  "elapsed_s": 1507.3,
+  "pca95_v0_components_kept": "~47-48 of 64 (PAS 1 comme dans le papier §7.4)",
+  "spatial_per_fold_mean_auc": {
+    "xgb_seul_WALL": 0.6429,
+    "v2a_full64d": 0.6509,
+    "v2b_pca8": 0.6422,
+    "v2b_pca16": 0.6544,
+    "v2c_gating": 0.5592,
+    "v2c_gating_xgb": 0.6444,
+    "stacking_v0": 0.6466,
+    "fusion_pca95_v0": 0.6400
+  },
+  "spatial_oof_global_auc": {
+    "xgb_seul_WALL": 0.6879,
+    "v2a_full64d": 0.6820,
+    "v2b_pca8": 0.6815,
+    "v2b_pca16": 0.6848,
+    "v2c_gating": 0.4952,
+    "v2c_gating_xgb": 0.6715,
+    "stacking_v0": 0.6823,
+    "fusion_pca95_v0": 0.6753
+  },
+  "paired_tests_per_fold": {
+    "v2a_full64d":   {"vs_wall": {"gain": 0.0080, "nb_p": 0.795, "wc_p": 0.844}, "vs_pca95v0": {"gain": 0.0109, "nb_p": 0.584, "wc_p": 0.313}, "verdict": "no_robust_gain"},
+    "v2b_pca8":      {"vs_wall": {"gain": -0.0007, "nb_p": 0.981, "wc_p": 0.945}, "vs_pca95v0": {"gain": 0.0023, "nb_p": 0.925, "wc_p": 0.945}, "verdict": "no_robust_gain"},
+    "v2b_pca16":     {"vs_wall": {"gain": 0.0115, "nb_p": 0.638, "wc_p": 0.547}, "vs_pca95v0": {"gain": 0.0145, "nb_p": 0.503, "wc_p": 0.383}, "verdict": "no_robust_gain"},
+    "v2c_gating":    {"vs_wall": {"gain": -0.0837, "nb_p": 0.193, "wc_p": 0.055}, "verdict": "BROKEN (sign-inverted, see below)"},
+    "v2c_gating_xgb":{"vs_wall": {"gain": 0.0014, "nb_p": 0.975, "wc_p": 0.945}, "vs_pca95v0": {"gain": 0.0044, "nb_p": 0.906, "wc_p": 1.0}, "verdict": "no_robust_gain"}
+  },
+  "gating_anomaly": {
+    "oof_global_auc": 0.4952,
+    "mean_gate_value": 0.1356,
+    "folds_with_best_val_auc_below_0.5": [0, 3, 4, 5],
+    "n_sign_inverted_folds": 4,
+    "note": "La tête de gating s'inverse (val AUC < 0.5 sélectionnée par l'early-stop) sur 4/8 blocs spatiaux -> proba OOF sous le hasard (0.495). Le flag under_training=false l'a manqué (il teste le sous-apprentissage, pas l'inversion de signe). v2c_gating_xgb (XGB sur fused_repr) récupère le signe -> 0.644 pfm, mais sans gain."
+  },
+  "verdict": "V2 NEGATIF + PREMISSE INFIRMEE : sur ce dataset PCA-95% garde ~47-48 comp (pas 1), donc la 'PCA destructrice' du papier n'existe pas ici ; aucune fusion non destructrice ne bat fusion_pca95_v0 ni le mur XGB de facon robuste ; la tete de gating est instable (4/8 plis a signe inverse)."
+}

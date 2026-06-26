@@ -1,0 +1,19 @@
+# hgt_fusion_stacking_t1 — config (seed 42)
+task: T1a
+smoke: False
+seed: 42
+n_blocks: 8
+n_features: 98
+include_location: False
+inductive: True
+relations:
+  - near        # spatial k-NN, cap 1.5 km, k=8
+  - same_subbasin_knn  # intra-sub-basin k-NN, cap 2.0 km, k=8
+hgt:
+  hidden: 64
+  layers: 2
+  dropout: 0.3
+  heads: 4
+pca_variance_target: 0.95
+wall_xgb_spatial_auc: 0.6528
+wall_rf_spatial_auc: 0.6493

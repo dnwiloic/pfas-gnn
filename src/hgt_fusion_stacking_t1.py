@@ -88,9 +88,12 @@ from .hybrid import (
 
 SEED = C.SEED
 
-# WALL (experiments/baseline_t1/metrics_spatial.json, full run smoke=false, k=8)
-WALL_XGB_SPATIAL_AUC = 0.5877739078600925
-WALL_RF_SPATIAL_AUC = 0.6009263696712559
+# WALL — v2 pure-mechanism tabular reference (experiments/baseline_t1_v2/
+# metrics_v2_t1_pure_mech.json, full run smoke=false, k=8, 98 features, no admin encodings).
+# NB: the apples-to-apples comparison is the *in-run* XGB wall (same feature_cols);
+# these committed constants are the contextual reference only.
+WALL_XGB_SPATIAL_AUC = 0.6528
+WALL_RF_SPATIAL_AUC = 0.6493
 NOISE_THRESHOLD = 0.03   # inter-fold reality bar (eval C-CMP)
 
 
@@ -526,7 +529,7 @@ def run(df=None, *, smoke=False, n_blocks=None, hidden=64, layers=2, dropout=0.3
         k_spatial=8, cap_km_spatial=1.5, k_subbasin=8, cap_km_subbasin=2.0,
         max_epochs=None, patience=None, lr=5e-3, weight_decay=5e-4, inductive=True,
         pca_var=0.95, compute_delta=True, write=True, exp_dir=None, seed=SEED,
-        verbose=False):
+        feature_cols=None, verbose=False):
     """End-to-end three-architecture T1a run.
 
     smoke=True : ~500 wells, 3 blocks, 15 epochs, small hidden -> CPU < ~3 min.
@@ -555,7 +558,8 @@ def run(df=None, *, smoke=False, n_blocks=None, hidden=64, layers=2, dropout=0.3
         keep = set(rng.choice(df[C.WELL_ID].unique(), size=SMOKE_N_WELLS, replace=False))
         df = df[df[C.WELL_ID].isin(keep)].reset_index(drop=True)
 
-    feature_cols = C.feature_columns(include_location=False, cocontam="core")
+    if feature_cols is None:
+        feature_cols = C.feature_columns(include_location=False, cocontam="core")
 
     common = dict(feature_cols=feature_cols, n_blocks=n_blocks, hidden=hidden,
                   layers=layers, dropout=dropout, heads=heads, k_spatial=k_spatial,
